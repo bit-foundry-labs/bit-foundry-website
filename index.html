@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Bit Foundry makes beautiful systems software, developer tools, and practical learning products." />
+  <title>Bit Foundry — Tools for the curious</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Bit Foundry home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>BIT FOUNDRY</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#mission">Mission</a>
+      <a href="#products">Tools</a>
+      <a class="nav-cta" href="#products">Browse the foundry</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> Independent systems studio</p>
+        <h1 id="hero-title">Beautiful tools for the <em>machinery</em> beneath computing.</h1>
+        <p class="hero-lede">We turn low-level concepts into software, interfaces, and learning tools that feel clear, useful, and genuinely good to use.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#products">Explore tools <span aria-hidden="true">↘</span></a>
+          <a class="text-link" href="#mission">Why Bit Foundry?</a>
+        </div>
+      </div>
+
+      <div class="hero-object" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="core">
+          <span class="core-label">BF</span>
+          <span class="core-line"></span>
+          <small>EST. 2026</small>
+        </div>
+        <span class="coordinate coordinate-a">0x2A</span>
+        <span class="coordinate coordinate-b">SYS.01</span>
+      </div>
+
+      <div class="signal-line" aria-hidden="true"><span></span></div>
+    </section>
+
+    <section class="mission" id="mission" aria-labelledby="mission-title">
+      <p class="section-number">01 / MISSION</p>
+      <div class="mission-grid">
+        <h2 id="mission-title">Computing is powerful.<br />Learning it should feel <span>alive.</span></h2>
+        <div class="mission-copy">
+          <p>Bit Foundry exists to make systems software more approachable, expressive, and beautiful. We build at the intersection of low-level engineering and thoughtful design.</p>
+          <p>From terminal themes to visual learning tools, every product is forged to help curious people understand their machines and enjoy the process.</p>
+        </div>
+      </div>
+      <div class="principles" aria-label="Our principles">
+        <div><span>01</span><strong>Understand deeply</strong><small>Make the invisible visible.</small></div>
+        <div><span>02</span><strong>Design deliberately</strong><small>Utility deserves beauty.</small></div>
+        <div><span>03</span><strong>Build for curiosity</strong><small>Invite people beneath the surface.</small></div>
+      </div>
+    </section>
+
+    <section class="products" id="products" aria-labelledby="products-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-number">02 / THE FOUNDRY</p>
+          <h2 id="products-title">Tools &amp; products</h2>
+        </div>
+        <p>Small, focused releases for developers, students, and people who like knowing how things work.</p>
+      </div>
+
+      <div class="product-grid">
+        <article class="product-card featured">
+          <div class="product-visual terminal-visual" aria-hidden="true">
+            <div class="terminal-bar"><span></span><span></span><span></span><small>bit-foundry — zsh</small></div>
+            <pre><code><b>➜</b> forge install spaceman
+<i>✓ palette loaded</i>
+<b>➜</b> _</code></pre>
+          </div>
+          <div class="product-info">
+            <div class="product-meta"><span>Theme pack</span><span>01</span></div>
+            <h3>Spaceman Terminal Themes</h3>
+            <p>A cinematic collection of polished terminal palettes, built for long coding sessions and late-night ideas.</p>
+            <div class="product-bottom">
+              <span class="price">$12</span>
+              <button class="buy-button" data-product="spaceman">Buy &amp; download <span aria-hidden="true">↗</span></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-visual notes-visual" aria-hidden="true">
+            <div class="note-sheet">
+              <span>OPERATING SYSTEMS</span>
+              <strong>Memory<br />Management</strong>
+              <i></i><i></i><i></i>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-meta"><span>Digital notes</span><span>02</span></div>
+            <h3>Visual OS Notes</h3>
+            <p>Hand-drawn operating systems notes that turn dense mechanisms into clear mental models.</p>
+            <div class="product-bottom">
+              <span class="price">$9</span>
+              <button class="buy-button" data-product="os-notes">Buy &amp; download <span aria-hidden="true">↗</span></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card coming-soon">
+          <div class="product-visual kernel-visual" aria-hidden="true">
+            <div class="kernel-ring"></div><div class="kernel-dot"></div>
+            <code>kernel.path()</code>
+          </div>
+          <div class="product-info">
+            <div class="product-meta"><span>Interactive course</span><span>03</span></div>
+            <h3>Kernel Path</h3>
+            <p>A visual roadmap from C and computer architecture to operating systems and real kernel development.</p>
+            <div class="product-bottom">
+              <span class="status">In development</span>
+              <span class="quiet-link">Coming soon</span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="checkout-note">Secure checkout and instant downloads are handled by our trusted commerce partner.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a>
+    <p>Systems software, made human.</p>
+    <p class="copyright">© <span id="year"></span> Bit Foundry</p>
+  </footer>
+
+  <dialog id="checkout-dialog" aria-labelledby="dialog-title">
+    <button class="dialog-close" aria-label="Close checkout message">×</button>
+    <p class="section-number">CHECKOUT</p>
+    <h2 id="dialog-title">This tool is almost ready.</h2>
+    <p>The storefront is built; connect the final product checkout link to switch this button live.</p>
+    <button class="button button-primary dialog-done">Got it</button>
+  </dialog>
+  <script src="script.js"></script>
+</body>
+</html>
