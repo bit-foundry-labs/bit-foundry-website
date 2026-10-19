@@ -1,20 +1,21 @@
 # Bit Foundry
 
-Beautiful systems software.
+An independent systems studio exploring systems software, developer tools, and interactive learning.
 
-Bit Foundry is a creative systems studio exploring low-level developer tools,
-systems education, and experimental software.
+## Pages
 
-## Current Projects
+- `/` — Studio home
+- `/learn/networking/` — Network Lab: follow a browser request through DNS, TCP, TLS, HTTP, and the response
+- `/learn/fortran/` — Field Note 001: compiler flow and an interactive Fibonacci flowchart
 
-### Kernel Path
-An interactive learning platform and roadmap for low-level, operating-system,
-and kernel development.
+## Run locally
 
-## Status
+This is a static site with no build step or dependencies. From this directory, start a local server:
 
-🚧 Bit Foundry is currently under active development.
+```sh
+python3 -m http.server 8000
+```
 
-## Website
+Then open `http://localhost:8000/` in a browser. The interactive pages are available at `/learn/networking/` and `/learn/fortran/`.
 
-bitfoundrylabs.io
+The current local update is for review. Push to the connected deployment repository only after review.

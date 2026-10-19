@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3eddc" />
+  <meta name="description" content="An interactive field note about FORTRAN, compilers, object programs, and Fibonacci flowcharts." />
+  <title>Field Note 001 — The Compiler’s Path · Bit Foundry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="learn-page">
+  <header class="site-header">
+    <a class="brand" href="../../" aria-label="Bit Foundry home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a>
+    <nav aria-label="Primary navigation"><a href="../../#mission">Mission</a><a href="../../#work">Work</a><a class="nav-cta" href="../networking/">Network Lab <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main>
+    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Field Notes / 001</p><h1>A program takes shape.</h1><p>Two diagrams from an old FORTRAN textbook, rebuilt as small interactive lessons. Follow the compile, then step through the Fibonacci loop.</p></section>
+    <div class="lesson-main">
+      <section aria-labelledby="compiler-title">
+        <div class="lesson-intro"><div><div class="section-kicker">PROGRAMMING LANGUAGES · CHAPTER 01</div><h2 id="compiler-title">The compiler’s path</h2></div><span class="lesson-index">01 / 02 · TAP A BOX TO INSPECT IT</span></div>
+        <div class="lesson-card" data-lesson="compiler">
+          <div class="lesson-controls"><span class="controls-label">Show the object program as</span>
+            <button class="control-button output-filter" data-filter="all" aria-pressed="true">All forms</button>
+            <button class="control-button output-filter" data-filter="cards" aria-pressed="false">Cards</button>
+            <button class="control-button output-filter" data-filter="disk" aria-pressed="false">Disk</button>
+            <button class="control-button output-filter" data-filter="print" aria-pressed="false">Printout</button>
+            <button class="control-button run-button" data-action="run-compile">▶ Run the compile</button>
+          </div>
+          <div class="diagram-frame">
+            <div class="diagram compile-diagram" aria-label="Compiler flow diagram">
+              <button class="diagram-node is-active" data-compile-node="source"><strong>Source program</strong><small>Human-readable instructions</small></button>
+              <span class="diagram-arrow" aria-hidden="true">→</span>
+              <button class="diagram-node compiler" data-compile-node="compiler"><span class="compiler-tag">TRANSLATION STATION</span><strong>Computer + compiler</strong><small>Reads, checks, translates</small></button>
+              <span class="diagram-arrow" aria-hidden="true">→</span>
+              <div>
+                <button class="diagram-node object" data-compile-node="object"><strong>Object program</strong><small>Machine-ready instructions</small></button>
+                <div class="output-stack" aria-label="Ways to store or inspect the object program">
+                  <div class="output-option" data-kind="cards">Punched cards</div><div class="output-option" data-kind="disk">Tape · drum · disk</div><div class="output-option" data-kind="print">Printed for inspection</div>
+                </div>
+              </div>
+              <div class="flow-track" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="lesson-detail">
+            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-compile-kicker>STEP 1 · INPUT</div><h3 data-compile-title>The source program</h3><p data-compile-copy>A person writes the program in a language such as FORTRAN. The statements express the work to be done, but the processor needs them translated before it can execute them.</p></div>
+            <div class="quick-check"><div class="section-kicker">QUICK CHECK</div><h3>What comes out of the compiler?</h3><p>Pick the result the computer can execute.</p><div class="answer-list"><button class="answer-button" data-compile-answer="source">Source program</button><button class="answer-button" data-compile-answer="object">Object program</button><button class="answer-button" data-compile-answer="cards">A flowchart</button></div><div class="feedback" data-compile-feedback aria-live="polite"></div></div>
+          </div>
+          <div class="page-note"><span>FIELD NOTE: The compiler translates the source into an object program.</span><span>SELECT A STAGE · FOLLOW THE ARROWS</span></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="fib-title">
+        <div class="lesson-intro"><div><div class="section-kicker">CONTROL FLOW · A CLASSIC LOOP</div><h2 id="fib-title">Find the first term over 1,000</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE LOOP</span></div>
+        <div class="lesson-card" data-lesson="fibonacci">
+          <div class="lesson-controls"><span class="controls-label">Watch the values move through the flowchart</span>
+            <button class="control-button" data-action="fib-step">Step once</button><button class="control-button run-button" data-action="fib-run">▶ Run loop</button><button class="control-button" data-action="fib-reset">Reset</button><span class="flow-status" data-fib-status aria-live="polite">Ready at the starting values.</span>
+          </div>
+          <div class="diagram-frame">
+            <div class="flowchart" aria-label="Fibonacci flowchart">
+              <button class="flow-node start-stop" data-fib-node="start"><strong>Start</strong></button><span class="flow-down" aria-hidden="true">↓</span>
+              <button class="flow-node initialize is-active" data-fib-node="initialize"><strong>Set NEXT = 0 · LATEST = 1</strong><small>Initialize the first pair</small></button><span class="flow-down" aria-hidden="true">↓</span>
+              <button class="flow-node sum" data-fib-node="sum"><strong>SUM ← LATEST + NEXT</strong><small data-fib-equation>Each pass adds the current pair</small></button><span class="flow-down" aria-hidden="true">↓</span>
+              <button class="flow-node test" data-fib-node="test"><strong>SUM &gt; 1,000?</strong></button>
+              <div class="branches">
+                <div class="branch"><span class="branch-label">TRUE</span><button class="flow-node output" data-fib-node="print"><strong>Print SUM · Stop</strong></button></div>
+                <div class="branch"><span class="branch-label">FALSE</span><button class="flow-node initialize" data-fib-node="update"><strong>NEXT ← LATEST</strong><small>LATEST ← SUM · Return to the addition</small></button></div>
+              </div>
+              <div class="loop-return" aria-hidden="true">↶ &nbsp; continue with the updated pair</div>
+            </div>
+          </div>
+          <div class="lesson-detail">
+            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-fib-kicker>READY · START</div><h3 data-fib-title>Two values begin the sequence</h3><p data-fib-copy>NEXT starts at 0 and LATEST at 1. Add them to make SUM. If SUM is not over 1,000, shift the pair forward and loop again.</p>
+              <div class="value-row"><span class="value-chip">NEXT = <b data-fib-next>0</b></span><span class="value-chip">LATEST = <b data-fib-latest>1</b></span><span class="value-chip">SUM = <b data-fib-sum>—</b></span><span class="value-chip">STEP = <b data-fib-count>0</b></span></div>
+            </div>
+            <div class="quick-check"><div class="section-kicker">QUICK CHECK</div><h3>First Fibonacci term above 1,000?</h3><p>Predict the value before you run the loop.</p><div class="answer-list"><button class="answer-button" data-fib-answer="987">987</button><button class="answer-button" data-fib-answer="1597">1,597</button><button class="answer-button" data-fib-answer="2584">2,584</button></div><div class="feedback" data-fib-feedback aria-live="polite"></div><div class="trace-wrap"><table class="trace-table"><thead><tr><th>Pass</th><th>Pair added</th><th>SUM</th></tr></thead><tbody data-fib-trace><tr><td colspan="3">Run the loop to build the trace.</td></tr></tbody></table></div></div>
+          </div>
+          <div class="page-note"><span>FIELD NOTE: 987 is below the threshold; 1,597 is the first term above it.</span><span>TRACE THE VALUES · TRACE THE CONTROL FLOW</span></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p>Systems, made human.</p><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
+  <script src="../../learn.js" defer></script>
+</body>
+</html>
