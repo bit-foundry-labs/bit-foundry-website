@@ -5,10 +5,10 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
 });
 
 const compileCopy = {
-  source: ["STEP 1 · INPUT", "The source program", "A person writes the program in a language such as FORTRAN. The statements express the work to be done, but the processor needs them translated before it can execute them."],
-  compiler: ["STEP 2 · TRANSLATION", "Computer + compiler", "The compiler reads the source statements and translates them into equivalent machine instructions. It also checks that the instructions follow the language rules."],
-  object: ["STEP 3 · RESULT", "The object program", "The result is the object program: instructions in a form the computer can execute. Modern toolchains may add linking and loading; this diagram focuses on the book’s compile step."],
-  storage: ["STEP 4 · KEEP OR INSPECT", "Save or inspect the result", "The object program can stay in memory, be saved to auxiliary storage, or be printed for inspection. The vintage media have changed; the idea of saving a build artifact remains."]
+  source: ["STEP 1 · INPUT", "The source program", "FORTRAN source code is human-readable. The compiler translates it into instructions the computer can execute."],
+  compiler: ["STEP 2 · TRANSLATION", "Computer + compiler", "The compiler checks the source code and translates it into machine instructions."],
+  object: ["STEP 3 · RESULT", "The object program", "The object program contains instructions the computer can execute."],
+  storage: ["STEP 4 · OUTPUT", "Save or inspect the result", "Store the object program in memory, on cards or disk, or print it for inspection."]
 };
 
 function showCompileNode(key) {
@@ -195,12 +195,12 @@ if (fibLesson) {
 const networkLesson = document.querySelector('[data-lesson="network"]');
 if (networkLesson) {
   const networkStages = [
-    ["STAGE 01 · THE REQUEST", "You ask for a page", "You type a website name or tap a link. Your browser knows the name, but it needs a network address before it can send anything toward the server."],
-    ["STAGE 02 · DNS", "Find the server’s address", "DNS looks up the domain name and returns an IP address. It works like a distributed address book, helping your browser find where the site lives."],
-    ["STAGE 03 · TCP", "Open a connection", "TCP helps the two computers establish a reliable connection. It tracks the pieces so missing data can be sent again and put back in order."],
-    ["STAGE 04 · TLS", "Agree on private communication", "For an HTTPS site, TLS authenticates the server and sets up encryption. Other people can still see some connection details, but the page contents are protected in transit."],
-    ["STAGE 05 · HTTP", "Ask for the page", "Your browser sends an HTTP request over the connection. It includes what it wants, such as a document at the site’s root address."],
-    ["STAGE 06 · RESPONSE", "Receive the page", "The server sends an HTTP response. Your browser reads the response and assembles the page from its document, styles, images, and other resources."]
+    ["STAGE 01 · REQUEST", "You ask for a page", "Your browser needs the server’s IP address before it can send a request."],
+    ["STAGE 02 · DNS", "Find the server’s address", "DNS looks up the domain name and returns its IP address."],
+    ["STAGE 03 · TCP", "Open a connection", "TCP provides reliable delivery between your browser and the server."],
+    ["STAGE 04 · TLS", "Encrypt the connection", "For HTTPS, TLS authenticates the server and encrypts data in transit."],
+    ["STAGE 05 · HTTP", "Send the request", "Your browser sends an HTTP request for the page."],
+    ["STAGE 06 · RESPONSE", "Receive the response", "The server returns the requested resource. Your browser reads it and requests any other files it needs."]
   ];
   let stage = 0;
   const stageElements = [...networkLesson.querySelectorAll("[data-network-stage]")];
@@ -228,7 +228,7 @@ if (networkLesson) {
     button.addEventListener("click", () => {
       const correct = button.dataset.networkAnswer === "DNS";
       const feedback = networkLesson.querySelector("[data-network-feedback]");
-      feedback.textContent = correct ? "✓ Right. DNS looks up the network address." : "Not quite. DNS is the name-to-address lookup step.";
+      feedback.textContent = correct ? "✓ Correct. DNS resolves the domain to an IP address." : "Not quite. DNS resolves domain names to IP addresses.";
       feedback.style.color = correct ? "var(--forest)" : "var(--orange)";
     });
   });

@@ -17,5 +17,3 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/` in a browser. The interactive pages are available at `/learn/networking/` and `/learn/fortran/`.
-
-The current local update is for review. Push to the connected deployment repository only after review.

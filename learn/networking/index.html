@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f3eddc" />
-  <meta name="description" content="An interactive field guide to what happens when a message travels across the internet." />
-  <title>Network Lab — Follow a message · Bit Foundry</title>
+  <meta name="description" content="Trace DNS, TCP, TLS, and HTTP as a browser loads a web page." />
+  <title>How a Web Request Works · Network Lab · Bit Foundry</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -17,37 +17,36 @@
     <nav aria-label="Primary navigation"><a href="../../#mission">Mission</a><a href="../../#work">Work</a><a class="nav-cta" href="../fortran/">Field Notes <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main>
-    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Network Lab / 001</p><h1>Follow a message.</h1><p>A request crosses a surprising number of invisible steps before a web page appears. Step through the trip and see what each layer is doing.</p></section>
+    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Network Lab / 001</p><h1>How a web request works.</h1><p>Trace DNS, TCP, TLS, and HTTP as your browser loads a page.</p></section>
     <div class="lesson-main">
-      <div class="lesson-intro"><div><div class="section-kicker">NETWORK LAB · EXPERIMENT 01</div><h2>From your browser to a website</h2></div><span class="lesson-index">6 STAGES · ONE REQUEST</span></div>
+      <div class="lesson-intro"><div><div class="section-kicker">NETWORK LAB · 01</div><h2>Request stages</h2></div><span class="lesson-index">6 STAGES</span></div>
       <section class="lesson-card" data-lesson="network">
         <div class="lab-grid">
           <div class="network-diagram" aria-label="Six stages of a web request">
             <article class="network-stage is-active" data-network-stage="0"><span class="stage-number">01</span><div><strong>You ask for a page</strong><small>Browser · example.org</small></div><span class="stage-icon">⌕</span></article>
             <article class="network-stage" data-network-stage="1"><span class="stage-number">02</span><div><strong>Find its address</strong><small>DNS · name becomes an IP address</small></div><span class="stage-icon">#</span></article>
-            <article class="network-stage" data-network-stage="2"><span class="stage-number">03</span><div><strong>Open a connection</strong><small>TCP · agree on a reliable route</small></div><span class="stage-icon">↔</span></article>
-            <article class="network-stage" data-network-stage="3"><span class="stage-number">04</span><div><strong>Make it private</strong><small>TLS · set up encrypted communication</small></div><span class="stage-icon">◇</span></article>
+            <article class="network-stage" data-network-stage="2"><span class="stage-number">03</span><div><strong>Open a connection</strong><small>TCP · reliable transport</small></div><span class="stage-icon">↔</span></article>
+            <article class="network-stage" data-network-stage="3"><span class="stage-number">04</span><div><strong>Encrypt the connection</strong><small>TLS · authenticate and encrypt</small></div><span class="stage-icon">◇</span></article>
             <article class="network-stage" data-network-stage="4"><span class="stage-number">05</span><div><strong>Send the request</strong><small>HTTP · ask the server for the page</small></div><span class="stage-icon">→</span></article>
             <article class="network-stage" data-network-stage="5"><span class="stage-number">06</span><div><strong>Receive the response</strong><small>Server → browser · the page arrives</small></div><span class="stage-icon">▤</span></article>
           </div>
           <aside class="lab-panel">
             <div class="section-kicker" data-network-kicker>STAGE 01 · THE REQUEST</div>
             <h3 data-network-title>You ask for a page</h3>
-            <p data-network-copy>You type a website name or tap a link. Your browser knows the name, but it needs a network address before it can send anything toward the server.</p>
+            <p data-network-copy>Your browser needs the server’s IP address before it can send a request.</p>
             <div class="lab-controls"><button class="control-button" data-action="network-back">← Back</button><button class="control-button run-button" data-action="network-next">Next stage →</button><button class="control-button" data-action="network-reset">Start over</button></div>
-            <div class="network-answer"><div class="section-kicker">QUICK CHECK</div><h3>Which step looks up the address?</h3><div class="answer-list"><button class="answer-button" data-network-answer="TCP">TCP</button><button class="answer-button" data-network-answer="DNS">DNS</button><button class="answer-button" data-network-answer="HTTP">HTTP</button></div><div class="feedback" data-network-feedback aria-live="polite"></div></div>
+            <div class="network-answer"><div class="section-kicker">QUICK CHECK</div><h3>Which protocol looks up the address?</h3><div class="answer-list"><button class="answer-button" data-network-answer="TCP">TCP</button><button class="answer-button" data-network-answer="DNS">DNS</button><button class="answer-button" data-network-answer="HTTP">HTTP</button></div><div class="feedback" data-network-feedback aria-live="polite"></div></div>
           </aside>
         </div>
-        <div class="page-note"><span>FIELD NOTE: The details vary, but the layers cooperate to deliver one page.</span><span>STEP THROUGH THE REQUEST</span></div>
       </section>
-      <div class="lesson-intro"><div><div class="section-kicker">KEEP EXPLORING</div><h2>Another way into the machinery</h2></div></div>
+      <div class="lesson-intro"><div><div class="section-kicker">RELATED LESSON</div><h2>FORTRAN: compilation &amp; loops</h2></div></div>
       <a class="work-card field-card" href="../fortran/" style="max-width:560px">
         <div class="card-art field-art" aria-hidden="true"><span class="art-index">FIELD NOTE / 001</span><div class="field-book"><small>PROGRAMACIÓN</small><strong>FORTRAN</strong><i></i><i></i><i></i><span>THE COMPILER<br />&amp; THE LOOP</span></div><span class="field-circle"></span><span class="field-caption">A VINTAGE IDEA, MADE INTERACTIVE</span></div>
-        <div class="work-card-copy"><div class="work-meta"><span>Computing history · interactive</span><span>01</span></div><h3>The compiler’s path</h3><p>Follow source code into an object program, then step through a Fibonacci flowchart.</p><span class="card-link">Open field note <b aria-hidden="true">↗</b></span></div>
+        <div class="work-card-copy"><div class="work-meta"><span>Programming</span><span>01</span></div><h3>The compiler’s path</h3><p>Explore compilation, then run a Fibonacci loop.</p><span class="card-link">Open lesson <b aria-hidden="true">↗</b></span></div>
       </a>
     </div>
   </main>
-  <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p>Systems, made human.</p><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
+  <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
   <script src="../../learn.js" defer></script>
 </body>
 </html>
