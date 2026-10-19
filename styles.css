@@ -176,6 +176,7 @@ a.work-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(-
 .flow-track::before { content: ""; position: absolute; width: 13px; height: 13px; left: 0; top: -4px; background: var(--orange); border: 1px solid var(--ink); transform: rotate(45deg); animation: packet-travel 2.4s ease-in-out infinite; }
 @keyframes packet-travel { to { left: calc(100% - 12px); } }
 .lesson-detail { display: grid; grid-template-columns: minmax(0,1fr) minmax(250px,.8fr); gap: 25px; margin-top: 21px; }
+.lesson-detail-single { grid-template-columns: 1fr; }
 .detail-copy,.quick-check { padding-top: 12px; border-top: 3px solid var(--forest); }
 .quick-check { border-color: var(--blue); }
 .detail-copy h3,.quick-check h3 { margin: 4px 0 7px; font: 600 1.25rem/1.1 var(--display); text-transform: uppercase; }

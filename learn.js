@@ -53,15 +53,7 @@ if (compilerLesson) {
         return;
       }
       showCompileNode(keys[index]);
-    }, 900);
-  });
-  compilerLesson.querySelectorAll("[data-compile-answer]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const correct = button.dataset.compileAnswer === "object";
-      const feedback = compilerLesson.querySelector("[data-compile-feedback]");
-      feedback.textContent = correct ? "✓ Correct. The compiler produces an object program." : "Not quite. Follow the arrow leaving the compiler.";
-      feedback.style.color = correct ? "var(--forest)" : "var(--orange)";
-    });
+    }, 1500);
   });
 }
 
@@ -75,7 +67,7 @@ if (fibLesson) {
     update: ["STEP 4 · SHIFT", "Move the pair forward", "NEXT takes the old LATEST, and LATEST takes SUM. The loop then returns to the addition."],
     print: ["STEP 5 · FINISH", "Print the first value over 1,000", "The loop stops at 1,597. The previous Fibonacci term is 987, so 1,597 is the first term that crosses the threshold."]
   };
-  const fib = { next: 0, latest: 1, sum: null, count: 0, phase: "initialize", done: false, timer: null, trace: [] };
+  const fib = { next: 0, latest: 1, sum: null, count: 0, phase: "initialize", done: false, timer: null };
   const value = (selector, content) => { fibLesson.querySelector(selector).textContent = content; };
 
   function renderFib(message) {
@@ -91,38 +83,17 @@ if (fibLesson) {
     value("[data-fib-status]", message);
     const equation = fibLesson.querySelector("[data-fib-equation]");
     equation.textContent = fib.sum === null ? "Each pass adds the current pair" : `${fib.next} + ${fib.latest} = ${fib.sum}`;
-    const body = fibLesson.querySelector("[data-fib-trace]");
-    body.replaceChildren();
-    if (fib.trace.length === 0) {
-      const row = document.createElement("tr");
-      const cell = document.createElement("td");
-      cell.colSpan = 3;
-      cell.textContent = "Run the loop to build the trace.";
-      row.append(cell);
-      body.append(row);
-      return;
-    }
-    fib.trace.forEach((entry) => {
-      const row = document.createElement("tr");
-      [entry.pass, `${entry.next} + ${entry.latest}`, entry.sum].forEach((item) => {
-        const cell = document.createElement("td");
-        cell.textContent = String(item);
-        row.append(cell);
-      });
-      body.append(row);
-    });
   }
 
   function stepFib() {
     if (fib.done) return;
     if (fib.phase === "initialize") {
-      fib.next = 0; fib.latest = 1; fib.sum = null; fib.count = 0; fib.trace = [];
+      fib.next = 0; fib.latest = 1; fib.sum = null; fib.count = 0;
       fib.phase = "sum";
       renderFib("Starting pair set. Follow the arrow to the addition.");
     } else if (fib.phase === "sum") {
       fib.sum = fib.next + fib.latest;
       fib.count += 1;
-      fib.trace.push({ pass: fib.count, next: fib.next, latest: fib.latest, sum: fib.sum });
       fib.phase = "test";
       renderFib(`Pass ${fib.count}: ${fib.next} + ${fib.latest} = ${fib.sum}. Check the condition.`);
     } else if (fib.phase === "test") {
@@ -160,22 +131,13 @@ if (fibLesson) {
     fib.timer = window.setInterval(() => {
       stepFib();
       if (fib.done) stopFib();
-    }, 520);
+    }, 1100);
   });
   fibLesson.querySelector('[data-action="fib-reset"]').addEventListener("click", () => {
     stopFib();
-    Object.assign(fib, { next: 0, latest: 1, sum: null, count: 0, phase: "initialize", done: false, trace: [] });
+    Object.assign(fib, { next: 0, latest: 1, sum: null, count: 0, phase: "initialize", done: false });
     fibLesson.querySelector('[data-action="fib-run"]').textContent = "▶ RUN LOOP";
-    fibLesson.querySelector("[data-fib-feedback]").textContent = "";
     renderFib("Ready at the starting values.");
-  });
-  fibLesson.querySelectorAll("[data-fib-answer]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const correct = button.dataset.fibAnswer === "1597";
-      const feedback = fibLesson.querySelector("[data-fib-feedback]");
-      feedback.textContent = correct ? "✓ Correct. 987 is below the threshold; the next term is 1,597." : "Not quite. 987 is still below 1,000; follow the loop once more.";
-      feedback.style.color = correct ? "var(--forest)" : "var(--orange)";
-    });
   });
   fibLesson.querySelectorAll("[data-fib-node]").forEach((node) => {
     node.addEventListener("click", () => {

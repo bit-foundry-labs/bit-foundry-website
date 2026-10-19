@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f3eddc" />
-  <meta name="description" content="Interactive diagrams explain FORTRAN compilation and a Fibonacci loop." />
-  <title>FORTRAN: Compilation &amp; Fibonacci · Bit Foundry</title>
+  <meta name="description" content="Run paced simulations of Fortran compilation and a Fibonacci loop." />
+  <title>Fortran · Bit Foundry</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -14,13 +14,13 @@
 <body class="learn-page">
   <header class="site-header">
     <a class="brand" href="../../" aria-label="Bit Foundry home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a>
-    <nav aria-label="Primary navigation"><a href="../../#work">Projects</a><a class="nav-cta" href="../networking/">Network Lab <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="Primary navigation"><a href="../../#products">Products</a><a class="nav-cta" href="../networking/">Network Lab <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main>
-    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Field Notes / 001</p><h1>FORTRAN: compilation &amp; loops.</h1><p>Explore compilation, object programs, and a Fibonacci loop.</p></section>
+    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Fortran</p><h1>Fortran.</h1><p>Compilation and Fibonacci simulations.</p></section>
     <div class="lesson-main">
       <section aria-labelledby="compiler-title">
-        <div class="lesson-intro"><div><div class="section-kicker">PROGRAMMING LANGUAGES · CHAPTER 01</div><h2 id="compiler-title">The compiler’s path</h2></div><span class="lesson-index">01 / 02 · TAP A BOX TO INSPECT IT</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 01</div><h2 id="compiler-title">The compiler’s path</h2></div><span class="lesson-index">01 / 02 · TAP A BOX TO INSPECT IT</span></div>
         <div class="lesson-card" data-lesson="compiler">
           <div class="lesson-controls"><span class="controls-label">Show the object program as</span>
             <button class="control-button output-filter" data-filter="all" aria-pressed="true">All forms</button>
@@ -44,15 +44,14 @@
               <div class="flow-track" aria-hidden="true"></div>
             </div>
           </div>
-          <div class="lesson-detail">
+          <div class="lesson-detail lesson-detail-single">
             <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-compile-kicker>STEP 1 · INPUT</div><h3 data-compile-title>The source program</h3><p data-compile-copy>FORTRAN source code is human-readable. The compiler translates it into instructions the computer can execute.</p></div>
-            <div class="quick-check"><div class="section-kicker">QUICK CHECK</div><h3>What does the compiler produce?</h3><div class="answer-list"><button class="answer-button" data-compile-answer="source">Source program</button><button class="answer-button" data-compile-answer="object">Object program</button><button class="answer-button" data-compile-answer="cards">A flowchart</button></div><div class="feedback" data-compile-feedback aria-live="polite"></div></div>
           </div>
         </div>
       </section>
 
       <section aria-labelledby="fib-title">
-        <div class="lesson-intro"><div><div class="section-kicker">CONTROL FLOW · A CLASSIC LOOP</div><h2 id="fib-title">Find the first term over 1,000</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE LOOP</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 02</div><h2 id="fib-title">Find the first term over 1,000</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE LOOP</span></div>
         <div class="lesson-card" data-lesson="fibonacci">
           <div class="lesson-controls"><span class="controls-label">Fibonacci terms</span>
             <button class="control-button" data-action="fib-step">Step once</button><button class="control-button run-button" data-action="fib-run">▶ Run loop</button><button class="control-button" data-action="fib-reset">Reset</button><span class="flow-status" data-fib-status aria-live="polite">Ready at the starting values.</span>
@@ -70,11 +69,10 @@
               <div class="loop-return" aria-hidden="true">↶ &nbsp; continue with the updated pair</div>
             </div>
           </div>
-          <div class="lesson-detail">
+          <div class="lesson-detail lesson-detail-single">
             <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-fib-kicker>READY · START</div><h3 data-fib-title>Two values begin the sequence</h3><p data-fib-copy>Start with NEXT = 0 and LATEST = 1. Add the pair; if SUM ≤ 1,000, shift the values and repeat.</p>
               <div class="value-row"><span class="value-chip">NEXT = <b data-fib-next>0</b></span><span class="value-chip">LATEST = <b data-fib-latest>1</b></span><span class="value-chip">SUM = <b data-fib-sum>—</b></span><span class="value-chip">STEP = <b data-fib-count>0</b></span></div>
             </div>
-            <div class="quick-check"><div class="section-kicker">QUICK CHECK</div><h3>Which term first exceeds 1,000?</h3><div class="answer-list"><button class="answer-button" data-fib-answer="987">987</button><button class="answer-button" data-fib-answer="1597">1,597</button><button class="answer-button" data-fib-answer="2584">2,584</button></div><div class="feedback" data-fib-feedback aria-live="polite"></div><div class="trace-wrap"><table class="trace-table"><thead><tr><th>Pass</th><th>Pair added</th><th>SUM</th></tr></thead><tbody data-fib-trace><tr><td colspan="3">Run the loop to build the trace.</td></tr></tbody></table></div></div>
           </div>
         </div>
       </section>
