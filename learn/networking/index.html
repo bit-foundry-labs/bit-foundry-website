@@ -85,6 +85,26 @@
     .transport-log li[data-kind="ack"] { color:#91a4ff; }
     .transport-concept { margin-top:15px; padding-top:13px; border-top:1px solid var(--rule); color:var(--muted); font-size:.9rem; line-height:1.6; }
     @media(max-width:640px) { .transport-controls { grid-template-columns:1fr; } .transport-topline { align-items:start; flex-direction:column; } }
+  
+    .forwarding-lab { display:grid; grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr); gap:20px; }
+    .route-input { display:grid; gap:8px; margin-bottom:15px; }
+    .route-input label { font-size:.9rem; }
+    .route-input input { width:100%; min-height:46px; padding:8px 10px; border:1px solid var(--ink); background:var(--paper); color:var(--ink); font:500 1rem var(--mono); }
+    .route-table-wrap { overflow-x:auto; }
+    .route-table { width:100%; border-collapse:collapse; font:400 .9rem/1.5 var(--mono); }
+    .route-table th,.route-table td { padding:9px 8px; border-bottom:1px solid var(--rule); text-align:left; white-space:nowrap; }
+    .route-table th { color:var(--forest); font-weight:500; text-transform:uppercase; }
+    .route-table tr.is-match { color:var(--muted); }
+    .route-table tr.is-selected { color:var(--ink); background:var(--forest-dark); box-shadow:inset 3px 0 var(--forest); }
+    .forward-result { min-height:145px; margin-top:15px; padding:15px; border:1px solid var(--forest); background:#0a0c0c; }
+    .forward-result h3 { margin:7px 0; font:600 1.25rem var(--display); text-transform:uppercase; }
+    .forward-result p { margin:0; color:var(--muted); font-size:.9rem; line-height:1.6; }
+    .packet-path { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:14px; }
+    .packet-path span { padding:8px 10px; border:1px solid var(--rule); font:500 .9rem var(--mono); }
+    .packet-path .packet-arrow { border:0; color:var(--forest); font-size:1.2rem; }
+    .packet-path [data-path="active"] { border-color:var(--forest); color:var(--forest); }
+    @media(max-width:760px) { .forwarding-lab { grid-template-columns:1fr; } }
+    @media(max-width:520px) { .packet-path { align-items:stretch; flex-direction:column; } .packet-path .packet-arrow { align-self:center; transform:rotate(90deg); } }
   </style>
 </head>
 <body class="learn-page">
@@ -211,6 +231,36 @@
         </section>
       </div>
     </section>
+    <section class="chapter-one" aria-labelledby="chapter-four-title" id="chapter-four">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 04 · DATA PLANE</div><h2 id="chapter-four-title">How routers forward packets</h2></div><p>Routing plans paths across the network. Forwarding moves each arriving packet from a router’s input to its chosen output.</p></div>
+      <div class="concept-grid">
+        <article class="concept"><div class="section-kicker">4.1 · TWO PLANES</div><h3>Route, then forward</h3><p>The control plane determines routes. The data plane uses a local forwarding table to move each packet to an output link.</p></article>
+        <article class="concept"><div class="section-kicker">4.2 · ROUTER</div><h3>Lookup to output</h3><p>An input port examines the packet header; the switching fabric carries it across the router; an output port queues and transmits it.</p></article>
+        <article class="concept"><div class="section-kicker">4.3 · IP</div><h3>Address the destination</h3><p>IPv4 and IPv6 datagrams carry addresses. Subnets and longest-prefix matching guide forwarding; NAT translates addresses at network boundaries.</p></article>
+        <article class="concept"><div class="section-kicker">4.4 · SDN</div><h3>Match and act</h3><p>Generalized forwarding can match on packet fields and apply actions such as forwarding, dropping, or modifying the packet.</p></article>
+      </div>
+      <p class="course-path"><strong>Queueing matters:</strong> If packets arrive at an output faster than its link can send them, they wait in a queue; when the buffer fills, packets are dropped. Scheduling decides which waiting packet goes next.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">INTERACTIVE SIMULATION</div><h2>Find the forwarding entry</h2></div><span class="lesson-index">CHAPTER 4</span></div>
+        <section class="lesson-card">
+          <div class="forwarding-lab">
+            <div>
+              <div class="route-input"><label for="destination-ip">Destination IPv4 address</label><input id="destination-ip" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="203.0.113.150" aria-describedby="route-help"><small id="route-help" class="http-note">Try 203.0.113.20, 203.0.113.200, or 198.51.100.7.</small></div>
+              <div class="forward-result" aria-live="polite"><div class="section-kicker">ROUTER DECISION</div><h3 id="forward-result-title">Forward to Link 3</h3><p id="forward-result-copy"></p><div class="packet-path"><span data-path="active">INPUT</span><span class="packet-arrow">→</span><span id="path-lookup">LONGEST PREFIX</span><span class="packet-arrow">→</span><span id="path-output">LINK 3</span></div></div>
+            </div>
+            <div class="route-table-wrap">
+              <table class="route-table"><thead><tr><th>Network prefix</th><th>Next hop</th></tr></thead><tbody>
+                <tr data-route="default"><td>0.0.0.0/0</td><td>Link 4 · default</td></tr>
+                <tr data-route="24"><td>203.0.113.0/24</td><td>Link 1</td></tr>
+                <tr data-route="25"><td>203.0.113.128/25</td><td>Link 2</td></tr>
+                <tr data-route="28"><td>203.0.113.144/28</td><td>Link 3</td></tr>
+              </tbody></table>
+              <div class="page-note"><span>Several entries may match one destination.</span><span>Choose the matching prefix with the most bits.</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
     <section class="lesson-main journey" aria-labelledby="journey-title">
       <div class="lesson-intro"><div><div class="section-kicker">COURSE PREVIEW · CHAPTER 6 RETROSPECTIVE</div><h2 id="journey-title">Trace a web request</h2></div><span class="lesson-index">6 STAGES</span></div>
       <section class="lesson-card" data-lesson="network">
@@ -235,6 +285,51 @@
   </main>
   <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
   <script src="../../learn.js" defer></script>
+  <script>
+    (() => {
+      const input = document.getElementById("destination-ip");
+      if (!input) return;
+      const routes = [
+        {id:"default", network:"0.0.0.0", prefix:0, link:"Link 4"},
+        {id:"24", network:"203.0.113.0", prefix:24, link:"Link 1"},
+        {id:"25", network:"203.0.113.128", prefix:25, link:"Link 2"},
+        {id:"28", network:"203.0.113.144", prefix:28, link:"Link 3"}
+      ];
+      const toInt = address => address.split(".").reduce((value, octet) => (value * 256 + Number(octet)) >>> 0, 0);
+      const parse = address => {
+        const parts = address.trim().split(".");
+        if (parts.length !== 4 || parts.some(part => !/^\d{1,3}$/.test(part) || Number(part) > 255)) return null;
+        return toInt(address.trim());
+      };
+      const mask = prefix => prefix === 0 ? 0 : (0xffffffff << (32-prefix)) >>> 0;
+      function updateForwarding() {
+        const destination = parse(input.value);
+        const title = document.getElementById("forward-result-title");
+        const copy = document.getElementById("forward-result-copy");
+        const output = document.getElementById("path-output");
+        const lookup = document.getElementById("path-lookup");
+        document.querySelectorAll("[data-route]").forEach(row => row.classList.remove("is-match","is-selected"));
+        if (destination === null) {
+          title.textContent = "Enter a valid IPv4 address";
+          copy.textContent = "Use four numbers from 0 to 255, separated by periods.";
+          output.textContent = "NO OUTPUT";
+          lookup.textContent = "NO MATCH";
+          return;
+        }
+        const matching = routes.filter(route => ((destination & mask(route.prefix)) >>> 0) === ((toInt(route.network) & mask(route.prefix)) >>> 0));
+        const selected = matching.reduce((best, route) => route.prefix > best.prefix ? route : best, routes[0]);
+        matching.forEach(route => document.querySelector('[data-route="'+route.id+'"]').classList.add("is-match"));
+        document.querySelector('[data-route="'+selected.id+'"]').classList.add("is-selected");
+        title.textContent = "Forward to " + selected.link;
+        lookup.textContent = "PREFIX /" + selected.prefix;
+        output.textContent = selected.link.toUpperCase();
+        copy.textContent = matching.length + " route" + (matching.length === 1 ? "" : "s") + " match. The router chooses /" + selected.prefix + ", the longest matching prefix.";
+      }
+      input.addEventListener("input", updateForwarding);
+      updateForwarding();
+    })();
+  </script>
+
   <script>
     (() => {
       const mode = document.getElementById("transport-mode");
