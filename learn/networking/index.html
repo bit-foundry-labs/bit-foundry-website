@@ -271,8 +271,9 @@
           }
         }
         list.push({kind:"loss", text:"Timer for packet " + lostSequence + " expires."});
-        const start = protocol === "gbn" ? lostSequence : lostSequence;
-        for (let i=start; i<4; i++) list.push({kind:"sender", text:"Sender retransmits packet " + i + (protocol === "gbn" ? " (window recovery)." : ".")});
+        const start = lostSequence;
+        const end = protocol === "gbn" ? 4 : lostSequence + 1;
+        for (let i=start; i<end; i++) list.push({kind:"sender", text:"Sender retransmits packet " + i + (protocol === "gbn" ? " (window recovery)." : ".")});
         if (protocol === "gbn") {
           for (let i=lostSequence; i<4; i++) {
             list.push({kind:"receiver", text:"Receiver accepts packet " + i + " in order."});
@@ -320,6 +321,7 @@
       runButton.addEventListener("click", () => {
         if (timer) { stop(); status.textContent += " · Paused"; return; }
         if (position >= events.length) reset();
+        runButton.textContent = "Pause";
         timer = window.setInterval(advance, 900);
         advance();
       });
