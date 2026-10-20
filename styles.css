@@ -315,3 +315,16 @@ a.work-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(-
   .stage-number { width: 30px; height: 30px; }
 }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .matrix-stream { top: -100%; transform: translateY(100%); animation: none; opacity: .7; } }
+
+/* Keep small labels readable at desktop and mobile sizes. */
+nav,.nav-cta,.button,.text-link,.section-tag,.company-note,.principle-number,
+.art-index,.art-caption,.field-caption,.kernel-caption,.station,.field-book small,.field-book span,
+.work-meta,.card-link,.status-label,.work-foot,.shelf-index,.terminal-top span,.terminal-code,
+.note-sheet small,.note-sheet span,.copyright,.learn-breadcrumb,.section-kicker,.lesson-index,
+.controls-label,.control-button,.diagram-node small,.compiler-tag,.output-option,.answer-button,
+.feedback,.value-chip,.flow-node small,.branch-label,.loop-return,.flow-status,.trace-table,
+.page-note,.stage-number,.network-stage small {
+  font-size: max(.72rem, .72vw);
+}
+.manifesto-copy p { font-size: 1rem; }
+.principles p,.work-card-copy p,.shelf-copy p,.lab-panel p { font-size: .9rem; }
