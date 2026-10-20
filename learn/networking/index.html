@@ -56,6 +56,20 @@
       .chapter-one-head { align-items:start; flex-direction:column; }
       .concept { min-height:0; }
     }
+  
+    .http-mode-options { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; padding:0; border:0; }
+    .http-mode-options legend { width:100%; margin-bottom:9px; font-size:.9rem; }
+    .http-mode-options label { min-height:42px; padding:9px 12px; display:flex; align-items:center; gap:8px; border:1px solid var(--rule); color:var(--muted); cursor:pointer; }
+    .http-mode-options label:has(input:checked) { border-color:var(--forest); color:var(--ink); background:var(--forest-dark); }
+    .http-mode-options input { accent-color:var(--forest); }
+    .http-compare { display:grid; gap:8px; }
+    .http-row { padding:12px; border:1px solid var(--rule); background:#0a0c0c; opacity:.65; }
+    .http-row.is-selected { opacity:1; border-color:var(--forest); }
+    .http-row-head { display:flex; justify-content:space-between; gap:12px; font-size:.9rem; }
+    .http-row-head strong { font-weight:600; }
+    .http-row-head output { color:var(--forest); font:500 .9rem var(--mono); }
+    .http-bar { height:8px; margin-top:9px; background:var(--forest); transition:width .2s ease; }
+    .http-note { margin:12px 0 0; color:var(--muted); font-size:.9rem; line-height:1.6; }
   </style>
 </head>
 <body class="learn-page">
@@ -112,6 +126,43 @@
         </section>
       </div>
     </section>
+    <section class="chapter-one" aria-labelledby="chapter-two-title" id="chapter-two">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 02 · LESSON</div><h2 id="chapter-two-title">Applications at the edge</h2></div><p>Applications define the messages exchanged by processes. Transport carries those messages between hosts.</p></div>
+      <div class="concept-grid">
+        <article class="concept"><div class="section-kicker">2.1 · ARCHITECTURE</div><h3>Processes communicate</h3><p>Client-server applications contact always-on servers. Peer-to-peer applications let hosts act as both clients and servers. Sockets connect an application process to transport.</p></article>
+        <article class="concept"><div class="section-kicker">2.2 · THE WEB</div><h3>HTTP is request–response</h3><p>A browser sends an HTTP request; a server returns a response. HTTP is stateless, while cookies and server-side state can support sessions.</p></article>
+        <article class="concept"><div class="section-kicker">2.3–2.4 · MAIL AND DNS</div><h3>Messages need destinations</h3><p>SMTP transfers outgoing email between mail servers. DNS is a distributed directory that maps names to records, including host addresses and mail servers.</p></article>
+        <article class="concept"><div class="section-kicker">2.5–2.7 · DISTRIBUTION</div><h3>Scale the content</h3><p>Peer-to-peer systems distribute work across hosts. Video services use HTTP streaming and CDNs to place content closer to viewers. Applications use UDP or TCP sockets.</p></article>
+      </div>
+      <p class="course-path"><strong>Connection to Chapter 3:</strong> HTTP, email, and streaming define application messages; transport protocols determine how those messages move between processes.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">INTERACTIVE SIMULATION</div><h2>Compare HTTP connection costs</h2></div><span class="lesson-index">CHAPTER 2</span></div>
+        <section class="lesson-card">
+          <div class="delay-lab">
+            <div class="slider-list">
+              <div class="slider-row"><label for="http-rtt">Round-trip time (RTT)</label><output id="http-rtt-value" for="http-rtt">80 ms</output><input id="http-rtt" type="range" min="10" max="300" step="1" value="80"></div>
+              <div class="slider-row"><label for="http-objects">Objects in the page</label><output id="http-objects-value" for="http-objects">5 objects</output><input id="http-objects" type="range" min="0" max="20" step="1" value="5"></div>
+              <fieldset class="http-mode-options">
+                <legend>Connection method</legend>
+                <label><input type="radio" name="http-mode" value="nonpersistent" checked> Non-persistent</label>
+                <label><input type="radio" name="http-mode" value="persistent"> Persistent</label>
+                <label><input type="radio" name="http-mode" value="pipelined"> Persistent + pipelined</label>
+              </fieldset>
+            </div>
+            <div class="delay-result" aria-live="polite">
+              <div class="section-kicker">ESTIMATED ROUND TRIPS</div>
+              <div class="http-compare">
+                <div class="http-row" data-http-row="nonpersistent"><div class="http-row-head"><strong>Non-persistent</strong><output id="http-nonpersistent"></output></div><div class="http-bar" id="http-bar-nonpersistent"></div></div>
+                <div class="http-row" data-http-row="persistent"><div class="http-row-head"><strong>Persistent</strong><output id="http-persistent"></output></div><div class="http-bar" id="http-bar-persistent"></div></div>
+                <div class="http-row" data-http-row="pipelined"><div class="http-row-head"><strong>Persistent + pipelined</strong><output id="http-pipelined"></output></div><div class="http-bar" id="http-bar-pipelined"></div></div>
+              </div>
+              <p class="http-note" id="http-explanation">Each additional non-persistent object needs a new TCP connection and a request/response round trip.</p>
+            </div>
+          </div>
+          <div class="page-note"><span>Model: one base HTML file plus the selected number of embedded objects.</span><span>Ignores transmission time, server processing, caching, and parallel connections.</span></div>
+        </section>
+      </div>
+    </section>
     <section class="lesson-main journey" aria-labelledby="journey-title">
       <div class="lesson-intro"><div><div class="section-kicker">COURSE PREVIEW · CHAPTER 6 RETROSPECTIVE</div><h2 id="journey-title">Trace a web request</h2></div><span class="lesson-index">6 STAGES</span></div>
       <section class="lesson-card" data-lesson="network">
@@ -136,6 +187,43 @@
   </main>
   <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
   <script src="../../learn.js" defer></script>
+  <script>
+    (() => {
+      const rtt = document.getElementById("http-rtt");
+      const objects = document.getElementById("http-objects");
+      const rounds = {
+        nonpersistent: n => 2 * (n + 1),
+        persistent: n => 2 + n,
+        pipelined: n => 2 + (n > 0 ? 1 : 0)
+      };
+      const descriptions = {
+        nonpersistent: "Each object opens its own TCP connection, then needs a request/response round trip.",
+        persistent: "One TCP connection is reused; each object still needs its own request/response round trip.",
+        pipelined: "One TCP connection is reused, and the browser sends the object requests together."
+      };
+      function updateHttp() {
+        const rttMs = Number(rtt.value);
+        const n = Number(objects.value);
+        const selected = document.querySelector('input[name="http-mode"]:checked').value;
+        const vals = Object.fromEntries(Object.keys(rounds).map(mode => [mode, rounds[mode](n)]));
+        const max = Math.max(...Object.values(vals),1);
+        document.getElementById("http-rtt-value").textContent = rttMs + " ms";
+        document.getElementById("http-objects-value").textContent = n + (n === 1 ? " object" : " objects");
+        Object.keys(vals).forEach(mode => {
+          const time = vals[mode] * rttMs;
+          document.getElementById("http-"+mode).textContent = vals[mode] + (vals[mode] === 1 ? " RTT" : " RTTs") + " · " + time + " ms";
+          document.getElementById("http-bar-"+mode).style.width = (vals[mode] / max * 100) + "%";
+          document.querySelector('[data-http-row="'+mode+'"]').classList.toggle("is-selected", mode === selected);
+        });
+        document.getElementById("http-explanation").textContent = descriptions[selected] + " The page load is estimated at " + vals[selected] + " RTTs, or " + vals[selected] * rttMs + " ms.";
+      }
+      rtt.addEventListener("input", updateHttp);
+      objects.addEventListener("input", updateHttp);
+      document.querySelectorAll('input[name="http-mode"]').forEach(input => input.addEventListener("change", updateHttp));
+      updateHttp();
+    })();
+  </script>
+
   <script>
     (() => {
       const ids = ["packet-size", "link-rate", "distance", "links", "queue"];
