@@ -70,6 +70,21 @@
     .http-row-head output { color:var(--forest); font:500 .9rem var(--mono); }
     .http-bar { height:8px; margin-top:9px; background:var(--forest); transition:width .2s ease; }
     .http-note { margin:12px 0 0; color:var(--muted); font-size:.9rem; line-height:1.6; }
+  
+    .transport-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
+    .transport-controls label { display:grid; gap:7px; font-size:.9rem; }
+    .transport-controls select { min-height:44px; padding:8px 10px; border:1px solid var(--ink); background:var(--paper); color:var(--ink); font:500 .9rem var(--mono); }
+    .transport-topline { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:14px 0 8px; }
+    .transport-status { color:var(--forest); font:500 .9rem var(--mono); }
+    .transport-log { min-height:210px; max-height:330px; overflow:auto; margin:0; padding:12px 12px 12px 42px; border:1px solid var(--rule); background:#080a0a; color:var(--muted); }
+    .transport-log li { padding:6px 4px; border-bottom:1px solid #202524; font:400 .9rem/1.5 var(--mono); }
+    .transport-log li:last-child { border-bottom:0; }
+    .transport-log li[data-kind="sender"] { color:var(--ink); }
+    .transport-log li[data-kind="receiver"] { color:var(--forest); }
+    .transport-log li[data-kind="loss"] { color:var(--orange); }
+    .transport-log li[data-kind="ack"] { color:#91a4ff; }
+    .transport-concept { margin-top:15px; padding-top:13px; border-top:1px solid var(--rule); color:var(--muted); font-size:.9rem; line-height:1.6; }
+    @media(max-width:640px) { .transport-controls { grid-template-columns:1fr; } .transport-topline { align-items:start; flex-direction:column; } }
   </style>
 </head>
 <body class="learn-page">
@@ -163,6 +178,39 @@
         </section>
       </div>
     </section>
+    <section class="chapter-one" aria-labelledby="chapter-three-title" id="chapter-three">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 03 · LESSON</div><h2 id="chapter-three-title">Transport: delivery between processes</h2></div><p>Transport uses ports to deliver data to the right process. TCP adds reliability, flow control, and congestion control; UDP keeps the service lightweight.</p></div>
+      <div class="concept-grid">
+        <article class="concept"><div class="section-kicker">3.1–3.2 · SERVICE</div><h3>Ports sort the traffic</h3><p>Multiplexing gathers data from application sockets. Demultiplexing uses port numbers to pass each segment to the correct process.</p></article>
+        <article class="concept"><div class="section-kicker">3.3 · UDP</div><h3>Connectionless transport</h3><p>UDP sends independent segments without a handshake or built-in retransmission. Its checksum helps detect errors in a segment.</p></article>
+        <article class="concept"><div class="section-kicker">3.4–3.5 · RELIABILITY</div><h3>TCP repairs loss</h3><p>Sequence numbers, acknowledgments, timers, and retransmissions let TCP provide reliable, in-order delivery over IP.</p></article>
+        <article class="concept"><div class="section-kicker">3.5–3.7 · CONTROL</div><h3>Two different limits</h3><p>Flow control keeps a fast sender from overwhelming the receiver. Congestion control responds to load inside the network.</p></article>
+      </div>
+      <p class="course-path"><strong>Reliable transfer:</strong> Go-Back-N retransmits the missing packet and later unacknowledged packets. Selective Repeat retransmits only missing packets and buffers out-of-order arrivals.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">SLOW INTERACTIVE SIMULATION</div><h2>Recover from packet loss</h2></div><span class="lesson-index">CHAPTER 3</span></div>
+        <section class="lesson-card">
+          <div class="transport-controls">
+            <label for="transport-mode">Reliable transfer protocol
+              <select id="transport-mode"><option value="gbn">Go-Back-N</option><option value="sr">Selective Repeat</option></select>
+            </label>
+            <label for="transport-loss">Packet lost on first send
+              <select id="transport-loss"><option value="1">Packet 1</option><option value="2" selected>Packet 2</option><option value="3">Packet 3</option></select>
+            </label>
+          </div>
+          <div class="lesson-controls">
+            <span class="controls-label">Advance one network event at a time, or run slowly.</span>
+            <button class="control-button" id="transport-step">Step</button>
+            <button class="control-button run-button" id="transport-run">Run slowly</button>
+            <button class="control-button" id="transport-reset">Reset</button>
+          </div>
+          <div class="transport-topline"><span class="section-kicker" id="transport-protocol-label">GO-BACK-N · WINDOW 4</span><span class="transport-status" id="transport-status" aria-live="polite">Ready · 4 packets in the send window</span></div>
+          <ol class="transport-log" id="transport-log" aria-live="polite" aria-label="Packet transfer event log"></ol>
+          <p class="transport-concept" id="transport-explanation">Go-Back-N discards packets received beyond a gap. A timeout makes the sender repeat every unacknowledged packet in its window.</p>
+          <div class="page-note"><span>Four packets are sent in one window; the selected packet is lost once.</span><span>Event pacing: one step, or one event every 900 ms.</span></div>
+        </section>
+      </div>
+    </section>
     <section class="lesson-main journey" aria-labelledby="journey-title">
       <div class="lesson-intro"><div><div class="section-kicker">COURSE PREVIEW · CHAPTER 6 RETROSPECTIVE</div><h2 id="journey-title">Trace a web request</h2></div><span class="lesson-index">6 STAGES</span></div>
       <section class="lesson-card" data-lesson="network">
@@ -187,6 +235,101 @@
   </main>
   <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
   <script src="../../learn.js" defer></script>
+  <script>
+    (() => {
+      const mode = document.getElementById("transport-mode");
+      const lost = document.getElementById("transport-loss");
+      const log = document.getElementById("transport-log");
+      const stepButton = document.getElementById("transport-step");
+      const runButton = document.getElementById("transport-run");
+      const resetButton = document.getElementById("transport-reset");
+      const status = document.getElementById("transport-status");
+      const label = document.getElementById("transport-protocol-label");
+      const explanation = document.getElementById("transport-explanation");
+      let events = [];
+      let position = 0;
+      let timer = null;
+      const copy = {
+        gbn: "Go-Back-N discards packets received beyond a gap. A timeout makes the sender repeat every unacknowledged packet in its window.",
+        sr: "Selective Repeat buffers packets beyond a gap and acknowledges them individually. A timeout retransmits only the missing packet."
+      };
+      function makeEvents(protocol, lostSequence) {
+        const list = [];
+        for (let i=0; i<4; i++) list.push({kind:"sender", text:"Sender sends packet " + i + "."});
+        for (let i=0; i<4; i++) {
+          if (i === lostSequence) {
+            list.push({kind:"loss", text:"Packet " + i + " is lost in the network."});
+          } else if (i < lostSequence) {
+            list.push({kind:"receiver", text:"Receiver accepts packet " + i + " in order."});
+            list.push({kind:"ack", text:"Receiver sends ACK " + i + "."});
+          } else if (protocol === "gbn") {
+            list.push({kind:"receiver", text:"Receiver discards out-of-order packet " + i + "; it is waiting for packet " + lostSequence + "."});
+            list.push({kind:"ack", text:"Receiver repeats cumulative ACK " + (lostSequence - 1) + "."});
+          } else {
+            list.push({kind:"receiver", text:"Receiver buffers out-of-order packet " + i + "."});
+            list.push({kind:"ack", text:"Receiver sends individual ACK " + i + "."});
+          }
+        }
+        list.push({kind:"loss", text:"Timer for packet " + lostSequence + " expires."});
+        const start = protocol === "gbn" ? lostSequence : lostSequence;
+        for (let i=start; i<4; i++) list.push({kind:"sender", text:"Sender retransmits packet " + i + (protocol === "gbn" ? " (window recovery)." : ".")});
+        if (protocol === "gbn") {
+          for (let i=lostSequence; i<4; i++) {
+            list.push({kind:"receiver", text:"Receiver accepts packet " + i + " in order."});
+            list.push({kind:"ack", text:"Receiver sends cumulative ACK " + i + "."});
+          }
+        } else {
+          list.push({kind:"receiver", text:"Receiver accepts packet " + lostSequence + " and releases buffered packets " + Array.from({length:3-lostSequence},(_,j)=>lostSequence+j+1).join(", ") + " in order."});
+          list.push({kind:"ack", text:"Receiver sends ACK " + lostSequence + "; earlier ACKs already cover the buffered packets."});
+        }
+        list.push({kind:"done", text:"All four packets have been delivered in order."});
+        return list;
+      }
+      function stop() {
+        if (timer) window.clearInterval(timer);
+        timer = null;
+        runButton.textContent = position >= events.length ? "Run slowly" : "Run slowly";
+      }
+      function advance() {
+        if (position >= events.length) { stop(); return; }
+        const event = events[position++];
+        const item = document.createElement("li");
+        item.dataset.kind = event.kind;
+        item.textContent = event.text;
+        log.appendChild(item);
+        log.scrollTop = log.scrollHeight;
+        if (event.kind === "done") {
+          status.textContent = "Complete · 4 packets delivered in order";
+          stepButton.disabled = true;
+          stop();
+        } else {
+          status.textContent = "Event " + position + " of " + events.length;
+        }
+      }
+      function reset() {
+        stop();
+        position = 0;
+        events = makeEvents(mode.value, Number(lost.value));
+        log.replaceChildren();
+        label.textContent = (mode.value === "gbn" ? "GO-BACK-N" : "SELECTIVE REPEAT") + " · WINDOW 4";
+        explanation.textContent = copy[mode.value];
+        status.textContent = "Ready · 4 packets in the send window";
+        stepButton.disabled = false;
+      }
+      stepButton.addEventListener("click", advance);
+      runButton.addEventListener("click", () => {
+        if (timer) { stop(); status.textContent += " · Paused"; return; }
+        if (position >= events.length) reset();
+        timer = window.setInterval(advance, 900);
+        advance();
+      });
+      resetButton.addEventListener("click", reset);
+      mode.addEventListener("change", reset);
+      lost.addEventListener("change", reset);
+      reset();
+    })();
+  </script>
+
   <script>
     (() => {
       const rtt = document.getElementById("http-rtt");
