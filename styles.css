@@ -46,21 +46,38 @@ h1 em { color: var(--forest); font-style: normal; }
 .button-primary:hover { background: var(--forest-dark); color: var(--ink); }
 .text-link { padding: 5px 0; border-bottom: 1px solid currentColor; font: 500 .68rem/1 var(--mono); letter-spacing: .045em; text-transform: uppercase; }
 .text-link:hover { color: var(--forest-dark); }
-.hero-illustration { width: min(100%,470px); aspect-ratio: 1; position: relative; justify-self: center; display: grid; place-items: center; }
-.hero-orbit { position: absolute; border: 1px solid #f3f4ed55; border-radius: 50%; }
-.orbit-a { inset: 7%; border-style: dashed; animation: orbit-spin 28s linear infinite; }
-.orbit-a::before { content: ""; position: absolute; width: 8px; height: 8px; left: 13%; top: 15%; border-radius: 50%; background: var(--forest); box-shadow: 0 0 18px var(--forest); }
-.orbit-b { inset: 20%; border-width: 2px; animation: orbit-spin-reverse 35s linear infinite; }
-.hero-chip { width: 48%; aspect-ratio: .86; display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 2px solid var(--ink); background: var(--forest-dark); box-shadow: 11px 11px 0 var(--ink); transform: rotate(-6deg); position: relative; z-index: 1; }
-.chip-bar { width: 72%; height: 10px; background: var(--ink); box-shadow: 0 19px 0 var(--orange),0 38px 0 var(--forest); }
-.chip-bar-short { width: 42%; height: 5px; background: var(--forest); box-shadow: none; }
-.chip-core { width: 24%; aspect-ratio: 1; align-self: flex-end; border: 2px solid var(--forest); border-radius: 50%; }
-.hero-dot { position: absolute; right: 8%; bottom: 12%; width: 14px; height: 14px; background: var(--orange); }
-.hero-signal { position: absolute; left: 0; right: 0; bottom: 21px; height: 1px; background: var(--rule); }
-.hero-signal span { display: block; width: 18%; height: 1px; background: var(--forest); animation: signal-travel 5s ease-in-out infinite; }
-@keyframes orbit-spin { from { transform: rotate(-18deg); } to { transform: rotate(342deg); } }
-@keyframes orbit-spin-reverse { from { transform: rotate(0); } to { transform: rotate(-360deg); } }
-@keyframes signal-travel { 0%,100% { transform: translateX(0); } 50% { transform: translateX(450%); } }
+.hero-illustration { width: min(100%,470px); aspect-ratio: 1; position: relative; justify-self: center; overflow: hidden; }
+.matrix-screen { border: 1px solid #c8ff3655; background: #050806; box-shadow: inset 0 0 50px #c8ff3612, 0 0 40px #c8ff360d; }
+.matrix-screen::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg,#050806 0%,transparent 16%,transparent 84%,#050806 100%),linear-gradient(0deg,#050806 0%,transparent 14%,transparent 86%,#050806 100%); }
+.matrix-rain { position: absolute; inset: 12px 10px; display: grid; grid-template-columns: repeat(22,minmax(0,1fr)); overflow: hidden; opacity: .88; }
+.matrix-stream { position: absolute; top: -100%; width: calc(100% / 22); color: var(--forest); font: 500 clamp(.5rem,1.8vw,.86rem)/1.12 var(--mono); text-align: center; text-shadow: 0 0 8px #c8ff3680; animation: matrix-fall 5.4s linear infinite; }
+.matrix-stream:nth-child(4n+1) { color: var(--ink); text-shadow: 0 0 8px #f3f4ed70; }
+.matrix-stream:nth-child(5n) { color: #6fa829; }
+.matrix-stream:nth-child(3n) { animation-duration: 4.1s; }
+.matrix-stream:nth-child(3n+1) { animation-duration: 6.2s; }
+.matrix-stream:nth-child(1) { left: 0.000%; animation-delay: -0.00s; }
+.matrix-stream:nth-child(2) { left: 4.545%; animation-delay: -0.23s; }
+.matrix-stream:nth-child(3) { left: 9.091%; animation-delay: -0.46s; }
+.matrix-stream:nth-child(4) { left: 13.636%; animation-delay: -0.69s; }
+.matrix-stream:nth-child(5) { left: 18.182%; animation-delay: -0.92s; }
+.matrix-stream:nth-child(6) { left: 22.727%; animation-delay: -1.15s; }
+.matrix-stream:nth-child(7) { left: 27.273%; animation-delay: -1.38s; }
+.matrix-stream:nth-child(8) { left: 31.818%; animation-delay: -1.61s; }
+.matrix-stream:nth-child(9) { left: 36.364%; animation-delay: -1.84s; }
+.matrix-stream:nth-child(10) { left: 40.909%; animation-delay: -2.07s; }
+.matrix-stream:nth-child(11) { left: 45.455%; animation-delay: -2.30s; }
+.matrix-stream:nth-child(12) { left: 50.000%; animation-delay: -2.53s; }
+.matrix-stream:nth-child(13) { left: 54.545%; animation-delay: -2.76s; }
+.matrix-stream:nth-child(14) { left: 59.091%; animation-delay: -2.99s; }
+.matrix-stream:nth-child(15) { left: 63.636%; animation-delay: -3.22s; }
+.matrix-stream:nth-child(16) { left: 68.182%; animation-delay: -3.45s; }
+.matrix-stream:nth-child(17) { left: 72.727%; animation-delay: -3.68s; }
+.matrix-stream:nth-child(18) { left: 77.273%; animation-delay: -3.91s; }
+.matrix-stream:nth-child(19) { left: 81.818%; animation-delay: -4.14s; }
+.matrix-stream:nth-child(20) { left: 86.364%; animation-delay: -4.37s; }
+.matrix-stream:nth-child(21) { left: 90.909%; animation-delay: -4.60s; }
+.matrix-stream:nth-child(22) { left: 95.455%; animation-delay: -4.83s; }
+@keyframes matrix-fall { from { transform: translateY(0); } to { transform: translateY(200%); } }
 
 .section-pad { padding-left: clamp(22px,8vw,120px); padding-right: clamp(22px,8vw,120px); }
 .manifesto { padding-top: 105px; padding-bottom: 110px; border-bottom: 1px solid var(--rule); }
@@ -269,7 +286,6 @@ a.work-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(-
   .hero h1 { font-size: clamp(2.8rem,10.8vw,4rem); }
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
   .hero-illustration { width: min(48vw,220px); right: 2px; bottom: 40px; }
-  .hero-chip { width: 48%; padding: 10px; }
   .section-tag { font-size: .52rem; }.tag-rule { width: 30px; }
   .manifesto-copy p { font-size: .87rem; }
   .work-card-copy { padding: 18px; }.work-meta { font-size: .47rem; }
@@ -298,4 +314,4 @@ a.work-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(-
   .network-stage { padding: 10px; grid-template-columns: 36px minmax(0,1fr) auto; gap: 8px; }
   .stage-number { width: 30px; height: 30px; }
 }
-@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .matrix-stream { top: -100%; transform: translateY(100%); animation: none; opacity: .7; } }
