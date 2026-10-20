@@ -3,13 +3,60 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f3eddc" />
-  <meta name="description" content="An interactive computer networking course, from Internet foundations through applications, transport, routing, links, wireless networks, and security." />
+  <meta name="theme-color" content="#0a0c0c" />
+  <meta name="description" content="An interactive course following Computer Networking: A Top-Down Approach, seventh edition, with chapter-aligned lessons and simulations." />
   <title>Computer Networking · Bit Foundry</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../styles.css?v=course-map-v1" />
+  <link rel="stylesheet" href="../../styles.css?v=networking-course-seventh-v1" />
+  <style>
+    .course-map-list { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .course-map-list li { min-height:210px; gap:14px; }
+    .course-map-list li > span { font-size:1rem; }
+    .course-map-list h3 { font-size:1.3rem; }
+    .course-map-list p { font-size:.9rem; }
+    .chapter-topics { margin-top:auto; padding-top:12px; border-top:1px solid var(--rule); color:var(--muted); font-size:.82rem; line-height:1.55; }
+    .chapter-topics strong { color:var(--forest); font-weight:500; }
+    .chapter-one { max-width:1440px; margin:0 auto; padding:40px clamp(20px,6vw,84px) 0; }
+    .chapter-one-head { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:18px; }
+    .chapter-one-head h2 { margin:8px 0 0; font:600 clamp(2rem,4vw,3.2rem)/1 var(--display); text-transform:uppercase; }
+    .chapter-one-head p { max-width:420px; margin:0 0 4px; color:var(--muted); font-size:.9rem; }
+    .concept-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .concept { min-height:160px; padding:18px; border:1px solid var(--rule); background:var(--paper-light); }
+    .concept h3 { margin:9px 0 7px; font:600 1.25rem/1.1 var(--display); text-transform:uppercase; }
+    .concept p { margin:0; color:var(--muted); font-size:.9rem; line-height:1.6; }
+    .formula { display:inline-block; margin-top:10px; padding:6px 8px; border:1px solid var(--rule); color:var(--forest); font:500 .9rem var(--mono); }
+    .delay-lab { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(260px,.95fr); gap:25px; align-items:start; }
+    .slider-list { display:grid; gap:17px; }
+    .slider-row { display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center; }
+    .slider-row label { font-size:.9rem; }
+    .slider-row output { color:var(--forest); font:500 .9rem var(--mono); }
+    .slider-row input { grid-column:1/-1; width:100%; accent-color:var(--forest); min-height:25px; cursor:pointer; }
+    .delay-result { padding:18px; border:1px solid var(--ink); background:var(--paper); }
+    .delay-total { margin:5px 0 15px; color:var(--forest); font:600 clamp(2rem,5vw,3.5rem)/1 var(--display); }
+    .delay-bar { display:flex; min-height:32px; overflow:hidden; border:1px solid var(--rule); background:#101414; }
+    .delay-bar span { min-width:2px; transition:width .2s ease; }
+    .bar-transmission { background:var(--orange); }
+    .bar-propagation { background:var(--forest); }
+    .bar-queue { background:#6580ff; }
+    .delay-key { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:12px; color:var(--muted); font-size:.84rem; }
+    .delay-key span::before { display:inline-block; width:9px; height:9px; margin-right:6px; content:""; background:var(--key-color); }
+    .delay-explain { margin:16px 0 0; color:var(--muted); font-size:.9rem; line-height:1.65; }
+    .course-path { margin:20px 0 0; padding:14px 16px; border-left:3px solid var(--forest); color:var(--muted); background:var(--paper-light); font-size:.9rem; }
+    .course-path strong { color:var(--ink); }
+    .journey { margin-top:52px; }
+    @media(max-width:900px) {
+      .course-map-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .delay-lab { grid-template-columns:1fr; }
+    }
+    @media(max-width:640px) {
+      .course-map-list,.concept-grid { grid-template-columns:1fr; }
+      .course-map-list li { min-height:0; }
+      .chapter-one-head { align-items:start; flex-direction:column; }
+      .concept { min-height:0; }
+    }
+  </style>
 </head>
 <body class="learn-page">
   <header class="site-header">
@@ -17,22 +64,55 @@
     <nav aria-label="Primary navigation"><a href="../../#products">Products</a><a class="nav-cta" href="../fortran/">Fortran <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main>
-    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Computer Networking</p><h1>Computer Networking</h1><p>An interactive course through the Internet’s layers, from applications to links, routing, wireless networks, and security.</p></section>
+    <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Computer Networking</p><h1>Computer Networking</h1><p>Follow the seventh edition from Internet foundations, up through applications, and down through the network.</p></section>
     <section class="course-map" aria-labelledby="course-map-title">
-      <div class="course-map-heading"><div><div class="section-kicker">COURSE MAP</div><h2 id="course-map-title">From the application to the link</h2></div><p>Start with the whole journey, then zoom into the protocols and systems that make it work.</p></div>
+      <div class="course-map-heading"><div><div class="section-kicker">COURSE MAP · 7TH EDITION</div><h2 id="course-map-title">Nine chapters, one connected system</h2></div><p>Chapters 1–6 build in the book’s top-down order. Chapters 7–9 apply those ideas to wireless, security, and multimedia.</p></div>
       <ol class="course-map-list">
-        <li><span>01</span><div><h3>Internet foundations</h3><p>Edges, core, packet switching, delay, and loss.</p></div></li>
-        <li><span>02</span><div><h3>Application layer</h3><p>HTTP, DNS, email, streaming, and content delivery.</p></div></li>
-        <li><span>03</span><div><h3>Transport layer</h3><p>UDP, TCP, reliability, flow control, and congestion.</p></div></li>
-        <li><span>04</span><div><h3>Network data plane</h3><p>IP, forwarding, addressing, and router internals.</p></div></li>
-        <li><span>05</span><div><h3>Network control plane</h3><p>Routing algorithms, protocols, and software-defined networks.</p></div></li>
-        <li><span>06</span><div><h3>Link layer and LANs</h3><p>Ethernet, switching, ARP, and error detection.</p></div></li>
-        <li><span>07</span><div><h3>Wireless and mobile</h3><p>Wi-Fi, cellular networks, and mobility.</p></div></li>
-        <li><span>08</span><div><h3>Network security</h3><p>Threats, encryption, authentication, and defenses.</p></div></li>
+        <li><span>CHAPTER 01</span><div><h3>Computer Networks and the Internet</h3><p>How hosts, links, routers, and protocols form the Internet.</p><div class="chapter-topics"><strong>Topics</strong><br>Network edge and core · packet switching · delay, loss, throughput · layers and encapsulation</div></div></li>
+        <li><span>CHAPTER 02</span><div><h3>Application Layer</h3><p>How networked applications exchange data.</p><div class="chapter-topics"><strong>Topics</strong><br>HTTP · email and SMTP · DNS · peer-to-peer · video and CDNs · sockets</div></div></li>
+        <li><span>CHAPTER 03</span><div><h3>Transport Layer</h3><p>How processes communicate across an unreliable network.</p><div class="chapter-topics"><strong>Topics</strong><br>Multiplexing · UDP · reliable transfer · TCP · flow and congestion control</div></div></li>
+        <li><span>CHAPTER 04</span><div><h3>Network Layer: Data Plane</h3><p>How each router moves packets toward their destination.</p><div class="chapter-topics"><strong>Topics</strong><br>Router internals · forwarding · IPv4 and IPv6 · addressing · NAT · SDN forwarding</div></div></li>
+        <li><span>CHAPTER 05</span><div><h3>Network Layer: Control Plane</h3><p>How routers find paths and coordinate across networks.</p><div class="chapter-topics"><strong>Topics</strong><br>Link-state and distance-vector · OSPF · BGP · SDN control · ICMP · SNMP</div></div></li>
+        <li><span>CHAPTER 06</span><div><h3>Link Layer and LANs</h3><p>How neighboring devices deliver frames over a link.</p><div class="chapter-topics"><strong>Topics</strong><br>Error detection · shared media · ARP · Ethernet · switches and VLANs · data centers</div></div></li>
+        <li><span>CHAPTER 07</span><div><h3>Wireless and Mobile Networks</h3><p>How networks handle radio links and moving devices.</p><div class="chapter-topics"><strong>Topics</strong><br>Wireless links · Wi-Fi · cellular networks · mobility management · handoffs</div></div></li>
+        <li><span>CHAPTER 08</span><div><h3>Security in Computer Networks</h3><p>How communication is protected and attacks are detected.</p><div class="chapter-topics"><strong>Topics</strong><br>Cryptography · integrity and signatures · authentication · TLS · IPsec · firewalls</div></div></li>
+        <li><span>CHAPTER 09</span><div><h3>Multimedia Networking</h3><p>How networks deliver audio and video under timing constraints.</p><div class="chapter-topics"><strong>Topics</strong><br>Streaming · VoIP · jitter and loss · RTP and SIP · QoS and Diffserv</div></div></li>
       </ol>
+      <p class="course-path"><strong>Course sequence:</strong> The interactive course is being built chapter by chapter. Chapter 1 starts below; later chapters will add their own explanations and simulations.</p>
     </section>
-    <div class="lesson-main">
-      <div class="lesson-intro"><div><div class="section-kicker">FIRST INTERACTIVE LAB</div><h2>Trace a web request</h2></div><span class="lesson-index">6 STAGES</span></div>
+    <section class="chapter-one" aria-labelledby="chapter-one-title">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 01 · LESSON</div><h2 id="chapter-one-title">The Internet under the hood</h2></div><p>Start with the whole path: applications create data, networks carry packets, and protocols coordinate each step.</p></div>
+      <div class="concept-grid">
+        <article class="concept"><div class="section-kicker">1.1–1.3 · STRUCTURE</div><h3>Edge, access, core</h3><p>Applications run on end systems at the network edge. Access networks connect them to routers; the network core forwards packets between networks.</p></article>
+        <article class="concept"><div class="section-kicker">1.3–1.4 · PERFORMANCE</div><h3>Packets have a cost</h3><p>Packet switching shares links. Each hop can add transmission, propagation, processing, and queueing delay; congestion can cause loss.</p><span class="formula">d<sub>trans</sub> = L / R</span></article>
+        <article class="concept"><div class="section-kicker">1.5 · ORGANIZATION</div><h3>Layers and encapsulation</h3><p>Each layer provides a service to the one above. As data moves down the stack, each layer adds control information; the receiver removes it on the way up.</p></article>
+      </div>
+      <p class="course-path"><strong>Key distinction:</strong> Transmission delay is the time to place packet bits onto a link. Propagation delay is the time those bits travel across the link.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">INTERACTIVE SIMULATION</div><h2>Explore packet delay</h2></div><span class="lesson-index">CHAPTER 1</span></div>
+        <section class="lesson-card">
+          <div class="delay-lab">
+            <div class="slider-list">
+              <div class="slider-row"><label for="packet-size">Packet size</label><output id="packet-size-value" for="packet-size">1500 bytes</output><input id="packet-size" type="range" min="64" max="1500" step="64" value="1500"></div>
+              <div class="slider-row"><label for="link-rate">Link rate</label><output id="link-rate-value" for="link-rate">10 Mbps</output><input id="link-rate" type="range" min="1" max="1000" step="1" value="10"></div>
+              <div class="slider-row"><label for="distance">Distance per link</label><output id="distance-value" for="distance">100 km</output><input id="distance" type="range" min="1" max="5000" step="1" value="100"></div>
+              <div class="slider-row"><label for="links">Number of links</label><output id="links-value" for="links">3</output><input id="links" type="range" min="1" max="8" step="1" value="3"></div>
+              <div class="slider-row"><label for="queue">Queueing per router</label><output id="queue-value" for="queue">2 ms</output><input id="queue" type="range" min="0" max="100" step="1" value="2"></div>
+            </div>
+            <div class="delay-result" aria-live="polite">
+              <div class="section-kicker">ESTIMATED ONE-WAY DELAY</div>
+              <div class="delay-total"><span id="delay-total">0</span> ms</div>
+              <div class="delay-bar" role="img" id="delay-bar" aria-label="Delay components"><span class="bar-transmission" id="bar-transmission"></span><span class="bar-propagation" id="bar-propagation"></span><span class="bar-queue" id="bar-queue"></span></div>
+              <div class="delay-key"><span style="--key-color:var(--orange)">Transmission <b id="transmission-value"></b></span><span style="--key-color:var(--forest)">Propagation <b id="propagation-value"></b></span><span style="--key-color:#6580ff">Queueing <b id="queue-total-value"></b></span></div>
+              <p class="delay-explain" id="delay-explain">Adjust a slider to see how packet size, link rate, distance, and queues shape delay.</p>
+            </div>
+          </div>
+          <div class="page-note"><span>Model: store-and-forward links, equal link rates, 200,000 km/s propagation speed.</span><span>Processing delay is omitted.</span></div>
+        </section>
+      </div>
+    </section>
+    <section class="lesson-main journey" aria-labelledby="journey-title">
+      <div class="lesson-intro"><div><div class="section-kicker">COURSE PREVIEW · CHAPTER 6 RETROSPECTIVE</div><h2 id="journey-title">Trace a web request</h2></div><span class="lesson-index">6 STAGES</span></div>
       <section class="lesson-card" data-lesson="network">
         <div class="lab-grid">
           <div class="network-diagram" aria-label="Six stages of a web request">
@@ -48,13 +128,50 @@
             <h3 data-network-title>You ask for a page</h3>
             <p data-network-copy>Your browser needs the server’s IP address before it can send a request.</p>
             <div class="lab-controls"><button class="control-button" data-action="network-back">← Back</button><button class="control-button run-button" data-action="network-next">Next stage →</button><button class="control-button" data-action="network-reset">Start over</button></div>
-            <div class="network-answer"><div class="section-kicker">QUICK CHECK</div><h3>Which protocol looks up the address?</h3><div class="answer-list"><button class="answer-button" data-network-answer="TCP">TCP</button><button class="answer-button" data-network-answer="DNS">DNS</button><button class="answer-button" data-network-answer="HTTP">HTTP</button></div><div class="feedback" data-network-feedback aria-live="polite"></div></div>
           </aside>
         </div>
       </section>
-    </div>
+    </section>
   </main>
   <footer class="site-footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><p class="copyright">© <span data-year></span> Bit Foundry Labs LLC · <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noopener noreferrer">GitHub</a></p></footer>
   <script src="../../learn.js" defer></script>
+  <script>
+    (() => {
+      const ids = ["packet-size", "link-rate", "distance", "links", "queue"];
+      const els = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+      const fmt = value => value < 10 ? value.toFixed(2) : value < 100 ? value.toFixed(1) : value.toFixed(0);
+      function updateDelay() {
+        const bytes = Number(els["packet-size"].value);
+        const rateMbps = Number(els["link-rate"].value);
+        const distanceKm = Number(els.distance.value);
+        const links = Number(els.links.value);
+        const queuePerRouterMs = Number(els.queue.value);
+        const transmission = (bytes * 8 / (rateMbps * 1e6)) * 1000 * links;
+        const propagation = (distanceKm * links / 200000) * 1000;
+        const queueing = queuePerRouterMs * Math.max(0, links - 1);
+        const total = transmission + propagation + queueing;
+        document.getElementById("packet-size-value").textContent = bytes + " bytes";
+        document.getElementById("link-rate-value").textContent = rateMbps + " Mbps";
+        document.getElementById("distance-value").textContent = distanceKm + " km";
+        document.getElementById("links-value").textContent = links;
+        document.getElementById("queue-value").textContent = queuePerRouterMs + " ms";
+        document.getElementById("delay-total").textContent = fmt(total);
+        document.getElementById("transmission-value").textContent = fmt(transmission) + " ms";
+        document.getElementById("propagation-value").textContent = fmt(propagation) + " ms";
+        document.getElementById("queue-total-value").textContent = fmt(queueing) + " ms";
+        document.getElementById("bar-transmission").style.width = (total ? transmission / total * 100 : 0) + "%";
+        document.getElementById("bar-propagation").style.width = (total ? propagation / total * 100 : 0) + "%";
+        document.getElementById("bar-queue").style.width = (total ? queueing / total * 100 : 0) + "%";
+        document.getElementById("delay-bar").setAttribute("aria-label", "Transmission " + fmt(transmission) + " milliseconds, propagation " + fmt(propagation) + " milliseconds, queueing " + fmt(queueing) + " milliseconds");
+        let note = "Transmission is packet bits divided by link rate; propagation is distance divided by signal speed.";
+        if (bytes >= 1000 && rateMbps <= 20) note = "Here, transmission dominates: a larger packet takes longer to push onto each link.";
+        else if (distanceKm >= 2500) note = "Here, propagation dominates: the signal must travel a long distance, even on a fast link.";
+        else if (queueing > transmission + propagation) note = "Here, queueing dominates: waiting behind other traffic adds more delay than sending or travel.";
+        document.getElementById("delay-explain").textContent = note;
+      }
+      ids.forEach(id => els[id].addEventListener("input", updateDelay));
+      updateDelay();
+    })();
+  </script>
 </body>
 </html>
