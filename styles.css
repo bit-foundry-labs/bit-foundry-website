@@ -324,7 +324,7 @@ nav,.nav-cta,.button,.text-link,.section-tag,.company-note,.principle-number,
 .controls-label,.control-button,.diagram-node small,.compiler-tag,.output-option,.answer-button,
 .feedback,.value-chip,.flow-node small,.branch-label,.loop-return,.flow-status,.trace-table,
 .page-note,.stage-number,.network-stage small {
-  font-size: max(.72rem, .72vw);
+  font-size: max(.875rem, .875vw);
 }
 .manifesto-copy p { font-size: 1rem; }
 .principles p,.work-card-copy p,.shelf-copy p,.lab-panel p { font-size: .9rem; }
