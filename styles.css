@@ -899,3 +899,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
   .hero { background:linear-gradient(155deg,#ff8058 0%,#fa3d69 39%,#d81891 76%,#552194 100%); }
   .crt-computer { width:84%; left:8%; height:82%; }
 }
+
+
+/* Use the photographic workstation as the hero artwork */
+.hero { position:relative; isolation:isolate; overflow:hidden; }
+.hero::before { display:none; }
+.hero-copy { z-index:2; }
+.hero-photo {
+  position:absolute; z-index:0; inset:0;
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  pointer-events:none;
+}
+@media (max-width:760px) {
+  .hero-photo {
+    position:relative; inset:auto; z-index:0; grid-column:1;
+    width:100%; height:auto; aspect-ratio:3 / 2; object-fit:contain;
+    margin:8px auto 0;
+  }
+}
