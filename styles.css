@@ -742,3 +742,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
   .retro-keyboard { left:25%; width:50%; }
   .floppy { width:14%; }
 }
+
+/* Keep the original four-line hero copy from wrapping into an accidental stack */
+.hero h1 { max-width:16ch; font-size:clamp(3.35rem,5.25vw,4.65rem); }
+@media (max-width:760px) { .hero h1 { max-width:14ch; font-size:clamp(3rem,9vw,4.35rem); } }
+@media (max-width:560px) { .hero h1 { max-width:13ch; font-size:clamp(2.7rem,11vw,3.75rem); } }
