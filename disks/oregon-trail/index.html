@@ -76,7 +76,7 @@
   </div>
   <section class="classic-game" id="classic-game" aria-label="1990 Oregon Trail game">
     <h2>The Oregon Trail (1990)</h2>
-    <p>Runs in an embedded Internet Archive emulator. It may take a moment to start; use the link below if the emulator is blocked on your device.</p>
+    <p>Click the green power icon inside the game screen to start it. Then click the game screen to use your keyboard. If the embed does not load on your device, open the game on Internet Archive.</p>
     <div class="classic-frame" id="classic-frame"></div>
     <a class="classic-fallback" href="https://archive.org/details/msdos_Oregon_Trail_The_1990" target="_blank" rel="noopener noreferrer">Open game on Internet Archive ↗</a>
   </section>
@@ -110,7 +110,7 @@
         const iframe = document.createElement("iframe");
         iframe.src = "https://archive.org/embed/msdos_Oregon_Trail_The_1990";
         iframe.title = "The Oregon Trail (1990), hosted by Internet Archive";
-        iframe.loading = "lazy";
+        iframe.loading = "eager";
         iframe.allowFullscreen = true;
         iframe.setAttribute("allow", "fullscreen");
         frame.appendChild(iframe);
