@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111116">
+  <meta name="description" content="A short, original trail-crossing game. Manage food, health and time to reach Oregon.">
+  <title>Oregon Trail — Bit Foundry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=archive-v7">
+  <style>
+    body.disk-page{margin:0;background:#f4f4f0;color:#171717}
+    .disk-page .site-header{position:relative;background:#f4f4f0}
+    .disk-page main{max-width:1120px;margin:0 auto;padding:clamp(28px,6vw,72px) clamp(18px,5vw,64px) 80px}
+    .disk-breadcrumb{font:600 .7rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#555}
+    .disk-breadcrumb a{color:inherit}
+    .disk-hero{padding:clamp(26px,5vw,56px) 0 28px;border-bottom:1px solid #171717}
+    .disk-hero h1{max-width:15ch;margin:.15em 0 .25em;font-size:clamp(2.7rem,7vw,5.8rem);line-height:.96}
+    .disk-hero p{max-width:58ch;margin:0;color:#41413e;font-size:1.05rem;line-height:1.65}
+    .disk-body{padding-top:28px}
+    .disk-page h2{font-size:1.35rem}
+    .disk-page a{color:#613516}
+    .fact-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .fact-card,.history-row,.game-panel{border:1px solid #171717;background:#fff;padding:18px}
+    .fact-card summary{cursor:pointer;font-weight:700}
+    .fact-card p,.history-row p{margin:.8em 0 0;color:#4b4b47;line-height:1.55}
+    .fact-index{display:block;margin-bottom:12px;font:600 .64rem/1 var(--mono);letter-spacing:.1em;color:#8b3e27}
+    .history-list{display:grid;gap:0}
+    .history-row{display:grid;grid-template-columns:90px 1fr;gap:18px;border-bottom:0}
+    .history-row:last-child{border-bottom:1px solid #171717}
+    .history-year{font:700 1.25rem/1.1 var(--mono)}
+    .source-list{margin-top:34px;padding-top:18px;border-top:1px solid #aaa;color:#555;font-size:.78rem;line-height:1.8}
+    .source-list h2{margin:0 0 8px;font-size:.78rem;font-family:var(--mono);text-transform:uppercase}
+    .source-list ul{margin:0;padding-left:18px}
+    .back-link{display:inline-block;margin-top:24px;font:600 .72rem/1.4 var(--mono);text-transform:uppercase}
+    .game-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:24px}
+    .game-panel h2{margin:0 0 12px}
+    .game-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .game-stat{padding:10px;border:1px solid #bbb;background:#f7f7f3}
+    .game-stat small{display:block;color:#666;font:600 .61rem/1.2 var(--mono);text-transform:uppercase}
+    .game-stat strong{display:block;margin-top:6px;font:700 1.1rem/1 var(--mono)}
+    .game-log{min-height:100px;margin-top:12px;padding:12px;background:#101510;color:#b9f9a7;font:500 .83rem/1.5 var(--mono)}
+    .game-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .game-controls button{min-height:42px;padding:0 13px;border:1px solid #171717;border-radius:0;background:#fff;color:#171717;font:600 .72rem/1 var(--mono);cursor:pointer}
+    .game-controls button:hover,.game-controls button:focus-visible{background:#171717;color:#fff}
+    .game-controls button:disabled{opacity:.45;cursor:not-allowed}
+    .game-message{min-height:1.5em;margin:8px 0;color:#555;font-size:.88rem}
+    .river-choice{display:none;margin-top:14px;padding:14px;border:1px dashed #333}
+    .river-choice.is-open{display:block}
+    .river-choice p{margin:0 0 10px}
+    @media(max-width:650px){.fact-list,.game-wrap{grid-template-columns:1fr}.history-row{grid-template-columns:64px 1fr;gap:10px}.disk-hero h1{font-size:clamp(2.65rem,13vw,4.5rem)}}
+  </style>
+</head>
+<body class="disk-page">
+<header class="site-header"><a class="brand" href="/" aria-label="Bit Foundry home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>BIT FOUNDRY</span></a><nav><a class="nav-cta" href="/">Return to workstation ↗</a></nav></header>
+<main>
+  <p class="disk-breadcrumb"><a href="/">← Floppy archive</a> / FIELD DISK 03</p>
+  <section class="disk-hero"><span class="disk-kicker">TRAIL SIMULATOR / 1848</span><h1>Oregon Trail</h1><p>Take a small party west. Make it to Oregon with enough food, health and oxen to finish the journey.</p></section>
+  <section class="game-wrap" aria-label="Oregon Trail game">
+    <div class="game-panel"><h2>Trail conditions</h2><div class="game-stats">
+      <div class="game-stat"><small>Distance</small><strong id="miles">0 / 2,000 mi</strong></div>
+      <div class="game-stat"><small>Food</small><strong id="food">650 lb</strong></div>
+      <div class="game-stat"><small>Health</small><strong id="health">100%</strong></div>
+      <div class="game-stat"><small>Oxen</small><strong id="oxen">6</strong></div>
+      <div class="game-stat"><small>Days</small><strong id="days">0</strong></div>
+      <div class="game-stat"><small>River</small><strong id="river">Ahead</strong></div>
+    </div><div class="game-log" id="log" role="status" aria-live="polite">Your wagon is ready. The trail is open.</div><p class="game-message" id="message">Travel 100 miles, hunt for food, or rest to recover.</p>
+    <div class="game-controls"><button id="travel">Travel 100 mi</button><button id="hunt">Hunt</button><button id="rest">Rest</button><button id="restart">Restart</button></div>
+    <div class="river-choice" id="river-choice"><p><strong>River crossing.</strong> The water is running high. Choose how to cross.</p><div class="game-controls"><button id="ford">Ford the river</button><button id="ferry">Pay for a ferry (60 lb)</button><button id="wait">Wait for lower water</button></div></div>
+    </div>
+    <aside class="game-panel"><h2>Trail card</h2><p>Each move covers 100 miles and uses food. Hunting can refill supplies but costs a day. Resting can restore health. At the halfway river, choose a crossing strategy.</p><p>Reach 2,000 miles before your food, health or oxen run out.</p><p class="disk-kicker">A SMALL ORIGINAL GAME / NO ACCOUNT NEEDED</p></aside>
+  </section>
+  <a class="back-link" href="/">← Eject disk / return to index</a>
+</main><script src="game.js" defer></script></body></html>
