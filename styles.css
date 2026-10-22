@@ -1091,3 +1091,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 @media(max-width:560px) {
   .hero-floppy-stack { left:78%; bottom:2%; width:20%; height:18%; }
 }
+
+/* Readable IBM era body type; display headings and monospace interface labels remain unchanged. */
+:root { --sans:"IBM Plex Sans",Arial,sans-serif; }
