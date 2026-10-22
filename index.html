@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=retro-v1" />
+  <link rel="stylesheet" href="styles.css?v=archive-v1" />
 </head>
 <body>
   <header class="site-header">
@@ -18,8 +18,6 @@
       <span>BIT FOUNDRY</span>
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#work">Lessons</a>
-      <a href="#products">Products</a>
       <a class="nav-cta" href="learn/networking/">Open Network Lab <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -84,7 +82,15 @@
       </div>
     </section>
 
-    <section class="work section-pad" id="work" aria-labelledby="work-title">
+    <div class="archive-layout">
+      <aside class="archive-sidebar">
+        <nav aria-label="Section index">
+          <a href="#work">Lessons</a>
+          <a href="#products">Products</a>
+        </nav>
+      </aside>
+      <div class="archive-main">
+        <section class="work section-pad" id="work" aria-labelledby="work-title">
       <div class="work-heading">
         <div><h2 id="work-title">Interactive Lessons &amp; Labs</h2></div>
       </div>
@@ -119,6 +125,8 @@
         </article>
       </div>
     </section>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
