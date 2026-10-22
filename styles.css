@@ -1056,3 +1056,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
   .hero-floppy,.hero-floppy.is-inserting { transition:none; }
   .hero-artwork.is-loading .hero-rain-screen { animation:none; }
 }
+
+
+/* Let the smaller workstation photo melt into the hero gradient. */
+.hero-photo { mask-image:linear-gradient(90deg,transparent 0%,#000 18%,#000 100%); }
+@media(max-width:760px) { .hero-photo { mask-image:none; } }
