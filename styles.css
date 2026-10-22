@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Overused Grotesk";
+  src: url("/assets/fonts/OverusedGrotesk-VF.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
   --paper: #0a0c0c;
@@ -11,7 +19,7 @@
   --rule: #292d2b;
   --mono: "Cascadia Code", monospace;
   --sans: "Source Sans 3", Arial, sans-serif;
-  --display: "Oswald", Impact, sans-serif;
+  --display: "Overused Grotesk", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -360,7 +368,7 @@ nav,.nav-cta,.button,.text-link,.section-tag,.company-note,.principle-number,
   --rule:#343236;
   --mono:"Cascadia Code",monospace;
   --sans:"Source Sans 3",Arial,sans-serif;
-  --display:"Oswald",Impact,sans-serif;
+  --display: "Overused Grotesk", Arial, sans-serif;
 }
 html { scroll-behavior:smooth; }
 body { background-color:var(--paper); background-image:radial-gradient(ellipse at 50% 0%,#fff 0%,transparent 43%); background-image:radial-gradient(ellipse at 50% 0%,#ffffff0a 0%,transparent 43%); color:var(--ink); }
@@ -509,7 +517,7 @@ a.work-card:hover { transform:translateY(-5px); border-color:#ef8a5d75; box-shad
   --forest:#1a1a1a; --forest-dark:#e8e8e2; --orange:#1a1a1a; --blue:#444;
   --muted:#626262; --rule:#bdbdb7;
   --mono:"Courier New",Courier,monospace; --sans:Arial,Helvetica,sans-serif;
-  --display:"Oswald",Impact,sans-serif;
+  --display: "Overused Grotesk", Arial, sans-serif;
 }
 html { scroll-behavior:smooth; scroll-padding-top:84px; }
 body { color:var(--ink); background:var(--paper); font-family:var(--sans); }
