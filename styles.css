@@ -1079,11 +1079,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .site-header { border-bottom:0; }
 
 
-/* Align matrix rain to the inset CRT glass in the refreshed workstation photo. */
-.hero-artwork { aspect-ratio:1831 / 859; }
+/* Front-facing workstation artwork: align the live screen and floppy interactions to the new photo. */
+.hero-artwork { aspect-ratio:3 / 2; }
 .hero-rain-screen {
-  left:63%; top:15.7%; width:15.2%; height:29.4%;
-  overflow:hidden; border-radius:8% / 7%;
-  clip-path:polygon(5% 0,95% 0,100% 100%,0 100%);
+  left:35.55%; top:16%; width:28.9%; height:30.2%;
+  overflow:hidden; border-radius:6% / 7%; clip-path:none;
   box-shadow:inset 0 0 16px #55ff591a;
+}
+.hero-drive-target { left:56.6%; top:58.8%; width:15.2%; height:11.5%; }
+.hero-floppy-stack { left:78%; bottom:2%; width:20%; height:18%; }
+@media(max-width:560px) {
+  .hero-floppy-stack { left:78%; bottom:2%; width:20%; height:18%; }
 }
