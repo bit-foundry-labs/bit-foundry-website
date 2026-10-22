@@ -31,7 +31,7 @@
   $("hunt").addEventListener("click",()=>{
     if(state.over||state.won)return;
     if(state.huntedToday){$("message").textContent="You have already hunted today. Travel or rest before trying again.";return;}
-    state.days+=1;state.food+=35+Math.floor(Math.random()*71);state.huntedToday=true;
+    state.days+=1;state.food+=50+Math.floor(Math.random()*81);state.huntedToday=true;
     say("The hunt brings back "+(state.food>0?"fresh food":"some food")+" for the wagon.");$("message").textContent="Food added. Keep an eye on the days passing.";
     endCheck();draw();
   });
