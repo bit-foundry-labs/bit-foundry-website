@@ -723,6 +723,34 @@ body p, body li, body label, body button, body input, body textarea, body select
   lab.querySelector("[data-queue-reset]").addEventListener("click",()=>{arrival.value="4";service.value="6";burst.value="2";simulate();});
   simulate();
  }
+ function bindDeliveryArchitecture(lab){
+  const modes=[...lab.querySelectorAll("[data-delivery-mode]")],flow=lab.querySelector("[data-delivery-flow]"),explain=lab.querySelector("[data-delivery-explainer]");
+  const views={
+   origin:{flow:["Viewer","→","Origin server"],text:"Every viewer pulls from the origin. It is simple, but long network paths and synchronized demand can overload the source."},
+   cdn:{flow:["Viewer","→","Nearby CDN edge","↔","Origin on a cache miss"],text:"A nearby edge serves a cache hit; a miss is fetched from origin and may be stored for later viewers. This reduces repeat origin traffic, while TTLs and invalidation control freshness."},
+   p2p:{flow:["Origin / CDN seed","→","Peer group","→","Viewer"],text:"A seed provides initial chunks; participating peers exchange pieces. This can offload central bandwidth, but depends on peer availability, connectivity, consent, and abuse controls."}
+  };
+  const select=name=>{const view=views[name];if(!view)return;modes.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.deliveryMode===name)));flow.innerHTML=view.flow.map(part=>part==="→"||part==="↔"?"<span class='delivery-arrow' aria-hidden='true'>"+part+"</span>":"<span class='delivery-node'>"+part+"</span>").join("");explain.textContent=view.text;};
+  modes.forEach(button=>button.addEventListener("click",()=>select(button.dataset.deliveryMode)));
+  select("origin");
+ }
+ function bindDeliveryLab(lab){
+  const inputs={};["viewers","bitrate","cache","peers"].forEach(key=>inputs[key]=lab.querySelector('[data-delivery-input="'+key+'"]'));
+  const fmt=value=>new Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(value);
+  const update=()=>{
+   const viewers=Number(inputs.viewers.value),rate=Number(inputs.bitrate.value),hit=Number(inputs.cache.value)/100,peer=Number(inputs.peers.value)/100;
+   const demand=viewers*rate/1000,edge=demand*(1-peer),origin=edge*(1-hit);
+   lab.querySelector('[data-delivery-value="viewers"]').textContent=fmt(viewers);
+   lab.querySelector('[data-delivery-value="bitrate"]').textContent=fmt(rate);
+   lab.querySelector('[data-delivery-value="cache"]').textContent=Math.round(hit*100)+"%";
+   lab.querySelector('[data-delivery-value="peers"]').textContent=Math.round(peer*100)+"%";
+   lab.querySelector('[data-delivery-result="demand"]').textContent=fmt(demand)+" Gbps";
+   lab.querySelector('[data-delivery-result="edge"]').textContent=fmt(edge)+" Gbps";
+   lab.querySelector('[data-delivery-result="origin"]').textContent=fmt(origin)+" Gbps";
+   lab.querySelector("[data-delivery-status]").textContent="Model: edge egress = viewer demand after peer contribution; origin egress = edge egress × cache-miss rate. A cache hit avoids an origin fetch, not viewer delivery.";
+  };
+  Object.values(inputs).forEach(input=>input.addEventListener("input",update));update();
+ }
  function render(){
   if(!active)return;
   const chapter=active.id.split("-")[1];
