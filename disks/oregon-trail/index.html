@@ -53,8 +53,7 @@
     .game-mode button{min-height:42px;padding:0 14px;border:1px solid #171717;border-radius:0;background:#171717;color:#fff;font:600 .72rem/1 var(--mono);cursor:pointer}
     .game-mode button:hover,.game-mode button:focus-visible{background:#fff;color:#171717}
     .game-mode p{margin:0;color:#555;font-size:.82rem}
-    .classic-game{display:none;margin-top:14px;border:1px solid #171717;background:#fff;padding:18px}
-    .classic-game.is-open{display:block}
+    .classic-game{display:block;margin-top:24px;border:1px solid #171717;background:#fff;padding:18px}
     .classic-game h2{margin:0 0 8px}
     .classic-game p{margin:0 0 14px;color:#555;font-size:.9rem;line-height:1.5}
     .classic-frame{position:relative;width:100%;aspect-ratio:1.46;min-height:340px;background:#111}
@@ -70,14 +69,10 @@
 <main>
   <p class="disk-breadcrumb"><a href="/">← Floppy archive</a> / FIELD DISK 03</p>
   <section class="disk-hero"><span class="disk-kicker">TRAIL SIMULATOR / 1848</span><h1>Oregon Trail</h1><p>Take a small party west. Make it to Oregon with enough food, health and oxen to finish the journey.</p></section>
-  <div class="game-mode">
-    <button type="button" id="classic-toggle" aria-expanded="false" aria-controls="classic-game">Play the 1990 classic</button>
-    <p>Optional Internet Archive emulator. The original Bit Foundry trail game stays below.</p>
-  </div>
   <section class="classic-game" id="classic-game" aria-label="1990 Oregon Trail game">
     <h2>The Oregon Trail (1990)</h2>
-    <p>Click the green power icon inside the game screen to start it. Then click the game screen to use your keyboard. If the embed does not load on your device, open the game on Internet Archive.</p>
-    <div class="classic-frame" id="classic-frame"></div>
+    <p>The original 1990 game runs here in your browser. Click the game screen to start, then use your keyboard to play. If it does not load on your device, open it on Internet Archive.</p>
+    <div class="classic-frame"><iframe src="https://archive.org/embed/msdos_Oregon_Trail_The_1990" title="The Oregon Trail (1990), hosted by Internet Archive" loading="eager" allowfullscreen allow="fullscreen"></iframe></div>
     <a class="classic-fallback" href="https://archive.org/details/msdos_Oregon_Trail_The_1990" target="_blank" rel="noopener noreferrer">Open game on Internet Archive ↗</a>
   </section>
   <section class="game-wrap" aria-label="Oregon Trail game">
@@ -96,25 +91,4 @@
   </section>
   <a class="back-link" href="/">← Eject disk / return to index</a>
 </main><script src="game.js" defer></script>
-<script>
-  (() => {
-    const button = document.getElementById("classic-toggle");
-    const panel = document.getElementById("classic-game");
-    const frame = document.getElementById("classic-frame");
-    button.addEventListener("click", () => {
-      const open = !panel.classList.contains("is-open");
-      panel.classList.toggle("is-open", open);
-      button.setAttribute("aria-expanded", String(open));
-      button.textContent = open ? "Close the 1990 classic" : "Play the 1990 classic";
-      if (open && !frame.firstChild) {
-        const iframe = document.createElement("iframe");
-        iframe.src = "https://archive.org/embed/msdos_Oregon_Trail_The_1990";
-        iframe.title = "The Oregon Trail (1990), hosted by Internet Archive";
-        iframe.loading = "eager";
-        iframe.allowFullscreen = true;
-        iframe.setAttribute("allow", "fullscreen");
-        frame.appendChild(iframe);
-      }
-    });
-  })();
-</script></body></html>
+</body></html>
