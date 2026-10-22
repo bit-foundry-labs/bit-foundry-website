@@ -555,3 +555,60 @@ html { scroll-padding-top: 94px; }
   .site-header { padding-right: 14px; padding-left: 14px; }
   .site-header nav { gap: 12px; }
 }
+
+
+/* Keep the original course and product card layout. */
+.work-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; max-width: none; }
+.work-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--paper-light);
+  box-shadow: 5px 5px 0 #000;
+  transition: transform .17s ease,box-shadow .17s ease;
+}
+a.work-card:hover {
+  transform: translate(-2px,-2px);
+  border-color: var(--rule);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.card-art { height: clamp(200px,27vw,295px); border-bottom: 1px solid var(--ink); }
+.work-card-copy { min-height: 0; padding: 21px 23px 22px; display: flex; flex: 1; flex-direction: column; }
+.work-card h3 { margin: 19px 0 7px; font: 600 1.8rem/1.05 var(--display); text-transform: uppercase; }
+.work-card-copy p { max-width: 450px; margin: 0; color: var(--muted); font-size: .83rem; line-height: 1.65; }
+.card-link,.status-label { margin-top: auto; padding-top: 24px; color: var(--forest); font: 500 .6rem var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.card-link b { font-size: .9rem; }
+.status-label { color: var(--orange); }
+.shelf-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 17px; }
+.shelf-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--paper-light);
+  box-shadow: 4px 4px 0 #000;
+  transition: transform .2s ease,border-color .2s ease;
+}
+.shelf-card:hover { transform: none; border-color: var(--rule); }
+.shelf-art { height: 210px; border-bottom: 1px solid var(--ink); }
+.shelf-copy { min-height: 225px; padding: 18px 18px 17px; display: flex; flex-direction: column; }
+.shelf-copy h3 { margin: 16px 0 7px; font: 600 1.35rem/1.08 var(--display); text-transform: uppercase; }
+.shelf-copy p { margin: 0; color: var(--muted); font-size: .77rem; line-height: 1.6; }
+.shelf-copy .card-link,.shelf-copy .status-label { padding-top: 18px; }
+@media (min-width: 761px) and (max-width: 900px) {
+  .work-grid { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: none; }
+}
+@media (max-width: 760px) and (min-width: 561px) {
+  .shelf-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .shelf-art { height: 190px; }
+  .shelf-copy { min-height: 230px; padding: 15px; }
+  .shelf-copy h3 { font-size: 1.22rem; }
+}
+@media (max-width: 560px) {
+  .work-grid { grid-template-columns: 1fr; }
+  .shelf-grid { grid-template-columns: 1fr; }
+  .shelf-art { height: 100%; min-height: 190px; }
+}
