@@ -17,11 +17,12 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, lessons, labs, reader] = await Promise.all([
+const [manifest, index, lessons, labs, storage, reader] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
   read(resolve(courseRoot, "course-lessons.js")),
   read(resolve(courseRoot, "course-labs.js")),
+  read(resolve(courseRoot, "course-storage.js")),
   read(resolve(courseRoot, "course-reader.js"))
 ]);
 
@@ -87,6 +88,7 @@ const scriptOrder = [
   "course-content.js",
   "course-lessons.js",
   "course-labs.js",
+  "course-storage.js",
   "course-reader.js"
 ].map((file) => index.indexOf(file));
 
@@ -117,6 +119,16 @@ if (
   fail("reader and interactive lab binders are not separated cleanly.");
 } else {
   pass("reader uses the extracted interactive-lab boundary");
+}
+
+if (
+  !/BIT_FOUNDRY_NETWORKING_STORAGE/.test(storage) ||
+  !/BIT_FOUNDRY_NETWORKING_STORAGE/.test(reader) ||
+  /localStorage/.test(reader)
+) {
+  fail("reader and browser storage are not separated cleanly.");
+} else {
+  pass("reader uses the extracted browser-storage boundary");
 }
 
 if (!/window\.networkingContentReady\.then/.test(reader)) {
