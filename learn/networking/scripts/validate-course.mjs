@@ -17,14 +17,16 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, lessons, labs, storage, config, reader] = await Promise.all([
+const [manifest, index, lessons, labs, storage, config, progress, reader, models] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
   read(resolve(courseRoot, "course-lessons.js")),
   read(resolve(courseRoot, "course-labs.js")),
   read(resolve(courseRoot, "course-storage.js")),
   read(resolve(courseRoot, "course-config.js")),
-  read(resolve(courseRoot, "course-reader.js"))
+  read(resolve(courseRoot, "course-progress.js")),
+  read(resolve(courseRoot, "course-reader.js")),
+  read(resolve(courseRoot, "course-models.js"))
 ]);
 
 const chapterFiles = [
@@ -91,6 +93,7 @@ const scriptOrder = [
   "course-labs.js",
   "course-storage.js",
   "course-config.js",
+  "course-progress.js",
   "course-reader.js"
 ].map((file) => index.indexOf(file));
 
@@ -142,6 +145,17 @@ if (
   fail("reader and curriculum configuration are not separated cleanly.");
 } else {
   pass("reader uses the extracted curriculum-configuration boundary");
+}
+
+if (
+  !/BIT_FOUNDRY_NETWORKING_PROGRESS/.test(progress) ||
+  !/BIT_FOUNDRY_NETWORKING_PROGRESS/.test(reader) ||
+  !/BIT_FOUNDRY_NETWORKING_PROGRESS/.test(models) ||
+  /localStorage/.test(models)
+) {
+  fail("reader and capstone do not share the course-progress boundary.");
+} else {
+  pass("reader and capstone share the course-progress boundary");
 }
 
 if (!/window\.networkingContentReady\.then/.test(reader)) {
