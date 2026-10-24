@@ -10,7 +10,6 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const courseRoot = resolve(here, "..");
-const repoRoot = resolve(courseRoot, "..", "..");
 const read = (path) => readFile(path, "utf8");
 const fail = (message) => {
   console.error("✗ " + message);
