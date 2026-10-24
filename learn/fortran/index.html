@@ -20,32 +20,29 @@
     <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Fortran</p><h1>Fortran.</h1><p>Compilation and Fibonacci simulations.</p></section>
     <div class="lesson-main">
       <section aria-labelledby="compiler-title">
-        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 01</div><h2 id="compiler-title">The compiler’s path</h2></div><span class="lesson-index">01 / 02 · TAP A BOX TO INSPECT IT</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 01</div><h2 id="compiler-title">From source to running program</h2></div><span class="lesson-index">01 / 02 · BUILD IT STEP BY STEP</span></div>
         <div class="lesson-card" data-lesson="compiler">
-          <div class="lesson-controls"><span class="controls-label">Show the object program as</span>
-            <button class="control-button output-filter" data-filter="all" aria-pressed="true">All forms</button>
-            <button class="control-button output-filter" data-filter="cards" aria-pressed="false">Cards</button>
-            <button class="control-button output-filter" data-filter="disk" aria-pressed="false">Disk</button>
-            <button class="control-button output-filter" data-filter="print" aria-pressed="false">Printout</button>
-            <button class="control-button run-button" data-action="run-compile">▶ Run the compile</button>
+          <div class="lesson-controls"><span class="controls-label">A compiler translates; a linker makes the program runnable.</span>
+            <button class="control-button run-button" data-action="compile">1 · Compile</button>
+            <button class="control-button" data-action="link" disabled>2 · Link</button>
+            <button class="control-button" data-action="run" disabled>3 · Run</button>
+            <button class="control-button" data-action="reset-build">Reset</button>
           </div>
           <div class="diagram-frame">
-            <div class="diagram compile-diagram" aria-label="Compiler flow diagram">
-              <button class="diagram-node is-active" data-compile-node="source"><strong>Source program</strong><small>Human-readable instructions</small></button>
-              <span class="diagram-arrow" aria-hidden="true">→</span>
-              <button class="diagram-node compiler" data-compile-node="compiler"><span class="compiler-tag">TRANSLATION STATION</span><strong>Computer + compiler</strong><small>Reads, checks, translates</small></button>
-              <span class="diagram-arrow" aria-hidden="true">→</span>
-              <div>
-                <button class="diagram-node object" data-compile-node="object"><strong>Object program</strong><small>Machine-ready instructions</small></button>
-                <div class="output-stack" aria-label="Ways to store or inspect the object program">
-                  <div class="output-option" data-kind="cards">Punched cards</div><div class="output-option" data-kind="disk">Tape · drum · disk</div><div class="output-option" data-kind="print">Printed for inspection</div>
-                </div>
-              </div>
-              <div class="flow-track" aria-hidden="true"></div>
+            <div class="build-diagram" aria-label="Fortran build pipeline">
+              <button class="build-stage is-active" data-compile-stage="source"><span class="stage-step">01</span><strong>FORTRAN source</strong><code>PROGRAM HELLO<br>PRINT *, 'HELLO'</code><small>hello.f</small></button>
+              <span class="build-arrow" aria-hidden="true">→</span>
+              <button class="build-stage" data-compile-stage="compile"><span class="stage-step">02</span><strong>Compiler</strong><code>fortran hello.f</code><small>checks syntax · emits object code</small></button>
+              <span class="build-arrow" aria-hidden="true">→</span>
+              <button class="build-stage" data-compile-stage="object"><span class="stage-step">03</span><strong>Object file</strong><code>hello.o</code><small>machine code, not yet runnable</small></button>
+              <span class="build-arrow" aria-hidden="true">→</span>
+              <button class="build-stage" data-compile-stage="link"><span class="stage-step">04</span><strong>Linker</strong><code>hello.o + runtime</code><small>resolves library references</small></button>
+              <span class="build-arrow" aria-hidden="true">→</span>
+              <button class="build-stage" data-compile-stage="run"><span class="stage-step">05</span><strong>Executable</strong><code>./hello</code><small data-compile-output>waiting to run</small></button>
             </div>
           </div>
           <div class="lesson-detail lesson-detail-single">
-            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-compile-kicker>STEP 1 · INPUT</div><h3 data-compile-title>The source program</h3><p data-compile-copy>FORTRAN source code is human-readable. The compiler translates it into instructions the computer can execute.</p></div>
+            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-compile-kicker>READY · SOURCE FILE</div><h3 data-compile-title>Start with code people can read</h3><p data-compile-copy>A FORTRAN source file is not something a computer runs directly. First compile it into an object file, then link it with the FORTRAN runtime to create an executable.</p><p class="build-status" data-compile-status>Choose Compile to begin the build.</p></div>
           </div>
         </div>
       </section>

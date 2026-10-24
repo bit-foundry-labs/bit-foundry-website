@@ -4,57 +4,60 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
   node.textContent = new Date().getFullYear();
 });
 
-const compileCopy = {
-  source: ["STEP 1 · INPUT", "The source program", "FORTRAN source code is human-readable. The compiler translates it into instructions the computer can execute."],
-  compiler: ["STEP 2 · TRANSLATION", "Computer + compiler", "The compiler checks the source code and translates it into machine instructions."],
-  object: ["STEP 3 · RESULT", "The object program", "The object program contains instructions the computer can execute."],
-  storage: ["STEP 4 · OUTPUT", "Save or inspect the result", "Store the object program in memory, on cards or disk, or print it for inspection."]
-};
-
-function showCompileNode(key) {
-  const lesson = document.querySelector('[data-lesson="compiler"]');
-  if (!lesson || !compileCopy[key]) return;
-  lesson.querySelectorAll("[data-compile-node]").forEach((node) => node.classList.toggle("is-active", node.dataset.compileNode === key));
-  const [kicker, title, copy] = compileCopy[key];
-  lesson.querySelector("[data-compile-kicker]").textContent = kicker;
-  lesson.querySelector("[data-compile-title]").textContent = title;
-  lesson.querySelector("[data-compile-copy]").textContent = copy;
-}
-
 const compilerLesson = document.querySelector('[data-lesson="compiler"]');
 if (compilerLesson) {
-  let compileTimer = null;
-  compilerLesson.querySelectorAll("[data-compile-node]").forEach((node) => {
-    node.addEventListener("click", () => showCompileNode(node.dataset.compileNode));
-  });
-  compilerLesson.querySelectorAll(".output-filter").forEach((button) => {
-    button.addEventListener("click", () => {
-      compilerLesson.querySelectorAll(".output-filter").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
-      const filter = button.dataset.filter;
-      compilerLesson.querySelectorAll(".output-option").forEach((item) => item.classList.toggle("is-dim", filter !== "all" && item.dataset.kind !== filter));
-      showCompileNode(filter === "all" ? "storage" : "storage");
+  const buildCopy = {
+    source: ["READY · SOURCE FILE", "Start with code people can read", "A FORTRAN source file is not something a computer runs directly. First compile it into an object file, then link it with the FORTRAN runtime to create an executable."],
+    compile: ["STEP 1 · COMPILE", "Translate and check the source", "The compiler reads hello.f, checks its FORTRAN syntax, and produces hello.o: machine instructions for this program."],
+    object: ["COMPILED · NOT RUNNABLE YET", "An object file is only a piece", "hello.o contains compiled instructions, but PRINT still depends on routines supplied by the FORTRAN runtime. The linker joins those pieces."],
+    link: ["STEP 2 · LINK", "Make a complete executable", "The linker resolves references to the FORTRAN runtime and packages the pieces into a runnable program."],
+    run: ["STEP 3 · RUN", "Execute the finished program", "Now the operating system can load the executable. The program reaches its PRINT statement and writes its result." ]
+  };
+  const state = { compiled: false, linked: false, ran: false, selected: "source" };
+  const showStage = (key) => {
+    if (!buildCopy[key]) return;
+    state.selected = key;
+    compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node) => node.classList.toggle("is-active", node.dataset.compileStage === key));
+    const [kicker, title, copy] = buildCopy[key];
+    compilerLesson.querySelector("[data-compile-kicker]").textContent = kicker;
+    compilerLesson.querySelector("[data-compile-title]").textContent = title;
+    compilerLesson.querySelector("[data-compile-copy]").textContent = copy;
+  };
+  const renderBuild = (status) => {
+    compilerLesson.querySelector('[data-action="compile"]').disabled = state.compiled;
+    compilerLesson.querySelector('[data-action="link"]').disabled = !state.compiled || state.linked;
+    compilerLesson.querySelector('[data-action="run"]').disabled = !state.linked || state.ran;
+    compilerLesson.querySelector('[data-compile-status]').textContent = status;
+    compilerLesson.querySelector('[data-compile-output]').textContent = state.ran ? "output: HELLO" : state.linked ? "ready to run" : "waiting to run";
+    compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node) => {
+      const key = node.dataset.compileStage;
+      node.classList.toggle("is-complete", (key === "compile" || key === "object") && state.compiled || key === "link" && state.linked || key === "run" && state.ran);
     });
+  };
+  compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node) => node.addEventListener("click", () => showStage(node.dataset.compileStage)));
+  compilerLesson.querySelector('[data-action="compile"]').addEventListener("click", () => {
+    state.compiled = true;
+    showStage("object");
+    renderBuild("Compiled hello.f → hello.o. Link it to add the FORTRAN runtime.");
   });
-  compilerLesson.querySelector('[data-action="run-compile"]').addEventListener("click", () => {
-    if (compileTimer) window.clearInterval(compileTimer);
-    const keys = ["source", "compiler", "object", "storage"];
-    let index = 0;
-    const runButton = compilerLesson.querySelector('[data-action="run-compile"]');
-    runButton.textContent = "RUNNING…";
-    compilerLesson.querySelector(".compile-diagram").classList.add("diagram-flowing");
-    showCompileNode(keys[index]);
-    compileTimer = window.setInterval(() => {
-      index += 1;
-      if (index >= keys.length) {
-        window.clearInterval(compileTimer);
-        compileTimer = null;
-        runButton.textContent = "▶ RUN THE COMPILE";
-        compilerLesson.querySelector(".compile-diagram").classList.remove("diagram-flowing");
-        return;
-      }
-      showCompileNode(keys[index]);
-    }, 1500);
+  compilerLesson.querySelector('[data-action="link"]').addEventListener("click", () => {
+    state.linked = true;
+    showStage("link");
+    renderBuild("Linked hello.o + runtime → hello. The executable is ready.");
   });
+  compilerLesson.querySelector('[data-action="run"]').addEventListener("click", () => {
+    state.ran = true;
+    showStage("run");
+    renderBuild("Ran ./hello. The program printed HELLO.");
+  });
+  compilerLesson.querySelector('[data-action="reset-build"]').addEventListener("click", () => {
+    state.compiled = false;
+    state.linked = false;
+    state.ran = false;
+    showStage("source");
+    renderBuild("Choose Compile to begin the build.");
+  });
+  renderBuild("Choose Compile to begin the build.");
 }
 
 const fibLesson = document.querySelector('[data-lesson="fibonacci"]');
