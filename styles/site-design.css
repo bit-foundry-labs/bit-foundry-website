@@ -350,3 +350,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 }
 
 
+
+
+/* Interaction polish: preserve the tactile archive language while keeping navigation and motion legible. */
+.site-header{position:sticky;top:0;z-index:100;isolation:isolate;transition:background-color .22s ease,border-color .22s ease,box-shadow .22s ease}
+.site-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 0%,var(--orange) 38%,#d856d8 61%,transparent 100%);opacity:.62;pointer-events:none}
+:where(a,button,input,select,textarea){-webkit-tap-highlight-color:transparent}
+:where(a,button){touch-action:manipulation}
+@media (hover:hover){
+  .work-card,.shelf-card,.disk-card,.interactive-model-card,.chapter-card{will-change:transform}
+  .work-card:hover,.shelf-card:hover,.disk-card:hover,.interactive-model-card:hover,.chapter-card:hover{transform:translateY(-3px)}
+  .card-link,.disk-enter,.chapter-module-button span:last-child{transition:transform .18s ease,color .18s ease}
+  .work-card:hover .card-link,.disk-card:hover .disk-enter,.chapter-module-button:hover span:last-child{transform:translateX(4px)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
