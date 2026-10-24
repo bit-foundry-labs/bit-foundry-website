@@ -45,6 +45,22 @@ window.networkingContentReady.then(() => {
  const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
  const txt=(el,sel)=>el?.querySelector(sel)?.textContent.trim()||"";
  const pages=()=>buildLessonPages({active,modules,txt,esc});
+
+ // Turn the explanatory pages into something the learner can operate. The source
+ // material stays intact; these layers change its delivery from a static list
+ // into a sequence to inspect and a case to reason through.
+ function makeTraceExplorer(root){
+  const list=root.querySelector("ol");if(!list||list.children.length<2)return;
+  const steps=[...list.children].map(item=>item.innerHTML),title=root.querySelector("h2")?.textContent||"System trace";
+  const explorer=document.createElement("section");explorer.className="reader-trace-explorer";explorer.innerHTML="<header><div><span class='reader-interaction-kicker'>TRACE THE SYSTEM</span><h3>Move through the mechanism</h3></div><p>Each stop changes something. Follow the causal chain instead of memorizing a list.</p></header><div class='reader-trace-tabs' role='tablist' aria-label='Steps in "+esc(title)+"'>"+steps.map((_,i)=>"<button type='button' role='tab' data-trace-step='"+i+"' aria-selected='"+(i===0)+"'>"+String(i+1).padStart(2,"0")+"</button>").join("")+"</div><div class='reader-trace-detail' data-trace-detail></div>";
+  list.replaceWith(explorer);const detail=explorer.querySelector("[data-trace-detail]"),buttons=[...explorer.querySelectorAll("[data-trace-step]")];
+  const show=i=>{detail.innerHTML="<span>STEP "+String(i+1).padStart(2,"0")+"</span><p>"+steps[i]+"</p>";buttons.forEach((button,n)=>button.setAttribute("aria-selected",String(n===i)));};buttons.forEach((button,i)=>button.addEventListener("click",()=>show(i)));show(0);
+ }
+ function makeCaseWorkbench(root){
+  const plan=root.querySelector("ol");if(!plan||plan.children.length<2)return;
+  const workbench=document.createElement("aside");workbench.className="reader-case-workbench";workbench.innerHTML="<div><span class='reader-interaction-kicker'>MAKE A CALL FIRST</span><h3>Where would you investigate?</h3><p>Pause before the walkthrough. Name the first boundary you would test, then compare it with the evidence path.</p></div><button type='button' data-case-reveal>Reveal investigation path</button>";
+  plan.hidden=true;plan.before(workbench);workbench.querySelector("[data-case-reveal]").addEventListener("click",event=>{const open=plan.hidden;plan.hidden=!open;event.currentTarget.textContent=open?"Hide investigation path":"Reveal investigation path";if(open)plan.scrollIntoView({block:"nearest",behavior:"smooth"});});
+ }
  
  function render(){
   if(!active)return;
@@ -55,6 +71,9 @@ window.networkingContentReady.then(() => {
   label.textContent="PAGE "+(index+1)+" OF 5 · "+names[index];bar.style.width=((index+1)*20)+"%";
   back.disabled=index===0;next.textContent=index<4?"Next page →":(modules.indexOf(active)<modules.length-1?"Next module →":"Finish lesson");
   page.innerHTML=pages()[index];
+  const sectionType=page.querySelector(".section-kicker")?.textContent||"";
+  if(index===1&&sectionType.includes("SYSTEM MODEL"))makeTraceExplorer(page);
+  if(index===2&&sectionType.includes("ENGINEERING CASE"))makeCaseWorkbench(page);
   const bloomTargets=[
    {level:"UNDERSTAND → ANALYZE",prompt:"Explain why "+txt(active,"h3").toLowerCase()+" changes a user-visible behavior, then name the boundary that owns it."},
    {level:"ANALYZE",prompt:"Trace the mechanism; separate what each component knows, changes, and merely carries."},
