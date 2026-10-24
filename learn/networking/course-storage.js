@@ -10,6 +10,7 @@
     journal: "bitfoundry-networking-journal-v1",
     course: "bitfoundry-networking-course-v1",
     resume: "bitfoundry-networking-resume-v1",
+    capstoneDraft: "bitfoundry-networking-capstone-v1",
     lessonNotePrefix: "bitfoundry-notes-"
   });
 
@@ -43,6 +44,9 @@
   const readResume = () => readJson(keys.resume, null);
   const saveResume = (record) => writeJson(keys.resume, record);
 
+  const readCapstoneDraft = () => readJson(keys.capstoneDraft, {});
+  const saveCapstoneDraft = (record) => writeJson(keys.capstoneDraft, record);
+
   const readLessonNote = (moduleId) =>
     localStorage.getItem(keys.lessonNotePrefix + moduleId) || "";
   const saveLessonNote = (moduleId, value) =>
@@ -56,6 +60,8 @@
     saveCourseRecord,
     readResume,
     saveResume,
+    readCapstoneDraft,
+    saveCapstoneDraft,
     readLessonNote,
     saveLessonNote
   });
