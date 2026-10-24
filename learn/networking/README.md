@@ -11,7 +11,7 @@ This is a static course. It runs directly in the browser and deploys through Ver
 | `course-content.js` | Loads the nine chapter card files into the course map |
 | `content/chapter-*.html` | Module cards, concise previews, and source markup for each chapter |
 | `course-lessons.js` | Lesson copy, five-page lesson markup, activities, and engineering context |
-| `course-reader.js` | Reader navigation, Bloom reflections, browser-local progress, certificates, resume state, and lab completion evidence |\n| `course-labs.js` | Interactive in-reader lab binders and their local UI state |\n| `course-storage.js` | Browser storage, record normalization, and future cloud-sync handoff point |\n| `course-config.js` | Reader page labels, research references, and designated module labs |
+| `course-reader.js` | Reader navigation, Bloom reflections, browser-local progress, certificates, resume state, and lab completion evidence |\n| `course-labs.js` | Interactive in-reader lab binders and their local UI state |\n| `course-storage.js` | Browser storage, record normalization, and future cloud-sync handoff point |\n| `course-config.js` | Reader page labels, research references, and designated module labs |\n| `course-progress.js` | Shared lesson, lab, capstone, and certificate-completion rules |
 | `course-models.js` | Landing-page models, OSI trace, standalone route/delay models, and final debugging capstone |
 | `course.css` | Networking course layout, visual system, responsive behavior, and lab styling |
 | `../../learn.js` | Shared Bit Foundry learning-page behavior |
@@ -31,7 +31,7 @@ The course deliberately works without accounts. Browser storage keys are grouped
 1. Update its visible module card in the matching `content/chapter-*.html` file.
 2. Update the same module ID in `course-lessons.js`; keep the five pages focused on why, mechanism, engineering case, practice, and transfer.
 3. Add an interactive model only when changing an input, tracing state, or making a decision helps students understand the mechanism.
-4. Put reader flow and lab completion UI in `course-reader.js`; put browser persistence in `course-storage.js`; put page labels, references, and designated labs in `course-config.js`; put an in-reader lab binder in `course-labs.js`; put a landing-page model in `course-models.js`.
+4. Put reader flow and lab completion UI in `course-reader.js`; put browser persistence in `course-storage.js`; put completion rules in `course-progress.js`; put page labels, references, and designated labs in `course-config.js`; put an in-reader lab binder in `course-labs.js`; put a landing-page model or capstone interaction in `course-models.js`.
 5. Put visual rules in `course.css`, including a mobile rule when a new layout needs one.
 
 ## Product constraints
