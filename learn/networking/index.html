@@ -352,6 +352,37 @@ body p, body li, body label, body button, body input, body textarea, body select
     @media(max-width:920px){.interactive-model-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:620px){.interactive-models-heading{align-items:start;flex-direction:column;gap:.8rem}.interactive-model-grid{grid-template-columns:1fr}.interactive-model-card{min-height:185px}}
 
+  
+    /* Course canvas: warm paper with white learning modules and sage signals. */
+    body.learn-page{
+      color-scheme:light;
+      --paper:#f1efe7;--paper-light:#ffffff;--ink:#223027;--muted:#5d685f;--rule:#c7cec3;
+      --forest:#789a78;--forest-dark:#e1ebe0;--orange:#789a78;
+      background:#f1efe7;background-image:none;color:#223027;
+    }
+    .learn-page .site-header,.learn-page .learn-hero{background:#f1efe7;border-color:#c7cec3}
+    .learn-page .learn-hero h1,.learn-page .course-map-heading h2,.learn-page .chapter-one-head h2{color:#223027}
+    .learn-page .learn-hero::after{border-color:#789a7860;box-shadow:0 0 0 18px #789a7812,0 0 0 38px #789a7812}
+    .learn-page .osi-layer{background:#fff;color:#314036;border-color:#c7cec3;border-left-color:var(--osi-color)}
+    .learn-page .osi-layer:hover,.learn-page .osi-layer.is-active{background:var(--osi-tint);border-color:var(--osi-color)}
+    .learn-page .osi-name,.learn-page .osi-detail h3,.learn-page .osi-trace h3{color:#223027}
+    .learn-page .osi-detail{background:#fff;border-color:#c7cec3}
+    .learn-page .osi-detail p,.learn-page .osi-trace p,.learn-page .osi-caveat{color:#536158}
+    .learn-page .osi-engineering{background:#e7efe6;border-color:#789a78}
+    .learn-page .osi-trace{border-color:#9caf99;background:#f9faf6}
+    .learn-page .osi-trace-next{background:#789a78;color:#fff;border-color:#789a78}
+    .learn-page .osi-trace-reset{color:#223027;border-color:#789a78;background:#fff}
+    .learn-page .osi-caveat{background:#fff;border-color:#9caf99}
+    .learn-page .interactive-model-card{background:#fff;color:#435046;border-color:#c7cec3}
+    .learn-page .interactive-model-card strong{color:#223027}
+    .learn-page .model-queue{background:linear-gradient(145deg,#fff,#f4f7f1 68%)}
+    .learn-page .model-delay{background:linear-gradient(145deg,#fff,#f4f7f1 68%)}
+    .learn-page .model-transport{background:linear-gradient(145deg,#fff,#f4f7f1 68%)}
+    .learn-page .model-route{background:linear-gradient(145deg,#fff,#f4f7f1 68%)}
+    .learn-page .chapter-card-modules{background:#fafbf8}
+    .learn-page .chapter-module-button{background:#fff;color:#314036;border-color:#c7cec3}
+    .learn-page .chapter-module-button:hover{background:#e1ebe0;border-color:#789a78}
+
   </style>
 </head>
 <body class="learn-page">
