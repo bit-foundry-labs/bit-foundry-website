@@ -383,6 +383,21 @@ body p, body li, body label, body button, body input, body textarea, body select
     .learn-page .chapter-module-button{background:#fff;color:#314036;border-color:#c7cec3}
     .learn-page .chapter-module-button:hover{background:#e1ebe0;border-color:#789a78}
 
+  
+    /* Keep the selected layer inside its own column; each layer has a distinct, quiet color field. */
+    body.learn-page .osi-layer.is-active{transform:none;box-shadow:inset 5px 0 var(--osi-color)}
+    body.learn-page .osi-layer{border-left-width:6px}
+    body.learn-page .osi-layer[data-osi-layer="7"]{--osi-color:#bb5c91;--osi-tint:#fbf1f6;background:#fbf1f6}
+    body.learn-page .osi-layer[data-osi-layer="6"]{--osi-color:#876fc5;--osi-tint:#f4f1fb;background:#f4f1fb}
+    body.learn-page .osi-layer[data-osi-layer="5"]{--osi-color:#4f91b5;--osi-tint:#eef7fa;background:#eef7fa}
+    body.learn-page .osi-layer[data-osi-layer="4"]{--osi-color:#b97942;--osi-tint:#fbf4ec;background:#fbf4ec}
+    body.learn-page .osi-layer[data-osi-layer="3"]{--osi-color:#9f8732;--osi-tint:#fbf8e9;background:#fbf8e9}
+    body.learn-page .osi-layer[data-osi-layer="2"]{--osi-color:#3d9077;--osi-tint:#edf8f3;background:#edf8f3}
+    body.learn-page .osi-layer[data-osi-layer="1"]{--osi-color:#6f9560;--osi-tint:#f1f7ed;background:#f1f7ed}
+    body.learn-page .osi-layer:hover,body.learn-page .osi-layer.is-active{background:var(--osi-tint)}
+    body.learn-page .osi-layer .osi-number,body.learn-page .osi-layer .osi-pdu{color:var(--osi-color)}
+    @media(max-width:560px){body.learn-page .osi-layer{border-left-width:4px}}
+
   </style>
 </head>
 <body class="learn-page">
