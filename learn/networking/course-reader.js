@@ -1,3 +1,4 @@
+window.networkingContentReady.then(() => {
 (()=> {
  const dialog=document.getElementById("module-reader"),page=document.getElementById("reader-page");
  if(!dialog||!page)return;
@@ -380,3 +381,4 @@
  window.addEventListener("bitfoundry-journal-update",updateJournal);
  window.addEventListener("hashchange",routeFromLocation);window.addEventListener("popstate",routeFromLocation);routeFromLocation();
 })();
+});
