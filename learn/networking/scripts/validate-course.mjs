@@ -17,10 +17,11 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, lessons, reader] = await Promise.all([
+const [manifest, index, lessons, labs, reader] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
   read(resolve(courseRoot, "course-lessons.js")),
+  read(resolve(courseRoot, "course-labs.js")),
   read(resolve(courseRoot, "course-reader.js"))
 ]);
 
@@ -85,6 +86,7 @@ const scriptOrder = [
   "course-manifest.js",
   "course-content.js",
   "course-lessons.js",
+  "course-labs.js",
   "course-reader.js"
 ].map((file) => index.indexOf(file));
 
@@ -105,6 +107,16 @@ if (
   fail("reader and lesson content are not connected through the lesson boundary.");
 } else {
   pass("reader uses the extracted lesson-content boundary");
+}
+
+if (
+  !/BIT_FOUNDRY_NETWORKING_LABS/.test(labs) ||
+  !/BIT_FOUNDRY_NETWORKING_LABS/.test(reader) ||
+  /function bind[A-Z]/.test(reader)
+) {
+  fail("reader and interactive lab binders are not separated cleanly.");
+} else {
+  pass("reader uses the extracted interactive-lab boundary");
 }
 
 if (!/window\.networkingContentReady\.then/.test(reader)) {
