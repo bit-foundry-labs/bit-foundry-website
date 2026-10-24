@@ -7,6 +7,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { Script } from "node:vm";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const courseRoot = resolve(here, "..");
@@ -163,6 +164,26 @@ if (!/window\.networkingContentReady\.then/.test(reader)) {
 } else {
   pass("reader waits for module content");
 }
+
+const courseScripts = [
+  ["course-lessons.js", lessons],
+  ["course-labs.js", labs],
+  ["course-storage.js", storage],
+  ["course-config.js", config],
+  ["course-progress.js", progress],
+  ["course-reader.js", reader],
+  ["course-models.js", models]
+];
+
+for (const [name, source] of courseScripts) {
+  try {
+    new Script(source, { filename: name });
+  } catch (error) {
+    fail(`${name} has a syntax error: ${error.message}`);
+  }
+}
+
+if (!process.exitCode) pass("all course scripts parse successfully");
 
 if (process.exitCode) {
   console.error("\nNetworking course validation failed.");
