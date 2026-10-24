@@ -411,3 +411,23 @@
 .hero-artwork.is-drive-ready .hero-drive-target {
   background:#c8ff3630; box-shadow:0 0 18px #c8ff3680; border-radius:4px;
 }
+
+
+/* The drive only accepts a disk when its centre is inside the slot; a missed drop snaps back cleanly. */
+.hero-floppy.is-returning {
+  position:fixed;
+  z-index:1000;
+  bottom:auto;
+  transform:translate3d(0,0,0) rotate(-4deg) scale(1)!important;
+  transition:left .34s cubic-bezier(.2,.8,.2,1),top .34s cubic-bezier(.2,.8,.2,1),width .34s ease,height .34s ease,transform .34s ease,filter .2s ease;
+}
+.hero-artwork.is-drive-ready .hero-drive-target::after {
+  content:"INSERT";
+  position:absolute;
+  left:50%; top:50%; transform:translate(-50%,-50%);
+  padding:2px 4px;
+  color:#dfffcf;
+  font:700 clamp(5px,.48vw,8px)/1 var(--mono);
+  letter-spacing:.08em;
+  text-shadow:0 1px 2px #000;
+}
