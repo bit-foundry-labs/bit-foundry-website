@@ -326,7 +326,7 @@ body p, body li, body label, body button, body input, body textarea, body select
     .incident-feedback { min-height:54px; margin:16px 0 0; padding:13px; border-left:3px solid #a9c4a4; color:#eef4ed; background:#121613; line-height:1.6; }
     .incident-feedback[hidden] { display:none; }
     .incident-next:disabled { opacity:.45; cursor:not-allowed; }
-    @media(max-width:640px) { .incident-head { align-items:start; flex-direction:column; } .incident-path { grid-template-columns:repeat(2,minmax(0,1fr)); } .incident-path span:nth-child(2) { border-right:0; } .incident-path span:nth-child(-n+2) { border-bottom:1px solid var(--rule); } .incident-choices { grid-template-columns:1fr; } }
+    @media(max-width:640px) { .incident-head { align-items:start; flex-direction:column; } .incident-path { grid-template-columns:repeat(2,minmax(0,1fr)); } .incident-path button:nth-child(2) { border-right:0; } .incident-path button:nth-child(-n+2) { border-bottom:1px solid var(--rule); } .incident-choices { grid-template-columns:1fr; } }
     /* Guided LAN trace: a same-subnet delivery, built for the ARP and switching lesson. */
     .lan-trace { margin-top:1.25rem; border:1px solid rgba(255,255,255,.18); background:#0e120f; color:#f0eee8; }
     .lan-trace header { display:flex; align-items:end; justify-content:space-between; gap:1rem; padding:1rem 1.15rem; border-bottom:1px solid rgba(255,255,255,.15); }
