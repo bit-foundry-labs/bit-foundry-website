@@ -6,10 +6,14 @@ This is a static course. It runs directly in the browser and deploys through Ver
 
 | File | Responsibility |
 | --- | --- |
-| `index.html` | Course structure, lesson source content, semantic markup, and page sections |
-| `course.css` | Networking course layout, visual system, responsive behavior, and lab styling |
-| `course-reader.js` | Five-page lesson reader, Bloom prompts, journal, course progress, labs, certificates, and resume state |
+| `index.html` | Course shell, landing-page sections, reader dialog, and script loading order |
+| `course-manifest.js` | Course structure: chapter files, lesson count, and lab count |
+| `course-content.js` | Loads the nine chapter card files into the course map |
+| `content/chapter-*.html` | Module cards, concise previews, and source markup for each chapter |
+| `course-lessons.js` | Lesson copy, five-page lesson markup, activities, and engineering context |
+| `course-reader.js` | Reader navigation, Bloom reflections, browser-local progress, labs, certificates, and resume state |
 | `course-models.js` | Landing-page models, OSI trace, standalone route/delay models, and final debugging capstone |
+| `course.css` | Networking course layout, visual system, responsive behavior, and lab styling |
 | `../../learn.js` | Shared Bit Foundry learning-page behavior |
 
 ## Course data stored locally
@@ -24,10 +28,10 @@ The course deliberately works without accounts. Browser storage keys are grouped
 
 ## Adding or changing a lesson
 
-1. Keep module source markup in `index.html`.
-2. Update the matching entry in the lesson-reader data in `course-reader.js`.
+1. Update its visible module card in the matching `content/chapter-*.html` file.
+2. Update the same module ID in `course-lessons.js`; keep the five pages focused on why, mechanism, engineering case, practice, and transfer.
 3. Add an interactive model only when changing an input, tracing state, or making a decision helps students understand the mechanism.
-4. Put reader and lab logic in `course-reader.js`; put a landing-page model in `course-models.js`.
+4. Put reader flow, persistence, and in-reader lab behavior in `course-reader.js`; put a landing-page model in `course-models.js`.
 5. Put visual rules in `course.css`, including a mobile rule when a new layout needs one.
 
 ## Product constraints
@@ -45,4 +49,4 @@ From the repository root, run:
 node learn/networking/scripts/validate-course.mjs
 ```
 
-The check verifies the manifest, all 41 module cards, reader data, launch targets, and the loader order. Run it whenever lesson IDs, chapter files, or the course shell changes.
+The check verifies the manifest, all 41 module cards, lesson content, launch targets, and script order. Run it whenever lesson IDs, chapter files, or the course shell changes.
