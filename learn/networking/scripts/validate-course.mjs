@@ -39,7 +39,7 @@ const chapters = await Promise.all(
 );
 const chapterMarkup = chapters.join("\n");
 const moduleIds = [
-  ...chapterMarkup.matchAll(/<article\\b[^>]*\\bid="(module-\\d+-\\d+)"/g)
+  ...chapterMarkup.matchAll(/<article\b[^>]*\bid="(module-\\d+-\\d+)"/g)
 ].map(([, id]) => id);
 const uniqueModuleIds = new Set(moduleIds);
 const expectedLessons = Number(
