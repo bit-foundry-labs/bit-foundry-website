@@ -71,10 +71,29 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
   };
   const pickupSound = () => { tone(780, .045, "square", .025); tone(1120, .035, "triangle", .018, .035); };
   const insertSound = () => { tone(180, .08, "triangle", .045); tone(520, .12, "square", .025, .075); };
-  const near = (a, b, radius = 105) => {
-    const acx = a.left + a.width / 2, acy = a.top + a.height / 2;
-    const bcx = b.left + b.width / 2, bcy = b.top + b.height / 2;
-    return Math.hypot(acx - bcx, acy - bcy) < radius;
+  const isOverDrive = (diskRect, driveRect) => {
+    const x = diskRect.left + diskRect.width / 2;
+    const y = diskRect.top + diskRect.height / 2;
+    const insetX = Math.max(6, driveRect.width * .12);
+    const insetY = Math.max(5, driveRect.height * .18);
+    return x >= driveRect.left + insetX && x <= driveRect.right - insetX &&
+      y >= driveRect.top + insetY && y <= driveRect.bottom - insetY;
+  };
+  const clearFixedPosition = (disk) => {
+    disk.style.removeProperty("left");
+    disk.style.removeProperty("top");
+    disk.style.removeProperty("width");
+    disk.style.removeProperty("height");
+    disk.style.removeProperty("--fly-x");
+    disk.style.removeProperty("--fly-y");
+  };
+  const returnToPile = (disk) => {
+    disk.classList.remove("is-dragging");
+    disk.classList.add("is-returning");
+    window.setTimeout(() => {
+      disk.classList.remove("is-held", "is-returning");
+      clearFixedPosition(disk);
+    }, 370);
   };
   const insert = (disk, fromRect) => {
     if (!artwork || !drive || disk.classList.contains("is-inserting")) return;
@@ -131,7 +150,7 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
       disk.style.top = (Number(disk.dataset.originTop) + dy) + "px";
       const d = drive.getBoundingClientRect();
       const r = disk.getBoundingClientRect();
-      artwork.classList.toggle("is-drive-ready", near(r, d));
+      artwork.classList.toggle("is-drive-ready", isOverDrive(r, d));
     });
     disk.addEventListener("pointerup", (event) => {
       if (!disk.classList.contains("is-held")) return;
@@ -140,15 +159,10 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
       const dragged = disk.dataset.dragged === "true";
       disk.releasePointerCapture(event.pointerId);
       artwork.classList.remove("is-drive-ready");
-      if (dragged && near(rect, d)) { insert(disk, rect); return; }
+      if (dragged && isOverDrive(rect, d)) { insert(disk, rect); return; }
       if (dragged) {
-        disk.classList.remove("is-held", "is-dragging");
-        disk.style.left = disk.dataset.originLeft + "px";
-        disk.style.top = disk.dataset.originTop + "px";
-        disk.style.width = disk.dataset.originWidth + "px";
-        disk.style.height = disk.dataset.originHeight + "px";
-        disk.classList.add("is-returning");
-        window.setTimeout(() => disk.classList.remove("is-returning"), 360);
+        returnToPile(disk);
+        if (status) status.textContent = "Disk returned to the pile. Drop it directly over the drive slot to insert it.";
         return;
       }
       disk.classList.remove("is-held", "is-dragging");
@@ -156,12 +170,15 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
     });
     disk.addEventListener("pointercancel", () => {
       if (!disk.classList.contains("is-held")) return;
-      disk.classList.remove("is-held", "is-dragging");
       artwork?.classList.remove("is-drive-ready");
-      disk.style.left = disk.dataset.originLeft + "px";
-      disk.style.top = disk.dataset.originTop + "px";
-      disk.style.width = disk.dataset.originWidth + "px";
-      disk.style.height = disk.dataset.originHeight + "px";
+      returnToPile(disk);
+    });
+    disk.addEventListener("click", (event) => {
+      // Keep anchor semantics for accessibility while preventing its default
+      // navigation from racing the physical insert animation.
+      event.preventDefault();
+      if (disk.classList.contains("is-held") || disk.classList.contains("is-inserting")) return;
+      insert(disk, disk.getBoundingClientRect());
     });
   });
 })();
