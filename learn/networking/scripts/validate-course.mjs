@@ -17,15 +17,16 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, reader] = await Promise.all([
+const [manifest, index, lessons, reader] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
+  read(resolve(courseRoot, "course-lessons.js")),
   read(resolve(courseRoot, "course-reader.js"))
 ]);
 
-const chapterFiles = [...manifest.matchAll(/"(.\/content\/chapter-\d{2}\.html)"/g)].map(
-  ([, file]) => file
-);
+const chapterFiles = [
+  ...manifest.matchAll(/"(.\/content\/chapter-[0-9]{2}\.html)"/g)
+].map(([, file]) => file);
 
 if (chapterFiles.length !== 9) {
   fail(`Expected 9 chapter files in the manifest; found ${chapterFiles.length}.`);
@@ -38,11 +39,11 @@ const chapters = await Promise.all(
 );
 const chapterMarkup = chapters.join("\n");
 const moduleIds = [
-  ...chapterMarkup.matchAll(/<article\b[^>]*\bid="(module-\\d+-\\d+)"/g)
+  ...chapterMarkup.matchAll(/<article[^>]* id="(module-[0-9]+-[0-9]+)"/g)
 ].map(([, id]) => id);
 const uniqueModuleIds = new Set(moduleIds);
 const expectedLessons = Number(
-  manifest.match(/lessonCount:\s*(\d+)/)?.[1] ?? 0
+  manifest.match(/lessonCount:[ 	]*([0-9]+)/)?.[1] ?? 0
 );
 
 if (moduleIds.length !== expectedLessons || uniqueModuleIds.size !== expectedLessons) {
@@ -53,22 +54,22 @@ if (moduleIds.length !== expectedLessons || uniqueModuleIds.size !== expectedLes
   pass(`${expectedLessons} unique module cards are present`);
 }
 
-const readerIds = new Set(
-  [...reader.matchAll(/"?(module-\d+-\d+)"?\s*:/g)].map(([, id]) => id)
+const lessonIds = new Set(
+  [...lessons.matchAll(/"?(module-[0-9]+-[0-9]+)"?[ 	]*:/g)].map(([, id]) => id)
 );
-const staleReaderIds = [...readerIds].filter((id) => !uniqueModuleIds.has(id));
-const missingReaderIds = [...uniqueModuleIds].filter((id) => !readerIds.has(id));
+const staleLessonIds = [...lessonIds].filter((id) => !uniqueModuleIds.has(id));
+const missingLessonIds = [...uniqueModuleIds].filter((id) => !lessonIds.has(id));
 
-if (staleReaderIds.length || missingReaderIds.length) {
-  if (staleReaderIds.length) fail(`Reader has stale module data: ${staleReaderIds.join(", ")}.`);
-  if (missingReaderIds.length) fail(`Reader lacks module data: ${missingReaderIds.join(", ")}.`);
+if (staleLessonIds.length || missingLessonIds.length) {
+  if (staleLessonIds.length) fail(`Lesson content has stale module data: ${staleLessonIds.join(", ")}.`);
+  if (missingLessonIds.length) fail(`Lesson content lacks module data: ${missingLessonIds.join(", ")}.`);
 } else {
-  pass("reader lesson data matches every module card");
+  pass("lesson content matches every module card");
 }
 
 const launchTargets = [
-  ...index.matchAll(/data-module-open="(module-\d+-\d+)"/g),
-  ...chapterMarkup.matchAll(/data-module-open="(module-\d+-\d+)"/g)
+  ...index.matchAll(/data-module-open="(module-[0-9]+-[0-9]+)"/g),
+  ...chapterMarkup.matchAll(/data-module-open="(module-[0-9]+-[0-9]+)"/g)
 ].map(([, id]) => id);
 const invalidLaunchTargets = [...new Set(launchTargets)].filter(
   (id) => !uniqueModuleIds.has(id)
@@ -80,12 +81,30 @@ if (invalidLaunchTargets.length) {
   pass("all module launch targets resolve");
 }
 
-if (!/course-manifest\.js/.test(index) || !/course-content\.js/.test(index)) {
-  fail("index.html must load the course manifest before the content loader.");
-} else if (index.indexOf("course-manifest.js") > index.indexOf("course-content.js")) {
-  fail("course manifest is loaded after the content loader.");
+const scriptOrder = [
+  "course-manifest.js",
+  "course-content.js",
+  "course-lessons.js",
+  "course-reader.js"
+].map((file) => index.indexOf(file));
+
+if (scriptOrder.some((position) => position < 0)) {
+  fail("index.html is missing a required networking course script.");
+} else if (scriptOrder.some((position, index) => index > 0 && position < scriptOrder[index - 1])) {
+  fail("networking course scripts load in the wrong order.");
 } else {
-  pass("manifest loads before the content loader");
+  pass("course scripts load in dependency order");
+}
+
+if (
+  !/BIT_FOUNDRY_NETWORKING_LESSONS/.test(lessons) ||
+  !/buildLessonPages/.test(lessons) ||
+  !/BIT_FOUNDRY_NETWORKING_LESSONS/.test(reader) ||
+  !/buildLessonPages/.test(reader)
+) {
+  fail("reader and lesson content are not connected through the lesson boundary.");
+} else {
+  pass("reader uses the extracted lesson-content boundary");
 }
 
 if (!/window\.networkingContentReady\.then/.test(reader)) {
