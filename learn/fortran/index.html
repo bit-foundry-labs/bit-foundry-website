@@ -48,26 +48,31 @@
       </section>
 
       <section aria-labelledby="fib-title">
-        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 02</div><h2 id="fib-title">Find the first term over 1,000</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE LOOP</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 02</div><h2 id="fib-title">Program it on a coding sheet</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE CARDS</span></div>
         <div class="lesson-card" data-lesson="fibonacci">
-          <div class="lesson-controls"><span class="controls-label">Fibonacci terms</span>
+          <div class="lesson-controls"><span class="controls-label">Classic FORTRAN used numbered labels and fixed columns; this program finds the first Fibonacci term over 1,000.</span>
             <button class="control-button" data-action="fib-step">Step once</button><button class="control-button run-button" data-action="fib-run">▶ Run loop</button><button class="control-button" data-action="fib-reset">Reset</button><span class="flow-status" data-fib-status aria-live="polite">Ready at the starting values.</span>
           </div>
           <div class="diagram-frame">
-            <div class="flowchart" aria-label="Fibonacci flowchart">
-              <button class="flow-node start-stop" data-fib-node="start"><strong>Start</strong></button><span class="flow-down" aria-hidden="true">↓</span>
-              <button class="flow-node initialize is-active" data-fib-node="initialize"><strong>Set NEXT = 0 · LATEST = 1</strong><small>Initialize the first pair</small></button><span class="flow-down" aria-hidden="true">↓</span>
-              <button class="flow-node sum" data-fib-node="sum"><strong>SUM ← LATEST + NEXT</strong><small data-fib-equation>Each pass adds the current pair</small></button><span class="flow-down" aria-hidden="true">↓</span>
-              <button class="flow-node test" data-fib-node="test"><strong>SUM &gt; 1,000?</strong></button>
-              <div class="branches">
-                <div class="branch"><span class="branch-label">TRUE</span><button class="flow-node output" data-fib-node="print"><strong>Print SUM · Stop</strong></button></div>
-                <div class="branch"><span class="branch-label">FALSE</span><button class="flow-node initialize" data-fib-node="update"><strong>NEXT ← LATEST</strong><small>LATEST ← SUM · Return to the addition</small></button></div>
-              </div>
-              <div class="loop-return" aria-hidden="true">↶ &nbsp; continue with the updated pair</div>
+            <div class="coding-sheet" aria-label="Classic FORTRAN Fibonacci program on a coding sheet">
+              <div class="sheet-head"><span>LABEL</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><strong>FORTRAN STATEMENT</strong></div>
+              <div class="sheet-title">PROGRAM: FIRST FIBONACCI TERM ABOVE 1000 <span>CLICK A LINE TO INSPECT</span></div>
+              <button class="code-line is-active" data-fib-node="initialize"><b></b><code>      NEXT = 0</code><small>initialize</small></button>
+              <button class="code-line" data-fib-node="initialize"><b></b><code>      LATEST = 1</code><small>initialize</small></button>
+              <button class="code-line" data-fib-node="sum"><b>2</b><code>   2  SUM = LATEST + NEXT</code><small data-fib-equation>add the pair</small></button>
+              <button class="code-line decision" data-fib-node="test"><b></b><code>      IF (SUM .GT. 1000) GO TO 6</code><small>branch if true</small></button>
+              <button class="code-line" data-fib-node="update"><b></b><code>      NEXT = LATEST</code><small>shift forward</small></button>
+              <button class="code-line" data-fib-node="update"><b></b><code>      LATEST = SUM</code><small>shift forward</small></button>
+              <button class="code-line jump" data-fib-node="update"><b></b><code>      GO TO 2</code><small>return to label 2 ↶</small></button>
+              <button class="code-line output" data-fib-node="print"><b>6</b><code>   6  WRITE (6,11) SUM</code><small>write the answer</small></button>
+              <button class="code-line output" data-fib-node="print"><b></b><code>      STOP</code><small>end execution</small></button>
+              <button class="code-line"><b>11</b><code>  11  FORMAT (I6)</code><small>print format</small></button>
+              <button class="code-line"><b></b><code>      END</code><small>end program</small></button>
+              <div class="sheet-foot">Columns 1–5 hold a label; the statement begins in column 7. Labels 2 and 6 are destinations for <code>GO TO</code>.</div>
             </div>
           </div>
           <div class="lesson-detail lesson-detail-single">
-            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-fib-kicker>READY · START</div><h3 data-fib-title>Two values begin the sequence</h3><p data-fib-copy>Start with NEXT = 0 and LATEST = 1. Add the pair; if SUM ≤ 1,000, shift the values and repeat.</p>
+            <div class="detail-copy" aria-live="polite"><div class="section-kicker" data-fib-kicker>READY · START</div><h3 data-fib-title>A program used to be a physical artifact</h3><p data-fib-copy>Early FORTRAN was prepared as fixed-column cards or coding sheets. Here, label 2 marks the loop; label 6 is where execution lands once SUM is larger than 1,000.</p>
               <div class="value-row"><span class="value-chip">NEXT = <b data-fib-next>0</b></span><span class="value-chip">LATEST = <b data-fib-latest>1</b></span><span class="value-chip">SUM = <b data-fib-sum>—</b></span><span class="value-chip">STEP = <b data-fib-count>0</b></span></div>
             </div>
           </div>

@@ -63,7 +63,7 @@ if (compilerLesson) {
 const fibLesson = document.querySelector('[data-lesson="fibonacci"]');
 if (fibLesson) {
   const fibDetails = {
-    start: ["START · BEGIN", "The sequence begins", "The flowchart starts by preparing two values. Each pass uses the current pair to calculate the next Fibonacci term."],
+    start: ["START · BEGIN", "The sequence begins", "The program starts by preparing two values on the coding sheet. Each pass uses the current pair to calculate the next Fibonacci term."],
     initialize: ["STEP 1 · INITIALIZE", "Set the starting pair", "NEXT begins at 0 and LATEST begins at 1. These are the two values the loop adds together."],
     sum: ["STEP 2 · ADD", "Make the next term", "SUM is NEXT plus LATEST. On the first pass, 0 + 1 gives 1."],
     test: ["STEP 3 · DECIDE", "Check the stopping condition", "If SUM is greater than 1,000, print it and stop. Otherwise take the false branch and update the pair."],
@@ -146,7 +146,7 @@ if (fibLesson) {
     node.addEventListener("click", () => {
       if (fib.timer) stopFib();
       const key = node.dataset.fibNode;
-      fibLesson.querySelectorAll("[data-fib-node]").forEach((item) => item.classList.toggle("is-active", item === node));
+      fibLesson.querySelectorAll("[data-fib-node]").forEach((item) => item.classList.toggle("is-active", item.dataset.fibNode === key));
       const detail = fibDetails[key];
       value("[data-fib-kicker]", detail[0]);
       value("[data-fib-title]", detail[1]);
