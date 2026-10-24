@@ -69,11 +69,15 @@ window.networkingContentReady.then(() => {
   const chapter=active.id.split("-")[1];
   kicker.textContent="NETWORK SYSTEMS LAB · "+active.id.replace("module-","EXPERIMENT ").replace("-",".");
   label.textContent=index===3?"INTERACTIVE MODEL":"CONTEXT & NOTES";bar.style.width=((index+1)*20)+"%";
-  back.disabled=index===0;back.textContent=index===3?"← Context":"← Previous view";next.textContent=index===3?"Related notes →":"Close experiment";
-  page.innerHTML=pages()[index];
+  back.disabled=true;back.textContent="";next.textContent="";
+  page.innerHTML=pages()[3];
+  // The public lab opens only the thing to manipulate. Course copy, prompts,
+  // reflection fields, and progression controls stay out of the experience.
+  const liveModel=page.querySelector(".network-lab");
+  if(liveModel)page.replaceChildren(liveModel);
   const sectionType=page.querySelector(".section-kicker")?.textContent||"";
-  if(index===1&&sectionType.includes("SYSTEM MODEL"))makeTraceExplorer(page);
-  if(index===2&&sectionType.includes("ENGINEERING CASE"))makeCaseWorkbench(page);
+  if(false&&index===1&&sectionType.includes("SYSTEM MODEL"))makeTraceExplorer(page);
+  if(false&&index===2&&sectionType.includes("ENGINEERING CASE"))makeCaseWorkbench(page);
   const bloomTargets=[
    {level:"UNDERSTAND → ANALYZE",prompt:"Explain why "+txt(active,"h3").toLowerCase()+" changes a user-visible behavior, then name the boundary that owns it."},
    {level:"ANALYZE",prompt:"Trace the mechanism; separate what each component knows, changes, and merely carries."},
@@ -85,14 +89,14 @@ window.networkingContentReady.then(() => {
   // One hands-on checkpoint per chapter keeps the journal useful without turning it
   // into a repetitive requirement.
   const reflectionCheckpoints=new Set(["module-1-4","module-2-4","module-3-4","module-4-4","module-5-4","module-6-4","module-7-3","module-8-4","module-9-5"]);
-  if(index===3&&reflectionCheckpoints.has(active.id)){
+  if(false&&index===3&&reflectionCheckpoints.has(active.id)){
    const journalEntryId=active.id+"::"+index,existingJournalEntry=readJournal()[journalEntryId];
    const thinking=document.createElement("aside");thinking.className="reader-thinking";thinking.innerHTML="<div class='reader-thinking-head'><div><strong>Optional Bloom reflection · "+bloomTargets.level+"</strong><p>Use this if you want to capture an insight from the model. It is never required for lesson progress or your certificate.</p></div><button type='button' class='reader-reflection-skip' data-bloom-skip>Skip reflection</button></div><div data-bloom-form><p class='reader-thinking-prompt'>"+esc(bloomTargets.prompt)+"</p><label class='reader-journal-prompt'><span>Write your thinking</span><select data-bloom-journal-tag aria-label='Reflection type'><option value='insight'>Insight</option><option value='question'>Question</option><option value='confusing'>Still unclear</option></select><textarea data-bloom-journal placeholder='Use this space to reason through the prompt.'></textarea><small data-bloom-save>"+(existingJournalEntry?.text?"Saved locally":"Saved automatically in this browser")+"</small></label></div>";
    const journalField=thinking.querySelector("[data-bloom-journal]"),journalTag=thinking.querySelector("[data-bloom-journal-tag]"),journalSave=thinking.querySelector("[data-bloom-save]");journalField.value=existingJournalEntry?.text||"";journalTag.value=existingJournalEntry?.tag||"insight";const saveReflection=()=>{const record=readJournal(),text=journalField.value.trim();if(text){record[journalEntryId]={lessonId:active.id,title:txt(active,"h3"),bloom:bloomTargets.level,tag:journalTag.value,text,updatedAt:Date.now()};}else delete record[journalEntryId];writeJournal(record);journalSave.textContent=text?"Saved locally":"Entry cleared";};journalField.addEventListener("input",saveReflection);journalTag.addEventListener("change",saveReflection);
    thinking.querySelector("[data-bloom-skip]")?.addEventListener("click",()=>{thinking.classList.add("is-skipped");thinking.innerHTML="<p class='reader-reflection-skipped'>Reflection skipped. <button type='button' data-bloom-restore>Add one after all</button></p>";thinking.querySelector("[data-bloom-restore]")?.addEventListener("click",()=>render());});
    const readerIntro=page.querySelector(".reader-intro");if(readerIntro)readerIntro.insertAdjacentElement("afterend",thinking);else page.prepend(thinking);
   }
-  if(index===4){const sources=researchSources[chapter]||[],references=document.createElement("aside");references.className="reader-research";references.innerHTML="<h3>Research basis</h3><p>Concepts in this module are synthesized from the references below. The course uses textbooks, university materials, and peer-reviewed venues only.</p><ul>"+sources.map(source=>"<li><a href='"+source[1]+"' target='_blank' rel='noreferrer'>"+esc(source[0])+" ↗</a></li>").join("")+"</ul>";page.append(references);}
+  if(false&&index===4){const sources=researchSources[chapter]||[],references=document.createElement("aside");references.className="reader-research";references.innerHTML="<h3>Research basis</h3><p>Concepts in this module are synthesized from the references below. The course uses textbooks, university materials, and peer-reviewed venues only.</p><ul>"+sources.map(source=>"<li><a href='"+source[1]+"' target='_blank' rel='noreferrer'>"+esc(source[0])+" ↗</a></li>").join("")+"</ul>";page.append(references);}
   const queueLab=page.querySelector("[data-queue-lab]");
   if(queueLab)bindQueueLab(queueLab);
   const encapsulationLab=page.querySelector("[data-encapsulation-lab]");if(encapsulationLab)bindEncapsulationLab(encapsulationLab);
@@ -140,7 +144,7 @@ window.networkingContentReady.then(() => {
   const sdnLab=page.querySelector("[data-sdn-lab]");if(sdnLab)bindSdn(sdnLab);
   const diagLab=page.querySelector("[data-icmp-lab]");if(diagLab)bindDiagnostics(diagLab);
   const chapterNumber=String(active.id.split("-")[1]).padStart(2,"0");
-  if(index===3&&chapterLabModules[chapterNumber]===active.id){
+  if(false&&index===3&&chapterLabModules[chapterNumber]===active.id){
    const record=courseRecord(),alreadyDone=record.labs.includes(chapterNumber),existingNote=record.labNotes[chapterNumber]||"",labCard=document.createElement("aside");labCard.className="lab-demonstration";labCard.innerHTML="<strong>Module lab demonstration · "+chapterNumber+"</strong><p>Record one observation from this model: what did you change, and what changed in the system?</p><label class='lab-reflection-label'>Lab observation<textarea data-lab-reflection placeholder='For example: Raising arrivals above service capacity made the queue grow because packets arrived faster than the link could drain them.'></textarea></label><small data-lab-reflection-status>"+(alreadyDone?"Saved as lab evidence":"Write at least one specific observation to record this lab.")+"</small><button type=\"button\" data-done=\""+alreadyDone+"\" "+(!alreadyDone&&existingNote.trim().length<30?"disabled":"")+">"+(alreadyDone?"Lab demonstrated ✓":"Record demonstrated lab")+"</button>";
    const labNote=labCard.querySelector("[data-lab-reflection]"),labStatus=labCard.querySelector("[data-lab-reflection-status]"),labButton=labCard.querySelector("button");labNote.value=existingNote;
    const persistLabNote=()=>{saveLabNote(chapterNumber,labNote.value);labButton.disabled=!alreadyDone&&labNote.value.trim().length<30;labStatus.textContent=labNote.value.trim().length>=30?"Observation saved locally.":"Write at least one specific observation to record this lab.";};labNote.addEventListener("input",persistLabNote);
@@ -161,7 +165,7 @@ window.networkingContentReady.then(() => {
  const pathDetail=document.querySelector("[data-incident-path-detail]"),pathTitle=document.querySelector("[data-incident-path-title]"),pathCopy=document.querySelector("[data-incident-path-copy]"),pathInfo={client:{title:"CLIENT · STARTING THE REQUEST",copy:"Your application decides what it needs: a URL, a method, headers, and a body. Before any network exchange, the client must know the hostname and the service it intends to reach."},name:{title:"DNS / NAME · FINDING THE DESTINATION",copy:"DNS translates a hostname into an IP address. If this step fails, the client has no destination for the connection; checking a resolver response and authoritative records is the useful next move."},transport:{title:"TCP / TLS · OPENING A PROTECTED CONNECTION",copy:"TCP reaches the destination port and provides its delivery service. TLS then authenticates the server and protects the HTTP exchange. A timeout or certificate error belongs here, before the API can respond."},app:{title:"HTTP / API · EXCHANGING APPLICATION MEANING",copy:"HTTP carries the request to the API and returns a response. Status codes, response bodies, authorization, and validation errors are application evidence, because the network path already worked."}};
  document.querySelectorAll("[data-incident-layer]").forEach(button=>button.addEventListener("click",()=>{const item=pathInfo[button.dataset.incidentLayer];if(!item||!pathDetail)return;document.querySelectorAll("[data-incident-layer]").forEach(other=>other.setAttribute("aria-expanded","false"));button.setAttribute("aria-expanded","true");pathTitle.textContent=item.title;pathCopy.textContent=item.copy;pathDetail.hidden=false;}));
  back.addEventListener("click",()=>{if(index>0){index--;render();page.querySelector("#reader-title")?.focus({preventScroll:true});}});
- next.addEventListener("click",()=>{if(index<4){index++;render();page.querySelector("#reader-title")?.focus({preventScroll:true});return;}leaveLesson();});
+ next.addEventListener("click",leaveLesson);
  close.addEventListener("click",leaveLesson);
  dialog.addEventListener("close",()=>{active=null;if(location.hash.startsWith("#module-")){if(history.state?.fromCourse)history.back();else history.replaceState(null,"",location.pathname+location.search);}});
  const certificateForm=document.getElementById("certificate-form"),certificatePreview=document.getElementById("certificate-preview");

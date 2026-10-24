@@ -427,4 +427,4 @@ body p, body li, body label, body button, body input, body textarea, body select
     body.learn-page .osi-layer:hover,body.learn-page .osi-layer.is-active{background:var(--osi-tint)}
     body.learn-page .osi-layer .osi-number,body.learn-page .osi-layer .osi-pdu{color:var(--osi-color)}
     @media(max-width:560px){body.learn-page .osi-layer{border-left-width:4px}}
-.lab-card.is-flagship{position:relative}
+.lab-card.is-flagship{position:relative}.reader-controls{display:none!important}.reader-page{display:flex;align-items:center;justify-content:center;padding:clamp(1rem,4vw,3rem)}.reader-page>.network-lab{width:min(100%,920px);margin:0}
