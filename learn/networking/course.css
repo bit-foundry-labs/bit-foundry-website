@@ -242,8 +242,11 @@ body p, body li, body label, body button, body input, body textarea, body select
     .chapter-card-modules { padding:0 12px 12px; border-top:1px solid var(--rule); }
     .chapter-module-button { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; padding:12px 6px; border:0; border-bottom:1px solid var(--rule); background:transparent; color:var(--ink); text-align:left; font:400 .96rem/1.35 "Source Sans 3",Arial,sans-serif; cursor:pointer; }
     .chapter-module-button:last-child { border-bottom:0; }
-    .chapter-module-button span:last-child { color:#789a78; }
+    .chapter-module-button span:last-child { position:relative;display:grid;flex:0 0 auto;width:1.65rem;height:1.65rem;overflow:hidden;border:1px solid #789a78;border-radius:50%;color:#789a78;font-size:0;place-items:center;transition:background .18s ease,color .18s ease,transform .18s ease; }
+    .chapter-module-button span:last-child::before { position:absolute;width:.5rem;height:.5rem;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;content:"";transform:translate(.11rem,-.11rem); }
+    .chapter-module-button span:last-child::after { width:.8rem;height:1.5px;background:currentColor;content:"";transform:rotate(-45deg); }
     .chapter-module-button:hover,.chapter-module-button:focus-visible { color:#789a78; outline:2px solid #789a78; outline-offset:-2px; }
+    .chapter-module-button:hover span:last-child,.chapter-module-button:focus-visible span:last-child { background:#789a78;color:#fff;transform:rotate(45deg); }
     .chapter-outline { display:none !important; }
     @media(max-width:900px) { .course-map-list { grid-template-columns:repeat(2,minmax(0,1fr)); } }
     @media(max-width:640px) {
