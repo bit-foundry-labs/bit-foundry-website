@@ -53,24 +53,115 @@ document.querySelectorAll("#year, [data-year]").forEach((node) => {
   const status = document.getElementById("hero-disk-status");
   const artwork = document.querySelector(".hero-artwork");
   const drive = document.querySelector(".hero-drive-target");
+  let audio;
+  const tone = (frequency, duration, type = "square", volume = 0.035, delay = 0) => {
+    try {
+      audio ||= new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === "suspended") audio.resume();
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+      const at = audio.currentTime + delay;
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, at);
+      gain.gain.setValueAtTime(volume, at);
+      gain.gain.exponentialRampToValueAtTime(0.001, at + duration);
+      oscillator.connect(gain); gain.connect(audio.destination);
+      oscillator.start(at); oscillator.stop(at + duration);
+    } catch (_) {}
+  };
+  const pickupSound = () => { tone(780, .045, "square", .025); tone(1120, .035, "triangle", .018, .035); };
+  const insertSound = () => { tone(180, .08, "triangle", .045); tone(520, .12, "square", .025, .075); };
+  const near = (a, b, radius = 105) => {
+    const acx = a.left + a.width / 2, acy = a.top + a.height / 2;
+    const bcx = b.left + b.width / 2, bcy = b.top + b.height / 2;
+    return Math.hypot(acx - bcx, acy - bcy) < radius;
+  };
+  const insert = (disk, fromRect) => {
+    if (!artwork || !drive || disk.classList.contains("is-inserting")) return;
+    const target = drive.getBoundingClientRect();
+    const dx = target.left + target.width / 2 - (fromRect.left + fromRect.width / 2);
+    const dy = target.top + target.height / 2 - (fromRect.top + fromRect.height / 2);
+    disk.classList.remove("is-held", "is-dragging");
+    disk.style.left = fromRect.left + "px";
+    disk.style.top = fromRect.top + "px";
+    disk.style.width = fromRect.width + "px";
+    disk.style.height = fromRect.height + "px";
+    disk.style.setProperty("--fly-x", dx + "px");
+    disk.style.setProperty("--fly-y", dy + "px");
+    disk.classList.add("is-inserting");
+    artwork.classList.add("is-loading");
+    insertSound();
+    if (status) status.textContent = "Inserting " + disk.dataset.diskLabel + " disk.";
+    let done = false;
+    const open = () => { if (!done) { done = true; window.location.assign(disk.href); } };
+    disk.addEventListener("transitionend", (e) => { if (e.propertyName === "transform") open(); }, {once:true});
+    window.setTimeout(open, 850);
+  };
   document.querySelectorAll("[data-disk-insert]").forEach((disk) => {
-    disk.addEventListener("click", (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !artwork || !drive) return;
+    disk.setAttribute("draggable", "false");
+    disk.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || !artwork || !drive) return;
       event.preventDefault();
-      if (disk.classList.contains("is-inserting")) return;
-      const from = disk.getBoundingClientRect(), to = drive.getBoundingClientRect();
-      const dx = to.left + to.width / 2 - (from.left + from.width / 2);
-      const dy = to.top + to.height / 2 - (from.top + from.height / 2);
-      disk.style.setProperty("--fly-x", dx + "px");
-      disk.style.setProperty("--fly-y", dy + "px");
-      disk.classList.add("is-inserting");
-      artwork.classList.add("is-loading");
-      if (status) status.textContent = "Inserting " + disk.dataset.diskLabel + " disk.";
-      let navigated = false;
-      const open = () => { if (!navigated) { navigated = true; window.location.assign(disk.href); } };
-      disk.addEventListener("transitionend", (e) => { if (e.propertyName === "transform") open(); }, {once:true});
-      window.setTimeout(open, 900);
+      const rect = disk.getBoundingClientRect();
+      disk.dataset.startX = event.clientX;
+      disk.dataset.startY = event.clientY;
+      disk.dataset.dragged = "false";
+      disk.dataset.originLeft = rect.left;
+      disk.dataset.originTop = rect.top;
+      disk.dataset.originWidth = rect.width;
+      disk.dataset.originHeight = rect.height;
+      disk.classList.add("is-held");
+      disk.style.left = rect.left + "px";
+      disk.style.top = rect.top + "px";
+      disk.style.width = rect.width + "px";
+      disk.style.height = rect.height + "px";
+      disk.setPointerCapture(event.pointerId);
+      pickupSound();
+      if (status) status.textContent = "Picked up " + disk.dataset.diskLabel + " disk. Drag it to the computer drive.";
+    });
+    disk.addEventListener("pointermove", (event) => {
+      if (!disk.classList.contains("is-held")) return;
+      const dx = event.clientX - Number(disk.dataset.startX);
+      const dy = event.clientY - Number(disk.dataset.startY);
+      if (Math.hypot(dx, dy) > 5) {
+        disk.dataset.dragged = "true";
+        disk.classList.add("is-dragging");
+      }
+      disk.style.left = (Number(disk.dataset.originLeft) + dx) + "px";
+      disk.style.top = (Number(disk.dataset.originTop) + dy) + "px";
+      const d = drive.getBoundingClientRect();
+      const r = disk.getBoundingClientRect();
+      artwork.classList.toggle("is-drive-ready", near(r, d));
+    });
+    disk.addEventListener("pointerup", (event) => {
+      if (!disk.classList.contains("is-held")) return;
+      const rect = disk.getBoundingClientRect();
+      const d = drive.getBoundingClientRect();
+      const dragged = disk.dataset.dragged === "true";
+      disk.releasePointerCapture(event.pointerId);
+      artwork.classList.remove("is-drive-ready");
+      if (dragged && near(rect, d)) { insert(disk, rect); return; }
+      if (dragged) {
+        disk.classList.remove("is-held", "is-dragging");
+        disk.style.left = disk.dataset.originLeft + "px";
+        disk.style.top = disk.dataset.originTop + "px";
+        disk.style.width = disk.dataset.originWidth + "px";
+        disk.style.height = disk.dataset.originHeight + "px";
+        disk.classList.add("is-returning");
+        window.setTimeout(() => disk.classList.remove("is-returning"), 360);
+        return;
+      }
+      disk.classList.remove("is-held", "is-dragging");
+      insert(disk, rect);
+    });
+    disk.addEventListener("pointercancel", () => {
+      if (!disk.classList.contains("is-held")) return;
+      disk.classList.remove("is-held", "is-dragging");
+      artwork?.classList.remove("is-drive-ready");
+      disk.style.left = disk.dataset.originLeft + "px";
+      disk.style.top = disk.dataset.originTop + "px";
+      disk.style.width = disk.dataset.originWidth + "px";
+      disk.style.height = disk.dataset.originHeight + "px";
     });
   });
 })();
