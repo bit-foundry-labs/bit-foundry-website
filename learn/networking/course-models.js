@@ -1,3 +1,4 @@
+window.networkingContentReady.then(() => {
 (() => {
       const input = document.getElementById("destination-ip");
       if (!input) return;
@@ -258,3 +259,4 @@
  submit?.addEventListener("click",()=>{if(submit.disabled)return;const key="bitfoundry-networking-course-v1";let record={lessons:[],labs:[],capstone:false};try{record={...record,...JSON.parse(localStorage.getItem(key)||"{}")};}catch{}record.capstone=true;localStorage.setItem(key,JSON.stringify(record));const value=readCapstone(),journalKey="bitfoundry-networking-journal-v1";let journal={};try{journal=JSON.parse(localStorage.getItem(journalKey)||"{}");}catch{}journal["capstone::incident-handoff"]={lessonId:"capstone",title:"End-to-end debugging capstone",bloom:"CREATE → EVALUATE",tag:"capstone",text:"Symptom: "+value.symptom+"\n\nFirst failing boundary: "+value.boundary+"\n\nEvidence: "+value.evidence+"\n\nNext test: "+value.test,updatedAt:Date.now()};localStorage.setItem(journalKey,JSON.stringify(journal));window.dispatchEvent(new Event("bitfoundry-course-update"));window.dispatchEvent(new Event("bitfoundry-journal-update"));submit.textContent="Capstone recorded ✓";submit.disabled=true;if(projectFeedback)projectFeedback.textContent="Your incident handoff is complete and saved in your learning journal.";});
  render();
 })();
+});
