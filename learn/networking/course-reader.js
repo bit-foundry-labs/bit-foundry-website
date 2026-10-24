@@ -67,9 +67,9 @@ window.networkingContentReady.then(() => {
   saveResume();
   if(journalPanel)journalPanel.hidden=true;
   const chapter=active.id.split("-")[1];
-  kicker.textContent="CHAPTER "+chapter.padStart(2,"0")+" · "+active.id.replace("module-","MODULE ").replace("-",".");
-  label.textContent="PAGE "+(index+1)+" OF 5 · "+names[index];bar.style.width=((index+1)*20)+"%";
-  back.disabled=index===0;next.textContent=index<4?"Next page →":(modules.indexOf(active)<modules.length-1?"Next module →":"Finish lesson");
+  kicker.textContent="NETWORK SYSTEMS LAB · "+active.id.replace("module-","EXPERIMENT ").replace("-",".");
+  label.textContent=index===3?"INTERACTIVE MODEL":"CONTEXT & NOTES";bar.style.width=((index+1)*20)+"%";
+  back.disabled=index===0;back.textContent=index===3?"← Context":"← Previous view";next.textContent=index===3?"Related notes →":"Close experiment";
   page.innerHTML=pages()[index];
   const sectionType=page.querySelector(".section-kicker")?.textContent||"";
   if(index===1&&sectionType.includes("SYSTEM MODEL"))makeTraceExplorer(page);
@@ -161,7 +161,7 @@ window.networkingContentReady.then(() => {
  const pathDetail=document.querySelector("[data-incident-path-detail]"),pathTitle=document.querySelector("[data-incident-path-title]"),pathCopy=document.querySelector("[data-incident-path-copy]"),pathInfo={client:{title:"CLIENT · STARTING THE REQUEST",copy:"Your application decides what it needs: a URL, a method, headers, and a body. Before any network exchange, the client must know the hostname and the service it intends to reach."},name:{title:"DNS / NAME · FINDING THE DESTINATION",copy:"DNS translates a hostname into an IP address. If this step fails, the client has no destination for the connection; checking a resolver response and authoritative records is the useful next move."},transport:{title:"TCP / TLS · OPENING A PROTECTED CONNECTION",copy:"TCP reaches the destination port and provides its delivery service. TLS then authenticates the server and protects the HTTP exchange. A timeout or certificate error belongs here, before the API can respond."},app:{title:"HTTP / API · EXCHANGING APPLICATION MEANING",copy:"HTTP carries the request to the API and returns a response. Status codes, response bodies, authorization, and validation errors are application evidence, because the network path already worked."}};
  document.querySelectorAll("[data-incident-layer]").forEach(button=>button.addEventListener("click",()=>{const item=pathInfo[button.dataset.incidentLayer];if(!item||!pathDetail)return;document.querySelectorAll("[data-incident-layer]").forEach(other=>other.setAttribute("aria-expanded","false"));button.setAttribute("aria-expanded","true");pathTitle.textContent=item.title;pathCopy.textContent=item.copy;pathDetail.hidden=false;}));
  back.addEventListener("click",()=>{if(index>0){index--;render();page.querySelector("#reader-title")?.focus({preventScroll:true});}});
- next.addEventListener("click",()=>{if(index<4){index++;render();page.querySelector("#reader-title")?.focus({preventScroll:true});return;}markLessonComplete(active.id);const following=modules[modules.indexOf(active)+1];if(following){history.pushState({moduleRoute:true,fromCourse:true},"",location.pathname+location.search+"#"+following.id);openModule(following.id);}else leaveLesson();});
+ next.addEventListener("click",()=>{if(index<4){index++;render();page.querySelector("#reader-title")?.focus({preventScroll:true});return;}leaveLesson();});
  close.addEventListener("click",leaveLesson);
  dialog.addEventListener("close",()=>{active=null;if(location.hash.startsWith("#module-")){if(history.state?.fromCourse)history.back();else history.replaceState(null,"",location.pathname+location.search);}});
  const certificateForm=document.getElementById("certificate-form"),certificatePreview=document.getElementById("certificate-preview");
