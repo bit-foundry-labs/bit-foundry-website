@@ -17,12 +17,13 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, lessons, labs, storage, reader] = await Promise.all([
+const [manifest, index, lessons, labs, storage, config, reader] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
   read(resolve(courseRoot, "course-lessons.js")),
   read(resolve(courseRoot, "course-labs.js")),
   read(resolve(courseRoot, "course-storage.js")),
+  read(resolve(courseRoot, "course-config.js")),
   read(resolve(courseRoot, "course-reader.js"))
 ]);
 
@@ -89,6 +90,7 @@ const scriptOrder = [
   "course-lessons.js",
   "course-labs.js",
   "course-storage.js",
+  "course-config.js",
   "course-reader.js"
 ].map((file) => index.indexOf(file));
 
@@ -129,6 +131,17 @@ if (
   fail("reader and browser storage are not separated cleanly.");
 } else {
   pass("reader uses the extracted browser-storage boundary");
+}
+
+if (
+  !/BIT_FOUNDRY_NETWORKING_CONFIG/.test(config) ||
+  !/BIT_FOUNDRY_NETWORKING_CONFIG/.test(reader) ||
+  /const researchSources=/.test(reader) ||
+  /const chapterLabModules=/.test(reader)
+) {
+  fail("reader and curriculum configuration are not separated cleanly.");
+} else {
+  pass("reader uses the extracted curriculum-configuration boundary");
 }
 
 if (!/window\.networkingContentReady\.then/.test(reader)) {
