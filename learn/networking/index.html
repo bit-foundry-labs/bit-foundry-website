@@ -343,7 +343,7 @@ body p, body li, body label, body button, body input, body textarea, body select
     .incident-case .control-button:hover:not(:disabled) { background:#e2ebe0; }
     .incident-feedback { min-height:54px; margin:16px 0 0; padding:13px; border-left:3px solid #a9c4a4; color:#eef4ed; background:#121613; line-height:1.6; }
     .incident-feedback[hidden] { display:none; }
-    .incident-next:disabled { opacity:.45; cursor:not-allowed; }
+    .incident-project{margin-top:18px;padding:18px;border:1px solid #445447;background:#f7f9f4}.incident-project[hidden]{display:none}.incident-project h3{margin:7px 0 5px;font:600 1.2rem/1.2 var(--display)}.incident-project>p{margin:0;color:#435046;line-height:1.55}.incident-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}.incident-project label{display:grid;gap:5px;color:#223027;font:700 .72rem/1.3 var(--mono);letter-spacing:.04em}.incident-project textarea{min-height:92px;padding:9px;border:1px solid #9aa69b;background:#fff;color:#223027;font:400 .9rem/1.5 var(--sans);resize:vertical}.incident-project-feedback{min-height:1.5em!important;margin-top:10px!important;color:#36533b!important;font-weight:600}.incident-next:disabled { opacity:.45; cursor:not-allowed; }
     @media(max-width:640px) { .incident-head { align-items:start; flex-direction:column; } .incident-path { grid-template-columns:repeat(2,minmax(0,1fr)); } .incident-path button:nth-child(2) { border-right:0; } .incident-path button:nth-child(-n+2) { border-bottom:1px solid var(--rule); } .incident-choices { grid-template-columns:1fr; } }
     /* Guided LAN trace: a same-subnet delivery, built for the ARP and switching lesson. */
     .lan-trace { margin-top:1.25rem; border:1px solid rgba(255,255,255,.18); background:#0e120f; color:#f0eee8; }
@@ -669,6 +669,18 @@ body p, body li, body label, body button, body input, body textarea, body select
         <div class="incident-actions"><button class="control-button run-button" type="button" data-incident-check disabled>Check diagnosis</button><button class="control-button incident-next" type="button" data-incident-next hidden>Next case →</button></div>
         <p class="incident-feedback" data-incident-feedback role="status" hidden></p>
       </div>
+      <section class="incident-project" data-incident-project hidden aria-labelledby="incident-project-title">
+        <div class="section-kicker">CAPSTONE HANDOFF · CREATE</div><h3 id="incident-project-title">Write the incident note</h3>
+        <p>Use one of the cases above, or a similar failure you have seen. Write what you know before proposing a fix.</p>
+        <div class="incident-project-grid">
+          <label>Symptom<textarea data-capstone-field="symptom" placeholder="What did the user or system observe?"></textarea></label>
+          <label>First failing boundary<textarea data-capstone-field="boundary" placeholder="Where does the evidence first show a change or failure?"></textarea></label>
+          <label>Evidence<textarea data-capstone-field="evidence" placeholder="Which status, trace, log, or measurement supports that boundary?"></textarea></label>
+          <label>Next test<textarea data-capstone-field="test" placeholder="What smallest test would distinguish the likely causes?"></textarea></label>
+        </div>
+        <button class="control-button run-button" type="button" data-capstone-submit disabled>Record capstone</button>
+        <p class="incident-project-feedback" data-capstone-feedback aria-live="polite"></p>
+      </section>
     </div>
   </section>
   <section class="course-completion" id="course-completion" aria-labelledby="course-completion-title">
@@ -1295,6 +1307,7 @@ body p, body li, body label, body button, body input, body textarea, body select
  window.addEventListener("afterprint",()=>document.body.classList.remove("printing-certificate"));
  updateJournal();
  paintCourseProgress();
+ window.addEventListener("bitfoundry-course-update",paintCourseProgress);
  window.addEventListener("hashchange",routeFromLocation);window.addEventListener("popstate",routeFromLocation);routeFromLocation();
 })();
 </script><script>
@@ -1329,10 +1342,12 @@ body p, body li, body label, body button, body input, body textarea, body select
   {title:"The connection is secure, but the API rejects the request",story:"The TCP connection succeeds and the TLS certificate validates for the API hostname. The server returns HTTP 401, and logs show that the request’s access token expired.",layer:"app",answer:"The access token expired",choices:["Congestion on the network path","An MTU problem prevents all packets arriving","The access token expired","The DNS cache is stale"],why:"TCP and TLS completed, and the server produced an HTTP response. The evidence places the failure at the API’s authentication boundary; refresh or renew the token and verify the server’s authorization logs."}
  ];
  let index=0,selected=-1,checked=false;
- const title=root.querySelector("[data-incident-title]"),story=root.querySelector("[data-incident-story]"),choices=root.querySelector("[data-incident-choices]"),step=root.querySelector("[data-incident-step]"),feedback=root.querySelector("[data-incident-feedback]"),check=root.querySelector("[data-incident-check]"),next=root.querySelector("[data-incident-next]");
+ const title=root.querySelector("[data-incident-title]"),story=root.querySelector("[data-incident-story]"),choices=root.querySelector("[data-incident-choices]"),step=root.querySelector("[data-incident-step]"),feedback=root.querySelector("[data-incident-feedback]"),check=root.querySelector("[data-incident-check]"),next=root.querySelector("[data-incident-next]"),project=document.querySelector("[data-incident-project]"),submit=document.querySelector("[data-capstone-submit]"),projectFeedback=document.querySelector("[data-capstone-feedback]"),fields=[...document.querySelectorAll("[data-capstone-field]")];
  function render(){const item=cases[index];selected=-1;checked=false;step.textContent="CASE "+(index+1)+" OF "+cases.length;title.textContent=item.title;story.textContent=item.story;feedback.hidden=true;check.hidden=false;check.disabled=true;next.hidden=true;choices.replaceChildren();root.closest(".incident-card").querySelectorAll("[data-incident-layer]").forEach(node=>node.classList.toggle("is-fault",node.dataset.incidentLayer===item.layer));item.choices.forEach((choice,i)=>{const b=document.createElement("button");b.type="button";b.className="incident-choice";b.textContent=choice;b.setAttribute("aria-pressed","false");b.addEventListener("click",()=>{if(checked)return;selected=i;choices.querySelectorAll("button").forEach((button,j)=>button.setAttribute("aria-pressed",String(j===i)));check.disabled=false;});choices.append(b);});}
- check.addEventListener("click",()=>{if(selected<0||checked)return;checked=true;const item=cases[index],correct=item.choices[selected]===item.answer;feedback.textContent=(correct?"Good diagnosis. ":"Re-check the boundary. ")+item.why;feedback.hidden=false;check.hidden=true;if(index<cases.length-1)next.hidden=false;else{const record=courseRecord();record.capstone=true;saveCourseRecord(record);feedback.textContent+=" Capstone recorded in your course progress.";next.textContent="Restart capstone ↻";next.hidden=false;}});
+ check.addEventListener("click",()=>{if(selected<0||checked)return;checked=true;const item=cases[index],correct=item.choices[selected]===item.answer;feedback.textContent=(correct?"Good diagnosis. ":"Re-check the boundary. ")+item.why;feedback.hidden=false;check.hidden=true;if(index<cases.length-1)next.hidden=false;else{feedback.textContent+=" Complete the capstone handoff below to record this project.";project.hidden=false;next.textContent="Restart cases ↻";next.hidden=false;project.scrollIntoView({behavior:"smooth",block:"start"});}});
  next.addEventListener("click",()=>{index=index===cases.length-1?0:index+1;render();});
+ const validateProject=()=>{if(submit)submit.disabled=!fields.every(field=>field.value.trim().length>=20);};fields.forEach(field=>field.addEventListener("input",validateProject));
+ submit?.addEventListener("click",()=>{if(submit.disabled)return;const key="bitfoundry-networking-course-v1";let record={lessons:[],labs:[],capstone:false};try{record={...record,...JSON.parse(localStorage.getItem(key)||"{}")};}catch{}record.capstone=true;localStorage.setItem(key,JSON.stringify(record));window.dispatchEvent(new Event("bitfoundry-course-update"));submit.textContent="Capstone recorded ✓";submit.disabled=true;if(projectFeedback)projectFeedback.textContent="Your incident handoff is complete. You can revise it locally before leaving the page.";});
  render();
 })();
 </script></body>
