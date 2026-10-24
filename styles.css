@@ -1098,3 +1098,25 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 
 /* Readable IBM era body type; display headings and monospace interface labels remain unchanged. */
 :root { --sans:"IBM Plex Sans",Arial,sans-serif; }
+
+
+/* Pick up a disk, drag it to the drive, then seat it with a short mechanical animation. */
+.hero-floppy { touch-action:none; user-select:none; -webkit-user-select:none; }
+.hero-floppy.is-held {
+  position:fixed; z-index:1000; margin:0; bottom:auto; left:0; top:0;
+  transform:translate3d(0,0,0) rotate(-4deg) scale(1.12);
+  filter:brightness(1.16);
+  box-shadow:inset 2px 2px #ffffff50,inset -3px -3px #08090c9c,0 18px 32px #0906109c;
+  transition:transform .12s ease,filter .12s ease;
+}
+.hero-floppy.is-held.is-dragging { transition:none; }
+.hero-floppy.is-inserting {
+  position:fixed; z-index:1001; bottom:auto; left:0; top:0;
+  transition:transform .48s cubic-bezier(.22,.75,.24,1),opacity .42s ease;
+  transform:translate(var(--fly-x),var(--fly-y)) rotate(0) scale(.28)!important;
+  opacity:.15;
+}
+.hero-floppy.is-returning { transition:left .34s cubic-bezier(.2,.8,.2,1),top .34s cubic-bezier(.2,.8,.2,1),width .34s ease,height .34s ease,transform .34s ease; }
+.hero-artwork.is-drive-ready .hero-drive-target {
+  background:#c8ff3630; box-shadow:0 0 18px #c8ff3680; border-radius:4px;
+}
