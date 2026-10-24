@@ -306,9 +306,10 @@ body p, body li, body label, body button, body input, body textarea, body select
     .incident-head h2 { margin:8px 0 0; font:600 clamp(1.8rem,4vw,3rem)/1.05 var(--display); text-transform:uppercase; }
     .incident-head p { max-width:460px; margin:0; color:var(--muted); font-size:.92rem; line-height:1.65; }
     .incident-path { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin:22px 0; border:1px solid var(--rule); }
-    .incident-path span { padding:12px 14px; color:var(--muted); font:500 .78rem/1.35 var(--mono); border-right:1px solid var(--rule); }
-    .incident-path span:last-child { border-right:0; }
-    .incident-path span.is-fault { color:var(--ink); background:#789a78; }
+    .incident-path button { min-height:58px; padding:12px 14px; border:0; border-right:1px solid var(--rule); background:transparent; color:var(--muted); text-align:left; font:500 .78rem/1.35 var(--mono); cursor:pointer; transition:background .16s ease,color .16s ease; }
+    .incident-path button:last-child { border-right:0; }
+    .incident-path button:hover,.incident-path button:focus-visible { background:#e7efe6; color:var(--ink); outline:2px solid #789a78; outline-offset:-2px; }
+    .incident-path button.is-fault { color:var(--ink); background:#789a78; }
     .incident-case { padding:20px; border:1px solid #445447; background:#0b0e0c; color:#f4f6f1; }
     .incident-case-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .incident-case .section-kicker { color:#b8c5b5; }
@@ -641,7 +642,7 @@ body p, body li, body label, body button, body input, body textarea, body select
     <div class="section-kicker">OPTIONAL CAPSTONE · APPLY THE WHOLE MODEL</div>
     <div class="incident-card">
       <div class="incident-head"><div><div class="section-kicker">DEBUG A REQUEST</div><h2 id="incident-title">Find where the request breaks</h2></div><p>Use the evidence to locate the first failing boundary, then choose a testable cause. This short practice lab is optional and does not change certificate requirements.</p></div>
-      <div class="incident-path" aria-label="Simplified request path"><span data-incident-layer="client">CLIENT</span><span data-incident-layer="name">DNS / NAME</span><span data-incident-layer="transport">TCP / TLS</span><span data-incident-layer="app">HTTP / API</span></div>
+      <div class="incident-path" aria-label="Simplified request path"><button type="button" data-incident-layer="client" data-course-chapter="1" aria-label="Open Module 1: Computer Networks and the Internet">CLIENT</button><button type="button" data-incident-layer="name" data-course-chapter="2" aria-label="Open Module 2: Application Layer">DNS / NAME</button><button type="button" data-incident-layer="transport" data-course-chapter="3" aria-label="Open Module 3: Transport Layer">TCP / TLS</button><button type="button" data-incident-layer="app" data-course-chapter="2" aria-label="Open Module 2: Application Layer">HTTP / API</button></div>
       <div class="incident-case" data-incident-case>
         <div class="incident-case-top"><span class="incident-step" data-incident-step>CASE 1 OF 3</span><span class="section-kicker">READ THE EVIDENCE</span></div>
         <h3 data-incident-title></h3><p class="incident-story" data-incident-story></p>
@@ -1194,6 +1195,7 @@ body p, body li, body label, body button, body input, body textarea, body select
  function leaveLesson(){if(history.state?.fromCourse){history.back();return;}history.replaceState(null,"",location.pathname+location.search);if(dialog.open)dialog.close();active=null;}
  document.querySelectorAll("[data-module-open]").forEach(button=>button.addEventListener("click",()=>openFromCourse(button.dataset.moduleOpen)));
  document.querySelectorAll(".chapter-card-toggle").forEach(toggle=>toggle.addEventListener("click",()=>{const shouldOpen=toggle.getAttribute("aria-expanded")!=="true";document.querySelectorAll(".chapter-card-toggle").forEach(other=>{other.setAttribute("aria-expanded","false");const panel=document.getElementById(other.getAttribute("aria-controls"));if(panel)panel.hidden=true;const icon=other.querySelector(".chapter-card-chevron");if(icon)icon.textContent="＋";});if(shouldOpen){toggle.setAttribute("aria-expanded","true");const panel=document.getElementById(toggle.getAttribute("aria-controls"));if(panel)panel.hidden=false;const icon=toggle.querySelector(".chapter-card-chevron");if(icon)icon.textContent="−";}}));
+ document.querySelectorAll("[data-course-chapter]").forEach(button=>button.addEventListener("click",()=>{const chapter=button.dataset.courseChapter,target=document.querySelector('.chapter-card-toggle[aria-controls="chapter-modules-'+chapter+'"]');if(!target)return;if(target.getAttribute("aria-expanded")!=="true")target.click();target.closest(".chapter-card")?.scrollIntoView({behavior:"smooth",block:"center"});target.focus({preventScroll:true});}));
  back.addEventListener("click",()=>{if(index>0){index--;render();page.querySelector("#reader-title")?.focus({preventScroll:true});}});
  next.addEventListener("click",()=>{if(index<4){index++;render();page.querySelector("#reader-title")?.focus({preventScroll:true});return;}markLessonComplete(active.id);const following=modules[modules.indexOf(active)+1];if(following){history.pushState({moduleRoute:true,fromCourse:true},"",location.pathname+location.search+"#"+following.id);openModule(following.id);}else leaveLesson();});
  close.addEventListener("click",leaveLesson);
