@@ -321,7 +321,22 @@ body p, body li, body label, body button, body input, body textarea, body select
     .incident-feedback[hidden] { display:none; }
     .incident-next:disabled { opacity:.45; cursor:not-allowed; }
     @media(max-width:640px) { .incident-head { align-items:start; flex-direction:column; } .incident-path { grid-template-columns:repeat(2,minmax(0,1fr)); } .incident-path span:nth-child(2) { border-right:0; } .incident-path span:nth-child(-n+2) { border-bottom:1px solid var(--rule); } .incident-choices { grid-template-columns:1fr; } }
-</style>
+
+    /* OSI color map: each layer keeps its own signal color across the stack. */
+    .osi-layer{--osi-color:#e97835;--osi-tint:rgba(233,120,53,.10);border-left:4px solid var(--osi-color)}
+    .osi-layer[data-osi-layer="7"]{--osi-color:#ef71b5;--osi-tint:rgba(239,113,181,.12)}
+    .osi-layer[data-osi-layer="6"]{--osi-color:#ac94ff;--osi-tint:rgba(172,148,255,.12)}
+    .osi-layer[data-osi-layer="5"]{--osi-color:#61c9ff;--osi-tint:rgba(97,201,255,.12)}
+    .osi-layer[data-osi-layer="4"]{--osi-color:#ff9b52;--osi-tint:rgba(255,155,82,.12)}
+    .osi-layer[data-osi-layer="3"]{--osi-color:#f1cf5d;--osi-tint:rgba(241,207,93,.12)}
+    .osi-layer[data-osi-layer="2"]{--osi-color:#50d4b3;--osi-tint:rgba(80,212,179,.12)}
+    .osi-layer[data-osi-layer="1"]{--osi-color:#9ed66a;--osi-tint:rgba(158,214,106,.12)}
+    .osi-layer:hover,.osi-layer.is-active{border-color:var(--osi-color);background:var(--osi-tint)}
+    .osi-layer.is-active{box-shadow:inset 3px 0 var(--osi-color)}
+    .osi-number,.osi-pdu{color:var(--osi-color)}
+    @media(max-width:560px){.osi-layer{border-left-width:3px}}
+
+  </style>
 </head>
 <body class="learn-page">
   <header class="site-header">
