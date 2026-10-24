@@ -1,0 +1,31 @@
+<section class="chapter-one chapter-outline" aria-labelledby="chapter-three-title" id="chapter-three">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 03 · LESSON</div><h2 id="chapter-three-title">Transport: delivery between processes</h2></div><p>Transport uses ports to deliver data to the right process. TCP adds reliability, flow control, and congestion control; UDP keeps the service lightweight.</p></div>
+      <div class="concept-grid">
+        <article class="concept" id="module-3-1"><div class="section-kicker">3.1–3.2 · SERVICE</div><h3>Ports sort the traffic</h3><p>Multiplexing gathers data from application sockets. Demultiplexing uses port numbers to pass each segment to the correct process.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-3-1">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>Transport multiplexes data from application sockets and demultiplexes segments to the right process. Port numbers identify endpoints; TCP also uses connection state, while UDP uses a simpler endpoint mapping.</p><p><strong>In practice:</strong> A laptop can run a browser, call, and DNS client at once because the OS separates their traffic.</p></div></div></article>
+        <article class="concept" id="module-3-2"><div class="section-kicker">3.3 · UDP</div><h3>Connectionless transport</h3><p>UDP sends independent segments without a handshake or built-in retransmission. Its checksum helps detect errors in a segment.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-3-2">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>UDP provides ports and a checksum without a handshake, retransmission, or built-in congestion control. It fits applications that need low overhead and can manage timing or loss themselves.</p><p><strong>In practice:</strong> A real-time app may skip a late audio packet instead of retransmitting it after it is no longer useful.</p></div></div></article>
+        <article class="concept" id="module-3-3"><div class="section-kicker">3.4–3.5 · RELIABILITY</div><h3>TCP repairs loss</h3><p>Sequence numbers, acknowledgments, timers, and retransmissions let TCP provide reliable, in-order delivery over IP.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-3-3">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>Reliable transfer uses sequence numbers, acknowledgments, checksums, and timers to detect loss and restore in-order delivery. Go-Back-N repeats a missing packet and later unacknowledged packets; Selective Repeat repeats only missing packets and buffers later arrivals.</p><p><strong>In practice:</strong> A sending window keeps multiple packets in flight while tracking what the receiver confirmed.</p></div></div></article>
+        <article class="concept" id="module-3-4"><div class="section-kicker">3.5–3.7 · CONTROL</div><h3>Two different limits</h3><p>Flow control keeps a fast sender from overwhelming the receiver. Congestion control responds to load inside the network.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-3-4">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>Flow control protects a receiver’s buffer; congestion control responds to load inside the network. TCP estimates round-trip time for timeouts and adjusts its sending rate when it detects congestion.</p><p><strong>In practice:</strong> A sender may be limited by a slow receiver, a congested path, or both; these controls solve different problems.</p></div></div></article>
+      </div>
+      <p class="course-path"><strong>Reliable transfer:</strong> Go-Back-N retransmits the missing packet and later unacknowledged packets. Selective Repeat retransmits only missing packets and buffers out-of-order arrivals.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">SLOW INTERACTIVE SIMULATION</div><h2>Recover from packet loss</h2></div><span class="lesson-index">CHAPTER 3</span></div>
+        <section class="lesson-card">
+          <div class="transport-controls">
+            <label for="transport-mode">Reliable transfer protocol
+              <select id="transport-mode"><option value="gbn">Go-Back-N</option><option value="sr">Selective Repeat</option></select>
+            </label>
+            <label for="transport-loss">Packet lost on first send
+              <select id="transport-loss"><option value="1">Packet 1</option><option value="2" selected>Packet 2</option><option value="3">Packet 3</option></select>
+            </label>
+          </div>
+          <div class="lesson-controls">
+            <span class="controls-label">Advance one network event at a time, or run slowly.</span>
+            <button class="control-button" id="transport-step">Step</button>
+            <button class="control-button run-button" id="transport-run">Run slowly</button>
+            <button class="control-button" id="transport-reset">Reset</button>
+          </div>
+          <div class="transport-topline"><span class="section-kicker" id="transport-protocol-label">GO-BACK-N · WINDOW 4</span><span class="transport-status" id="transport-status" aria-live="polite">Ready · 4 packets in the send window</span></div>
+          <ol class="transport-log" id="transport-log" aria-live="polite" aria-label="Packet transfer event log"></ol>
+          <p class="transport-concept" id="transport-explanation">Go-Back-N discards packets received beyond a gap. A timeout makes the sender repeat every unacknowledged packet in its window.</p>
+          <div class="page-note"><span>Four packets are sent in one window; the selected packet is lost once.</span><span>Event pacing: one step, or one event every 900 ms.</span></div>
+        </section>
