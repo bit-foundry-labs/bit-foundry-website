@@ -1,0 +1,35 @@
+<section class="chapter-one chapter-outline" aria-labelledby="chapter-two-title" id="chapter-two">
+      <div class="chapter-one-head"><div><div class="section-kicker">CHAPTER 02 · LESSON</div><h2 id="chapter-two-title">Applications at the edge</h2></div><p>Applications define the messages exchanged by processes. Transport carries those messages between hosts.</p></div>
+      <div class="concept-grid">
+        <article class="concept" id="module-2-1"><div class="section-kicker">2.1 · ARCHITECTURE</div><h3>Processes communicate</h3><p>Client-server applications contact always-on servers. Peer-to-peer applications let hosts act as both clients and servers. Sockets connect an application process to transport.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-2-1">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>Application architecture describes which processes communicate and where they run. Client-server systems use an often-available server; peer-to-peer systems let hosts request and provide service. A socket connects an app to transport.</p><p><strong>In practice:</strong> A mobile app opens a socket to an API; a file-sharing app can connect to several peers.</p></div></div></article>
+        <article class="concept" id="module-2-2"><div class="section-kicker">2.2 · THE WEB</div><h3>HTTP is request–response</h3><p>A browser sends an HTTP request; a server returns a response. HTTP is stateless, while cookies and server-side state can support sessions.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-2-2">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>HTTP is request-response: a client asks for a resource and a server returns a status, headers, and possibly a body. Persistent connections reuse TCP; caches avoid round trips; cookies carry state.</p><p><strong>In practice:</strong> A browser can reuse one connection for several assets and load a repeat image from cache.</p></div></div></article>
+        <article class="concept" id="module-2-3"><div class="section-kicker">2.3–2.4 · MAIL AND DNS</div><h3>Email is a journey across systems</h3><p>DNS MX records locate receiving mail servers; SMTP relays and queues messages; IMAP or POP3 gives recipients mailbox access.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-2-3">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>Email uses DNS for destination discovery and SMTP for submission and server-to-server relay. Receiving servers can accept messages into durable queues; mailbox access happens afterward through a separate service.</p><p><strong>In practice:</strong> Inspect MX records, SMTP response codes, queue age, and mailbox filtering as separate checkpoints.</p></div></div></article>
+        <article class="concept" id="module-2-4"><div class="section-kicker">2.5–2.7 · DISTRIBUTION</div><h3>Scale the content</h3><p>Peer-to-peer systems distribute work across hosts. Video services use HTTP streaming and CDNs to place content closer to viewers. Applications use UDP or TCP sockets.</p><div class="module-deep-dive"><button class="module-launch" type="button" data-module-open="module-2-4">OPEN FULL LESSON <span aria-hidden="true">↗</span></button><div class="module-body" hidden><p>DNS is a distributed directory mapping names to records. Peer-to-peer apps distribute work among hosts; video services use adaptive HTTP streaming and CDNs to put content near viewers.</p><p><strong>In practice:</strong> DNS resolves a site’s name, then a CDN can direct the browser to a nearby cache.</p></div></div></article>
+      </div>
+      <p class="course-path"><strong>Connection to Chapter 3:</strong> HTTP, email, and streaming define application messages; transport protocols determine how those messages move between processes.</p>
+      <div class="lesson-main" style="padding:36px 0 0">
+        <div class="lesson-intro"><div><div class="section-kicker">INTERACTIVE SIMULATION</div><h2>Compare HTTP connection costs</h2></div><span class="lesson-index">CHAPTER 2</span></div>
+        <section class="lesson-card">
+          <div class="delay-lab">
+            <div class="slider-list">
+              <div class="slider-row"><label for="http-rtt">Round-trip time (RTT)</label><output id="http-rtt-value" for="http-rtt">80 ms</output><input id="http-rtt" type="range" min="10" max="300" step="1" value="80"></div>
+              <div class="slider-row"><label for="http-objects">Objects in the page</label><output id="http-objects-value" for="http-objects">5 objects</output><input id="http-objects" type="range" min="0" max="20" step="1" value="5"></div>
+              <fieldset class="http-mode-options">
+                <legend>Connection method</legend>
+                <label><input type="radio" name="http-mode" value="nonpersistent" checked> Non-persistent</label>
+                <label><input type="radio" name="http-mode" value="persistent"> Persistent</label>
+                <label><input type="radio" name="http-mode" value="pipelined"> Persistent + pipelined</label>
+              </fieldset>
+            </div>
+            <div class="delay-result" aria-live="polite">
+              <div class="section-kicker">ESTIMATED ROUND TRIPS</div>
+              <div class="http-compare">
+                <div class="http-row" data-http-row="nonpersistent"><div class="http-row-head"><strong>Non-persistent</strong><output id="http-nonpersistent"></output></div><div class="http-bar" id="http-bar-nonpersistent"></div></div>
+                <div class="http-row" data-http-row="persistent"><div class="http-row-head"><strong>Persistent</strong><output id="http-persistent"></output></div><div class="http-bar" id="http-bar-persistent"></div></div>
+                <div class="http-row" data-http-row="pipelined"><div class="http-row-head"><strong>Persistent + pipelined</strong><output id="http-pipelined"></output></div><div class="http-bar" id="http-bar-pipelined"></div></div>
+              </div>
+              <p class="http-note" id="http-explanation">Each additional non-persistent object needs a new TCP connection and a request/response round trip.</p>
+            </div>
+          </div>
+          <div class="page-note"><span>Model: one base HTML file plus the selected number of embedded objects.</span><span>Ignores transmission time, server processing, caching, and parallel connections.</span></div>
+        </section>
