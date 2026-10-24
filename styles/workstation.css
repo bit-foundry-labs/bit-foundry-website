@@ -1,0 +1,413 @@
+/* Restore the complete CSS-built workstation geometry */
+.retro-room { position:relative; isolation:isolate; overflow:visible; }
+.room-glow { position:absolute; z-index:0; pointer-events:none; }
+.desk-surface { position:absolute; z-index:0; }
+.crt-computer { position:absolute; z-index:2; left:15%; top:5%; width:70%; height:76%; }
+.crt-shell { position:absolute; inset:0 0 16%; display:flex; flex-direction:column; padding:5.5% 5.5% 0; }
+.crt-bezel { position:relative; flex:1 1 auto; min-height:0; padding:5.5%; }
+.crt-glass { position:relative; width:100%; height:100%; overflow:hidden; }
+.crt-glass::after { content:""; position:absolute; inset:0; z-index:2; pointer-events:none; }
+.retro-room .matrix-rain { position:absolute; inset:0; z-index:1; overflow:hidden; }
+.retro-room .matrix-stream { top:-100%; height:200%; }
+.crt-glass-glint { position:absolute; inset:0; z-index:3; pointer-events:none; }
+.crt-controls { height:13%; flex:0 0 13%; display:flex; justify-content:flex-end; align-items:center; gap:3%; padding:0 3%; }
+.crt-controls i { display:block; width:4%; aspect-ratio:1; border-radius:50%; }
+.crt-neck { position:absolute; left:36%; bottom:8%; width:28%; height:12%; z-index:-1; }
+.crt-foot { position:absolute; left:27%; bottom:4%; width:46%; height:6%; z-index:-1; }
+.retro-keyboard { position:absolute; z-index:4; left:28%; bottom:11%; width:46%; height:14%; padding:2.2% 3%; display:flex; flex-direction:column; justify-content:space-between; transform:perspective(500px) rotateX(12deg); }
+.key-row { flex:1; display:flex; align-items:center; gap:1.8%; }
+.key-row i { flex:1; height:68%; display:block; }
+.key-row:nth-child(2) { padding:0 3%; }
+.key-row:nth-child(3) { padding:0 10%; }
+.floppy { position:absolute; z-index:5; width:13%; height:22%; }
+.floppy-one { left:7%; bottom:14%; transform:rotate(-9deg); }
+.floppy-two { right:7%; bottom:13%; transform:rotate(8deg); }
+.floppy-shutter { position:absolute; top:0; right:8%; width:47%; height:20%; }
+.floppy-label { position:absolute; left:13%; right:13%; top:31%; height:43%; }
+.floppy-label::before,.floppy-label::after { content:""; position:absolute; left:12%; right:12%; height:1px; }
+.floppy-label::before { top:32%; }.floppy-label::after { top:52%; }
+.floppy-hub { position:absolute; left:39%; bottom:8%; width:22%; aspect-ratio:1; border:1px solid; border-radius:50%; }
+.joystick { position:absolute; z-index:5; right:17%; bottom:7%; width:14%; height:28%; }
+.joystick-base { position:absolute; bottom:0; left:0; width:100%; height:25%; display:flex; align-items:center; justify-content:space-evenly; }
+.joystick-base i { width:18%; height:28%; border-radius:50%; }
+.joystick-stick { position:absolute; left:48%; bottom:20%; width:7%; height:62%; transform:rotate(7deg); transform-origin:bottom; }
+.joystick-ball { position:absolute; left:28%; top:0; width:46%; aspect-ratio:1; border-radius:50%; }
+.hero h1 { max-width:12ch; font-size:clamp(3.45rem,6vw,5.65rem); }
+@media (max-width:760px) {
+  .hero h1 { max-width:12ch; font-size:clamp(3.15rem,9vw,4.6rem); }
+}
+@media (max-width:560px) {
+  .crt-computer { left:13%; width:74%; }
+  .retro-keyboard { left:25%; width:50%; }
+  .floppy { width:14%; }
+}
+
+/* Keep the original four-line hero copy from wrapping into an accidental stack */
+.hero h1 { max-width:16ch; font-size:clamp(3.35rem,5.25vw,4.65rem); }
+@media (max-width:760px) { .hero h1 { max-width:14ch; font-size:clamp(3rem,9vw,4.35rem); } }
+@media (max-width:560px) { .hero h1 { max-width:13ch; font-size:clamp(2.7rem,11vw,3.75rem); } }
+
+
+/* Give the CRT casing more volume and a few recognizable hardware cues */
+.crt-shell {
+  border:2px solid #77776f;
+  border-radius:9% 9% 6% 6%;
+  background:
+    linear-gradient(112deg,#f1f0e8 0%,#ddddD5 19%,#c4c4bb 57%,#a5a59d 100%);
+  box-shadow:
+    inset 2px 2px 0 #fff,
+    inset 5px 5px 12px #ffffff60,
+    inset -5px -7px 12px #66665f55,
+    0 8px 0 #77776f,
+    0 18px 24px #0002;
+}
+.crt-shell::before {
+  content:"";
+  position:absolute;
+  left:9%;
+  bottom:5%;
+  width:10%;
+  height:2.4%;
+  background:repeating-linear-gradient(90deg,#66665e 0 1px,transparent 1px 3px);
+  opacity:.8;
+}
+.crt-shell::after {
+  content:"";
+  position:absolute;
+  left:27%;
+  bottom:5.5%;
+  width:14%;
+  height:2.3%;
+  border:1px solid #77776f;
+  background:linear-gradient(#aaa9a0,#d7d6ce);
+  box-shadow:inset 0 1px #fff;
+}
+.crt-bezel {
+  border:2px solid #42433e;
+  border-radius:13% 13% 11% 11%;
+  background:linear-gradient(145deg,#9b9b92 0%,#6b6c64 31%,#53544d 78%,#818179 100%);
+  box-shadow:inset 2px 2px 0 #ffffff45,inset -3px -4px 4px #2228,0 1px 2px #1118;
+}
+.crt-glass {
+  border:2px solid #111;
+  border-radius:47% / 13%;
+  background:radial-gradient(ellipse at 50% 42%,#071508 0%,#020702 68%,#000 100%);
+  box-shadow:inset 0 0 28px #74ff5d35,inset 0 0 5px #b4ffa980,0 0 0 1px #252922;
+}
+.crt-glass::after {
+  background:
+    linear-gradient(118deg,#ffffff1c 0%,transparent 17%,transparent 74%,#ffffff0b 100%),
+    repeating-linear-gradient(0deg,transparent 0 3px,#9cff570c 4px);
+}
+.crt-controls i:first-child {
+  background:radial-gradient(circle at 36% 30%,#caffb8,#55bc48 55%,#245d2c 100%);
+  box-shadow:0 0 0 2px #f4f4f0,0 0 0 3px #181818,0 0 8px #52d84a8c;
+}
+.crt-controls i:nth-child(2),.crt-controls i:nth-child(3) {
+  background:radial-gradient(circle at 32% 26%,#fff,#a6a69d 62%,#696a62 100%);
+  box-shadow:inset 0 0 0 1px #fff8,0 1px 1px #555;
+}
+@media (max-width:560px) {
+  .crt-shell { border-radius:9% 9% 6% 6%; }
+  .crt-shell::before,.crt-shell::after { opacity:.72; }
+}
+
+
+/* Neon room palette and a separate vintage desktop chassis */
+.hero {
+  background:linear-gradient(112deg,#ff8058 0%,#fa3d69 36%,#d81891 62%,#552194 100%);
+}
+.hero::before {
+  opacity:.075;
+  background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:linear-gradient(105deg,#000 0%,transparent 80%);
+}
+.hero-lede { color:#261216; }
+.hero .text-link { color:#211016; }
+.crt-computer { width:76%; left:12%; height:82%; }
+.crt-shell {
+  inset:0 0 26%;
+  z-index:2;
+  border-color:#785f51;
+  border-radius:9% 9% 5% 5%;
+  background:linear-gradient(112deg,#fff0dc 0%,#e7cdb6 24%,#d1b29a 68%,#a98873 100%);
+  box-shadow:inset 2px 2px 0 #fff9e9,inset 5px 5px 12px #ffffff70,inset -5px -7px 12px #735a4c66,0 8px 0 #8c6d5a,0 16px 22px #30112544;
+}
+.crt-shell::before { background:repeating-linear-gradient(90deg,#765d4e 0 1px,transparent 1px 3px); }
+.crt-shell::after { border-color:#896a58; background:linear-gradient(#c3a28b,#f1d9c4); }
+.crt-bezel {
+  border-color:#604c40;
+  background:linear-gradient(145deg,#a98c77 0%,#7b6354 34%,#5a483e 78%,#947965 100%);
+  box-shadow:inset 2px 2px 0 #fff3,inset -3px -4px 4px #271d1a77,0 1px 2px #21171688;
+}
+.crt-glass {
+  border-color:#2a2119;
+  background:radial-gradient(ellipse at 50% 42%,#071508 0%,#020702 68%,#000 100%);
+}
+.crt-neck { display:none; }
+.crt-foot {
+  z-index:1;
+  left:2%;
+  bottom:0;
+  width:96%;
+  height:28%;
+  border:1px solid #775e50;
+  border-radius:2px 2px 5px 5px;
+  background:linear-gradient(105deg,#f0d7c1 0%,#d5b59d 45%,#bd9b83 100%);
+  box-shadow:inset 2px 2px #fff8e480,inset -3px -4px #795e4d55,0 9px 12px #30112544;
+}
+.crt-foot::before {
+  content:"";
+  position:absolute;
+  left:8%;
+  top:20%;
+  width:24%;
+  height:60%;
+  border:1px solid #987865;
+  background:repeating-linear-gradient(90deg,#75594b 0 1px,transparent 1px 4px);
+}
+.crt-foot::after {
+  content:"";
+  position:absolute;
+  right:8%;
+  top:21%;
+  width:34%;
+  height:22%;
+  border:1px solid #8c6d5a;
+  background:linear-gradient(#9b7965,#c6a38b);
+  box-shadow:0 28px 0 -1px #c7a58e,0 28px 0 0 #8c6d5a;
+}
+.retro-keyboard {
+  background:linear-gradient(145deg,#f4ddc7,#d5b69d 70%,#b18e79);
+  border-color:#765d4e;
+  box-shadow:inset 2px 2px #fff9eb,2px 4px 0 #795d4d;
+}
+.key-row i { background:linear-gradient(145deg,#6b5447,#3d312b); border-color:#866b5c; }
+.desk-surface {
+  background:linear-gradient(180deg,#f56755,#c64b58 42%,#7e316f);
+  border-color:#261a2e;
+}
+.room-glow { background:radial-gradient(ellipse,#ffcc4366 0,#fa327044 34%,transparent 70%); }
+@media (max-width:760px) {
+  .hero { background:linear-gradient(150deg,#ff8058 0%,#fa3d69 38%,#d81891 72%,#552194 100%); }
+  .crt-computer { width:82%; left:9%; height:82%; }
+  .crt-foot { height:28%; }
+}
+@media (max-width:560px) {
+  .hero { background:linear-gradient(155deg,#ff8058 0%,#fa3d69 39%,#d81891 76%,#552194 100%); }
+  .crt-computer { width:84%; left:8%; height:82%; }
+}
+
+
+/* Use the photographic workstation as the hero artwork */
+.hero { position:relative; isolation:isolate; overflow:hidden; }
+.hero::before { display:none; }
+.hero-copy { z-index:2; }
+.hero-photo {
+  position:absolute; z-index:0; inset:0;
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  pointer-events:none;
+}
+@media (max-width:760px) {
+  .hero-photo {
+    position:relative; inset:auto; z-index:0; grid-column:1;
+    width:100%; height:auto; aspect-ratio:3 / 2; object-fit:contain;
+    margin:8px auto 0;
+  }
+}
+
+
+/* Clickable floppy disk archive */
+.disk-shelf {
+  padding:clamp(38px,5vw,68px) clamp(22px,6vw,92px) clamp(48px,6vw,84px);
+  color:var(--ink); background:var(--paper); border-bottom:1px solid var(--ink);
+}
+.disk-shelf-heading { max-width:1420px; margin:0 auto 26px; }
+.disk-kicker { margin:0 0 10px; font:600 .67rem/1.3 var(--mono); letter-spacing:.11em; }
+.disk-shelf-heading h2 { max-width:24ch; margin:0; font-size:clamp(1.6rem,3.2vw,2.5rem); line-height:1.06; }
+.disk-grid { max-width:1420px; margin:0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.disk-card {
+  min-width:0; padding:14px; display:grid; grid-template-columns:minmax(96px,.72fr) minmax(0,1fr);
+  gap:16px; align-items:center; border:1px solid var(--ink); background:#fff; color:var(--ink); text-decoration:none;
+  transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.disk-card:hover { transform:translateY(-4px); box-shadow:5px 5px 0 var(--ink); background:#f4f4f0; }
+.disk-card:focus-visible { outline:3px solid #f06b39; outline-offset:4px; }
+.disk-art {
+  position:relative; display:block; width:100%; aspect-ratio:1; overflow:hidden; background:#242424;
+  border:2px solid #111; box-shadow:inset 2px 2px #ffffff20,inset -3px -3px #0008;
+}
+.disk-card--amber .disk-art { background:linear-gradient(145deg,#b74d22,#562316 68%,#2b1712); }
+.disk-card--violet .disk-art { background:linear-gradient(145deg,#593b7e,#30223f 68%,#1c1824); }
+.disk-card--green .disk-art { background:linear-gradient(145deg,#3c6540,#243728 68%,#171f1a); }
+.disk-shutter { position:absolute; top:0; right:8%; width:46%; height:20%; display:block; border:1px solid #111; background:linear-gradient(#e4e4df,#8c8c85); }
+.disk-shutter::after { content:""; position:absolute; left:18%; bottom:0; width:64%; height:25%; background:#343432; }
+.disk-label {
+  position:absolute; left:12%; right:12%; top:30%; height:48%; padding:9% 8%;
+  display:flex; flex-direction:column; justify-content:space-between; border:1px solid #171717; background:#f4f0df;
+  color:#171717; font-style:normal; box-shadow:inset 1px 1px #fff;
+}
+.disk-label b { font:700 clamp(.42rem,.65vw,.62rem)/1.2 var(--mono); letter-spacing:.04em; }
+.disk-label small { font:600 clamp(.42rem,.66vw,.62rem)/1.2 var(--mono); }
+.disk-label em { font:500 clamp(.36rem,.52vw,.48rem)/1 var(--mono); font-style:normal; color:#555; }
+.disk-hub { position:absolute; bottom:5%; left:41%; width:18%; aspect-ratio:1; border:1px solid #bbb; border-radius:50%; background:radial-gradient(circle,#1b1b1b 0 26%,#b9b9b0 30% 54%,#3b3b39 58%); }
+.disk-card-copy { min-width:0; display:flex; flex-direction:column; gap:8px; }
+.disk-card-copy strong { font-size:1rem; line-height:1.15; }
+.disk-card-copy small { color:#555; font-size:.82rem; line-height:1.4; }
+.disk-enter { display:flex; justify-content:space-between; align-items:center; margin-top:5px; padding-top:9px; border-top:1px solid #aaa; font:600 .6rem/1 var(--mono); letter-spacing:.06em; }
+.disk-enter b { font-size:.85rem; transition:transform .15s ease; }
+.disk-card:hover .disk-enter b { transform:translate(2px,-2px); }
+@media(max-width:1000px) { .disk-grid { grid-template-columns:1fr; max-width:720px; } .disk-card { grid-template-columns:110px 1fr; } }
+@media(max-width:560px) { .disk-shelf { padding:38px 18px 48px; } .disk-grid { gap:11px; } .disk-card { grid-template-columns:86px minmax(0,1fr); gap:13px; padding:10px; } .disk-card-copy strong { font-size:.91rem; } .disk-card-copy small { font-size:.75rem; } .disk-label { padding:6%; } }
+
+
+/* Smaller, interactive workstation with live CRT rain and insertable disks */
+.hero {
+  min-height:min(700px,calc(100svh - 66px));
+  background:linear-gradient(112deg,#ff8058 0%,#fa3d69 36%,#d81891 62%,#552194 100%);
+}
+.hero-copy { position:relative; z-index:3; }
+.hero-artwork {
+  position:absolute; z-index:1; top:50%; right:0; width:min(76%,980px);
+  aspect-ratio:3/2; transform:translateY(-50%); overflow:visible;
+}
+.hero-photo {
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 100%),linear-gradient(0deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 100%),linear-gradient(0deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  mask-composite:intersect;
+}
+.hero-rain-screen {
+  position:absolute; z-index:2; left:47.5%; top:14.4%; width:25.7%; height:34%;
+  overflow:hidden; border-radius:8% / 9%; background:rgba(0,6,1,.5);
+  box-shadow:inset 0 0 18px #55ff592c,0 0 12px #42ff4720; pointer-events:none;
+}
+.hero-rain-screen canvas { display:block; width:100%; height:100%; opacity:.92; }
+.hero-drive-target {
+  position:absolute; z-index:2; left:62%; top:63%; width:25%; height:13%;
+  pointer-events:none;
+}
+.hero-floppy-stack {
+  position:absolute; z-index:5; left:70%; bottom:0; width:27%; height:20%;
+}
+.hero-floppy {
+  position:absolute; display:block; width:43%; aspect-ratio:1; bottom:0;
+  border:1px solid #090a0c; border-radius:3px; color:#111; text-decoration:none;
+  background:linear-gradient(145deg,#505158 0%,#26272c 54%,#111216 100%);
+  box-shadow:inset 2px 2px #ffffff35,inset -3px -3px #08090c9c,0 7px 9px #09061080;
+  transform-origin:center; transition:transform .18s ease,filter .18s ease;
+  cursor:pointer; outline-offset:4px;
+}
+.hero-floppy::before {
+  content:""; position:absolute; left:6%; top:6%; width:88%; height:88%;
+  border:1px solid #ffffff1a; border-radius:2px; pointer-events:none;
+}
+.hero-floppy:hover,.hero-floppy:focus-visible { filter:brightness(1.16); z-index:8; }
+.hero-floppy--internet { left:0; bottom:0; transform:rotate(-12deg); }
+.hero-floppy--gaming { left:28%; bottom:5%; transform:rotate(-2deg); }
+.hero-floppy--trail { left:56%; bottom:9%; transform:rotate(9deg); }
+.hero-floppy--internet:hover,.hero-floppy--internet:focus-visible { transform:translateY(-10px) rotate(-12deg); }
+.hero-floppy--gaming:hover,.hero-floppy--gaming:focus-visible { transform:translateY(-10px) rotate(-2deg); }
+.hero-floppy--trail:hover,.hero-floppy--trail:focus-visible { transform:translateY(-10px) rotate(9deg); }
+.hero-floppy-shutter {
+  position:absolute; top:0; right:8%; width:45%; height:19%; border:1px solid #111;
+  background:linear-gradient(#e3e3df,#92938d);
+}
+.hero-floppy-shutter::after { content:""; position:absolute; left:18%; bottom:0; width:64%; height:25%; background:#343532; }
+.hero-floppy-label {
+  position:absolute; left:12%; right:12%; top:28%; height:49%; padding:7%;
+  display:flex; flex-direction:column; justify-content:space-between; border:1px solid #aaa99f;
+  background:#eee9d9; box-shadow:inset 1px 1px #fff; font-style:normal;
+}
+.hero-floppy-label b,.hero-floppy-label small,.hero-floppy-label em {
+  display:block; font-family:var(--mono); font-style:normal; line-height:1.1; color:#20201e;
+}
+.hero-floppy-label b { font-size:clamp(5px,.55vw,8px); letter-spacing:.04em; }
+.hero-floppy-label small { font-size:clamp(4px,.46vw,6px); }
+.hero-floppy-label em { font-size:clamp(4px,.4vw,5px); color:#666; }
+.hero-floppy-hub {
+  position:absolute; bottom:5%; left:41%; width:18%; aspect-ratio:1; border:1px solid #aaa; border-radius:50%;
+  background:radial-gradient(circle,#161719 0 27%,#c5c3b9 30% 55%,#3a3b3c 59%);
+}
+.hero-floppy.is-inserting {
+  z-index:20!important; transition:transform .72s cubic-bezier(.22,.75,.24,1),opacity .65s ease;
+  transform:translate(var(--fly-x),var(--fly-y)) rotate(0) scale(.42)!important; opacity:.82;
+}
+.hero-artwork.is-loading .hero-rain-screen { animation:screen-load .55s ease-in-out 2 alternate; }
+@keyframes screen-load { from { filter:brightness(1); } to { filter:brightness(1.8); } }
+.hero-disk-status { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media(max-width:760px) {
+  .hero { min-height:auto; }
+  .hero-artwork {
+    position:relative; top:auto; right:auto; transform:none; grid-column:1;
+    width:min(92%,600px); margin:4px auto 0;
+  }
+  .hero-photo { position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; object-fit:contain; margin:0; }
+  .hero-rain-screen { left:47.5%; top:14.4%; width:25.7%; height:34%; }
+  .hero-floppy-label b { font-size:clamp(5px,1.1vw,8px); }
+  .hero-floppy-label small { font-size:clamp(4px,.95vw,7px); }
+  .hero-floppy-label em { font-size:clamp(4px,.8vw,6px); }
+}
+@media(max-width:560px) {
+  .hero-artwork { width:min(96%,460px); }
+  .hero-floppy-stack { left:69%; width:29%; height:21%; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-floppy,.hero-floppy.is-inserting { transition:none; }
+  .hero-artwork.is-loading .hero-rain-screen { animation:none; }
+}
+
+
+/* Let the smaller workstation photo melt into the hero gradient. */
+.hero-photo {
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 18%,#000 100%),linear-gradient(0deg,transparent 0%,#000 7.5%,#000 92.5%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 18%,#000 100%),linear-gradient(0deg,transparent 0%,#000 7.5%,#000 92.5%,transparent 100%);
+  mask-composite:intersect;
+}
+@media(max-width:760px) { .hero-photo { -webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 4%,#000 96%,transparent 100%); mask-image:linear-gradient(0deg,transparent 0%,#000 4%,#000 96%,transparent 100%); } }
+
+/* Keep the hero transition clean; the gradient has no separator rule. */
+.site-header { border-bottom:0; }
+
+
+/* Front-facing workstation artwork: align the live screen and floppy interactions to the new photo. */
+.hero-artwork { aspect-ratio:3 / 2; }
+.hero-rain-screen {
+  left:35.55%; top:16%; width:28.9%; height:30.2%;
+  overflow:hidden; border-radius:6% / 7%; clip-path:none;
+  box-shadow:inset 0 0 16px #55ff591a;
+}
+.hero-drive-target { left:56.6%; top:58.8%; width:15.2%; height:11.5%; }
+.hero-floppy-stack { left:78%; bottom:2%; width:20%; height:18%; }
+@media(max-width:560px) {
+  .hero-floppy-stack { left:78%; bottom:2%; width:20%; height:18%; }
+}
+
+/* Readable IBM era body type; display headings and monospace interface labels remain unchanged. */
+:root { --sans:"IBM Plex Sans",Arial,sans-serif; }
+
+
+/* Pick up a disk, drag it to the drive, then seat it with a short mechanical animation. */
+.hero-floppy { touch-action:none; user-select:none; -webkit-user-select:none; }
+.hero-floppy.is-held {
+  position:fixed; z-index:1000; margin:0; bottom:auto; left:0; top:0;
+  transform:translate3d(0,0,0) rotate(-4deg) scale(1.12);
+  filter:brightness(1.16);
+  box-shadow:inset 2px 2px #ffffff50,inset -3px -3px #08090c9c,0 18px 32px #0906109c;
+  transition:transform .12s ease,filter .12s ease;
+}
+.hero-floppy.is-held.is-dragging { transition:none; }
+.hero-floppy.is-inserting {
+  position:fixed; z-index:1001; bottom:auto; left:0; top:0;
+  transition:transform .48s cubic-bezier(.22,.75,.24,1),opacity .42s ease;
+  transform:translate(var(--fly-x),var(--fly-y)) rotate(0) scale(.28)!important;
+  opacity:.15;
+}
+.hero-floppy.is-returning { transition:left .34s cubic-bezier(.2,.8,.2,1),top .34s cubic-bezier(.2,.8,.2,1),width .34s ease,height .34s ease,transform .34s ease; }
+.hero-artwork.is-drive-ready .hero-drive-target {
+  background:#c8ff3630; box-shadow:0 0 18px #c8ff3680; border-radius:4px;
+}
