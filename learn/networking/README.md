@@ -36,3 +36,13 @@ The course deliberately works without accounts. Browser storage keys are grouped
 - Use concise, evidence-based language.
 - Keep journal, completion, and certificates functional without an account.
 - Treat the future Socratic assistant as an opt-in layer that works from student-owned journal context.
+
+## Validate before publishing
+
+From the repository root, run:
+
+```bash
+node learn/networking/scripts/validate-course.mjs
+```
+
+The check verifies the manifest, all 41 module cards, reader data, launch targets, and the loader order. Run it whenever lesson IDs, chapter files, or the course shell changes.
