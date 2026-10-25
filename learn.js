@@ -29,10 +29,19 @@ if (compilerLesson) {
     compilerLesson.querySelector('[data-action="run"]').disabled = !state.linked || state.ran;
     compilerLesson.querySelector('[data-compile-status]').textContent = status;
     compilerLesson.querySelector('[data-compile-output]').textContent = state.ran ? "output: HELLO" : state.linked ? "ready to run" : "waiting to run";
-    compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node) => {
+    const progress = state.ran ? 4 : state.linked ? 3 : state.compiled ? 2 : 0;
+    compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node, index) => {
       const key = node.dataset.compileStage;
       node.classList.toggle("is-complete", (key === "compile" || key === "object") && state.compiled || key === "link" && state.linked || key === "run" && state.ran);
+      node.classList.toggle("is-passed", index <= progress);
     });
+    compilerLesson.querySelector("[data-build-log]").innerHTML = state.ran
+      ? "&gt; linker: created ./hello<br><b>&gt; ./hello → HELLO</b>"
+      : state.linked
+        ? "&gt; linker: resolved FORTRAN runtime<br><b>&gt; wrote executable: ./hello</b>"
+        : state.compiled
+          ? "&gt; compiler: checked hello.f<br><b>&gt; wrote object file: hello.o</b>"
+          : "&gt; ready: hello.f<br>&gt; choose Compile to begin";
   };
   compilerLesson.querySelectorAll("[data-compile-stage]").forEach((node) => node.addEventListener("click", () => showStage(node.dataset.compileStage)));
   compilerLesson.querySelector('[data-action="compile"]').addEventListener("click", () => {
