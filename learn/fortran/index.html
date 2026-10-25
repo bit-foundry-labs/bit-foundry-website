@@ -20,7 +20,7 @@
     <section class="learn-hero"><p class="learn-breadcrumb"><a href="../../">Bit Foundry</a> / Fortran</p><h1>Fortran.</h1><p>Compilation and Fibonacci simulations.</p></section>
     <div class="lesson-main">
       <section aria-labelledby="compiler-title">
-        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 01</div><h2 id="compiler-title">From source to running program</h2></div><span class="lesson-index">01 / 02 · BUILD IT STEP BY STEP</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 01</div><h2 id="compiler-title">From source to running program</h2></div><span class="lesson-index">01 / 05 · BUILD IT STEP BY STEP</span></div>
         <div class="lesson-card" data-lesson="compiler">
           <div class="lesson-controls"><span class="controls-label">A compiler translates; a linker makes the program runnable.</span>
             <button class="control-button run-button" data-action="compile">1 · Compile</button>
@@ -48,7 +48,7 @@
       </section>
 
       <section aria-labelledby="fib-title">
-        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 02</div><h2 id="fib-title">Program it on a coding sheet</h2></div><span class="lesson-index">02 / 02 · STEP THROUGH THE CARDS</span></div>
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 02</div><h2 id="fib-title">Program it on a coding sheet</h2></div><span class="lesson-index">02 / 05 · STEP THROUGH THE CARDS</span></div>
         <div class="lesson-card" data-lesson="fibonacci">
           <div class="lesson-controls"><span class="controls-label">Classic FORTRAN used numbered labels and fixed columns; this program finds the first Fibonacci term over 1,000.</span>
             <button class="control-button" data-action="fib-step">Step once</button><button class="control-button run-button" data-action="fib-run">▶ Run loop</button><button class="control-button" data-action="fib-reset">Reset</button><span class="flow-status" data-fib-status aria-live="polite">Ready at the starting values.</span>
@@ -76,6 +76,35 @@
               <div class="value-row"><span class="value-chip">NEXT = <b data-fib-next>0</b></span><span class="value-chip">LATEST = <b data-fib-latest>1</b></span><span class="value-chip">SUM = <b data-fib-sum>—</b></span><span class="value-chip">STEP = <b data-fib-count>0</b></span></div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="card-title">
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 03</div><h2 id="card-title">Where a statement lives</h2></div><span class="lesson-index">03 / 05 · FORMAT A PUNCH CARD</span></div>
+        <div class="lesson-card" data-lesson="card-format">
+          <div class="lesson-controls"><span class="controls-label">A classic FORTRAN card gave different columns different jobs.</span><button class="control-button" data-card-zone="label">Columns 1–5 · Label</button><button class="control-button" data-card-zone="continuation">Column 6 · Continue</button><button class="control-button run-button" data-card-zone="statement">Columns 7–72 · Statement</button></div>
+          <div class="diagram-frame">
+            <div class="punch-card" aria-live="polite"><div class="card-ruler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span></div><div class="card-slots" data-card-slots><span class="card-label">2</span><span class="card-continuation"></span><code class="card-statement">SUM = LATEST + NEXT</code></div><div class="card-caption" data-card-caption>Label 2 is a destination. A <code>GO TO 2</code> statement can return here.</div></div>
+          </div>
+          <div class="lesson-detail lesson-detail-single"><div class="detail-copy"><div class="section-kicker" data-card-kicker>FIXED FORMAT · LABEL</div><h3 data-card-title>Columns 1–5 hold a label</h3><p data-card-copy>In fixed-form FORTRAN, the location of a character carried meaning. A label was not decoration; it named a landing point for control flow.</p></div></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="branch-title">
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 04</div><h2 id="branch-title">Follow the branch</h2></div><span class="lesson-index">04 / 05 · MAKE THE JUMP</span></div>
+        <div class="lesson-card" data-lesson="branch">
+          <div class="lesson-controls"><label class="range-label">SUM <input type="range" min="0" max="1600" step="1" value="987" data-branch-sum /><output data-branch-value>987</output></label><span class="flow-status" data-branch-status aria-live="polite"></span></div>
+          <div class="diagram-frame"><div class="branch-machine"><div class="branch-line"><code>IF (SUM .GT. 1000) GO TO 6</code></div><div class="branch-gates"><button class="branch-destination" data-branch-destination="loop"><span>FALSE</span><strong>continue at label 2</strong><small>calculate the next term</small></button><button class="branch-destination" data-branch-destination="print"><span>TRUE</span><strong>jump to label 6</strong><small>WRITE SUM, then STOP</small></button></div></div></div>
+          <div class="lesson-detail lesson-detail-single"><div class="detail-copy"><div class="section-kicker" data-branch-kicker>CONDITION · FALSE</div><h3 data-branch-title>The loop keeps going</h3><p data-branch-copy>`.GT.` means “greater than.” At 987, the condition is false, so the program does not jump to label 6 yet.</p></div></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="io-title">
+        <div class="lesson-intro"><div><div class="section-kicker">FORTRAN · 05</div><h2 id="io-title">Read, calculate, write</h2></div><span class="lesson-index">05 / 05 · RUN THE DATA</span></div>
+        <div class="lesson-card" data-lesson="io">
+          <div class="lesson-controls"><span class="controls-label">Choose a punched input value, then watch a tiny program transform it.</span><button class="control-button" data-io-value="4">Card: 4</button><button class="control-button" data-io-value="11">Card: 11</button><button class="control-button" data-io-value="27">Card: 27</button><button class="control-button run-button" data-action="io-run">▶ Run program</button></div>
+          <div class="diagram-frame"><div class="io-machine"><div class="io-station" data-io-stage="read"><span>01 · READ</span><code>READ (5,10) N</code><strong data-io-input>4</strong></div><span class="io-arrow" aria-hidden="true">→</span><div class="io-station" data-io-stage="calculate"><span>02 · CALCULATE</span><code>SQUARE = N * N</code><strong data-io-result>16</strong></div><span class="io-arrow" aria-hidden="true">→</span><div class="io-station" data-io-stage="write"><span>03 · WRITE</span><code>WRITE (6,11) SQUARE</code><strong data-io-output>16</strong></div></div></div>
+          <div class="lesson-detail lesson-detail-single"><div class="detail-copy"><div class="section-kicker" data-io-kicker>INPUT · CARD READER</div><h3 data-io-title>A number enters the program</h3><p data-io-copy><code>READ</code> moves data in, an assignment transforms it, and <code>WRITE</code> sends a result out. Choose a card, then run the small program.</p></div></div>
         </div>
       </section>
     </div>

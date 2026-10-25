@@ -157,6 +157,77 @@ if (fibLesson) {
   renderFib("Ready at the starting values.");
 }
 
+const cardLesson = document.querySelector('[data-lesson="card-format"]');
+if (cardLesson) {
+  const cardCopy = {
+    label: ["FIXED FORMAT · LABEL", "Columns 1–5 hold a label", "A label names a landing point for control flow. Here label 2 marks the addition line, so GO TO 2 can return to it.", "Label 2 is a destination. A GO TO 2 statement can return here."],
+    continuation: ["FIXED FORMAT · CONTINUATION", "Column 6 continues a long statement", "If a statement did not fit on one card, a non-blank character in column 6 told the compiler the next card continued it.", "Column 6 signals that this card continues the statement above."],
+    statement: ["FIXED FORMAT · STATEMENT", "Columns 7–72 carry the instruction", "This is the executable part: the compiler reads SUM = LATEST + NEXT as an assignment that computes the next Fibonacci value.", "The statement begins in column 7, after the label and continuation fields."]
+  };
+  cardLesson.querySelectorAll("[data-card-zone]").forEach((button) => button.addEventListener("click", () => {
+    const key = button.dataset.cardZone;
+    const [kicker, title, copy, caption] = cardCopy[key];
+    cardLesson.querySelectorAll("[data-card-zone]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+    cardLesson.querySelector("[data-card-kicker]").textContent = kicker;
+    cardLesson.querySelector("[data-card-title]").textContent = title;
+    cardLesson.querySelector("[data-card-copy]").textContent = copy;
+    cardLesson.querySelector("[data-card-caption]").textContent = caption;
+    cardLesson.querySelector("[data-card-slots]").dataset.activeZone = key;
+  }));
+}
+
+const branchLesson = document.querySelector('[data-lesson="branch"]');
+if (branchLesson) {
+  const slider = branchLesson.querySelector("[data-branch-sum]");
+  const renderBranch = () => {
+    const sum = Number(slider.value);
+    const jumps = sum > 1000;
+    branchLesson.querySelector("[data-branch-value]").value = String(sum);
+    branchLesson.querySelector("[data-branch-status]").textContent = jumps ? `${sum} is greater than 1,000; take the TRUE branch.` : `${sum} is not greater than 1,000; stay in the loop.`;
+    branchLesson.querySelectorAll("[data-branch-destination]").forEach((node) => node.classList.toggle("is-active", node.dataset.branchDestination === (jumps ? "print" : "loop")));
+    branchLesson.querySelector("[data-branch-kicker]").textContent = `CONDITION · ${jumps ? "TRUE" : "FALSE"}`;
+    branchLesson.querySelector("[data-branch-title]").textContent = jumps ? "Jump to label 6" : "The loop keeps going";
+    branchLesson.querySelector("[data-branch-copy]").textContent = jumps ? `${sum} .GT. 1000 is true, so execution jumps to label 6, writes the answer, and stops.` : `${sum} .GT. 1000 is false, so execution continues through the updates and returns to label 2.`;
+  };
+  slider.addEventListener("input", renderBranch);
+  renderBranch();
+}
+
+const ioLesson = document.querySelector('[data-lesson="io"]');
+if (ioLesson) {
+  let input = 4;
+  let timer = null;
+  const setStage = (stage, message) => {
+    ioLesson.querySelectorAll("[data-io-stage]").forEach((node) => node.classList.toggle("is-active", node.dataset.ioStage === stage));
+    const copy = {
+      read: ["INPUT · CARD READER", "A number enters the program", `READ (5,10) brings ${input} from an input device into the variable N.`],
+      calculate: ["ASSIGNMENT · MEMORY", "The program transforms the value", `SQUARE = N * N calculates ${input} × ${input} and stores ${input * input}.`],
+      write: ["OUTPUT · PRINTER", "The result leaves the program", `WRITE (6,11) sends ${input * input} to the output device using a numeric format.`]
+    }[stage];
+    ioLesson.querySelector("[data-io-kicker]").textContent = copy[0];
+    ioLesson.querySelector("[data-io-title]").textContent = copy[1];
+    ioLesson.querySelector("[data-io-copy]").textContent = copy[2] + (message ? ` ${message}` : "");
+  };
+  const render = () => {
+    ioLesson.querySelector("[data-io-input]").textContent = String(input);
+    ioLesson.querySelector("[data-io-result]").textContent = String(input * input);
+    ioLesson.querySelector("[data-io-output]").textContent = String(input * input);
+  };
+  ioLesson.querySelectorAll("[data-io-value]").forEach((button) => button.addEventListener("click", () => {
+    input = Number(button.dataset.ioValue);
+    ioLesson.querySelectorAll("[data-io-value]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+    render();
+    setStage("read", "Choose Run program to send it through all three stages.");
+  }));
+  ioLesson.querySelector('[data-action="io-run"]').addEventListener("click", () => {
+    if (timer) window.clearTimeout(timer);
+    setStage("read");
+    timer = window.setTimeout(() => { setStage("calculate"); timer = window.setTimeout(() => { setStage("write"); timer = null; }, 800); }, 800);
+  });
+  render();
+  setStage("read", "Choose a card, then run the small program.");
+}
+
 const networkLesson = document.querySelector('[data-lesson="network"]');
 if (networkLesson) {
   const networkStages = [
