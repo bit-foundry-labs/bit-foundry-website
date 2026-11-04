@@ -25,3 +25,11 @@ A standalone HTML/CSS/JavaScript interface features four custom French-country s
 **Project title:** Maison Fleur | A Personal Correspondence Atelier
 
 **Description:** Maison Fleur turns inbox triage into a thoughtful correspondence ritual. Connected to Gmail through a private ChatGPT assistant, it reviews threads, identifies replies that genuinely need attention, and prepares drafts for approval on a daily schedule. The accompanying French botanical stationery interface demonstrates reading, composing and reviewing letters; no messages are sent without human approval.
+
+## Daily briefing and screenshot
+
+The public interface has a 09:00 *Morning brief* toggle. Its example ledger groups reply-due-soon, unread that needs a reply, a draft for approval, and a conversation awaiting the other person's response. Each entry opens the corresponding fictional letter. This is an interactive public demonstration, **not** a live Gmail dashboard.
+
+The private ChatGPT Gmail assistant independently runs daily at 09:00 America/Mexico_City and produces an evidence-based digest with Gmail links and reply drafts. The public screenshot intentionally uses fictional names and emails for privacy. No sending happens automatically.
+
+Submission preview: `Maison-Fleur-Handshake-Submission.png` is a composite of genuine local browser captures illustrating the morning briefing, stationery interface and local draft editor.
