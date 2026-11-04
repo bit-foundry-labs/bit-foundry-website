@@ -266,6 +266,22 @@ render();
   const style = document.createElement('style');
   style.textContent = css;
   document.head.append(style);
+  const connectionStyle = document.createElement('style');
+  connectionStyle.textContent = `
+.mf-connect-strip{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:19px clamp(20px,4vw,57px);background:#f7f6ef;border-top:1px solid #91988845;border-bottom:1px solid #91988855}
+.mf-connect-copy{flex:1 1 310px;min-width:0}
+.mf-connect-kicker{display:block;color:var(--waterloo);font:11px 'Josefin Sans',Optima,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.mf-connect-head{margin:0 0 3px;font:clamp(25px,3vw,36px)/1.15 'Viaoda Libre',Georgia,serif;color:var(--deep)}
+.mf-connect-text{margin:0;color:#61726a;font:16px/1.4 'Newsreader',Georgia,serif}
+.mf-connect-actions{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.mf-connect-button{background:var(--waterloo);color:var(--white);padding:12px 21px;font:14px 'Belleza',Optima,sans-serif;letter-spacing:.02em;min-height:44px}
+.mf-connect-button:disabled{opacity:.6;cursor:wait}
+.mf-connect-feedback{color:#7b5650;max-width:340px;font:12px/1.35 'Belleza',Optima,sans-serif}
+.mf-live-alert{font:14px/1.45 'Belleza',Optima,sans-serif;color:#7b5650;max-width:900px;margin:12px auto;padding:8px 0}
+.mf-live-alert:empty{display:none}
+@media(max-width:640px){.mf-connect-strip{padding:15px 19px;gap:12px}.mf-connect-actions{width:100%}.mf-connect-button{width:100%}}
+`;
+  document.head.append(connectionStyle);
 
   const headButtons = document.createElement('div');
   headButtons.className = 'mf-account-buttons';
@@ -275,11 +291,30 @@ render();
   const rule = header.querySelector('.head-rule');
   if (rule) rule.replaceWith(headButtons); else header.append(headButtons);
 
+  const connectStrip = document.createElement('section');
+  connectStrip.className='mf-connect-strip';
+  connectStrip.setAttribute('aria-label','Personal Gmail connection');
+  const connectionCopy = document.createElement('div');
+  connectionCopy.className='mf-connect-copy';
+  const connectionKicker = node('span','mf-connect-kicker','PERSONAL CORRESPONDENCE');
+  const connectionTitle = node('h2','mf-connect-head','Your Gmail, on the writing desk');
+  const connectionText = node('p','mf-connect-text','The envelopes below are fictional until you open your inbox.');
+  connectionCopy.append(connectionKicker,connectionTitle,connectionText);
+  const connectionActions = document.createElement('div');
+  connectionActions.className='mf-connect-actions';
+  const connectionButton = button('Connect my Gmail','mf-connect-button');
+  const connectionFeedback = node('span','mf-connect-feedback','');
+  connectionFeedback.setAttribute('role','status');
+  connectionActions.append(connectionButton,connectionFeedback);
+  connectStrip.append(connectionCopy,connectionActions);
+  header.after(connectStrip);
+
   const live = document.createElement('main');
   live.className = 'mf-live';
   live.hidden = true;
   live.innerHTML = `
     <div class="topline"><h1>Le courrier</h1><span class="small-date" id="mf-g-count"></span></div>
+    <p id="mf-live-alert" class="mf-live-alert" role="alert"></p>
     <section class="mf-morning" aria-label="Your Gmail overview">
       <p class="mf-morning-date">Your correspondence · <span id="mf-checked">just now</span></p>
       <div id="mf-morning-counts" class="mf-morning-counts" aria-live="polite"></div>
@@ -325,15 +360,27 @@ render();
   document.body.append(overlay);
 
   const read = id => document.getElementById(id);
-  const status = message => { const el = read('mf-g-note'); if (el) el.textContent = message; };
+  const status = message => { const el = read('mf-g-note'); if (el) el.textContent = message; const alert=read('mf-live-alert'); if(alert)alert.textContent = /failed|expired|not enabled|error|403|401|blocked|no correspondence|could not/i.test(message)?message:''; };
   const error = message => { const el = read('mf-g-auth-error'); if (el) el.textContent = message; };
   const validClientId = v => /^[0-9]+-[a-zA-Z0-9_-]+\.apps\.googleusercontent\.com$/.test(v);
   function button(label, classes) { const b = document.createElement('button'); b.type = 'button'; b.className = classes; b.textContent = label; return b; }
   function node(tag, classes, text) { const el = document.createElement(tag); if (classes) el.className = classes; if (text != null) el.textContent = String(text); return el; }
   function gmailUrl(threadId) { return 'https://mail.google.com/mail/u/' + encodeURIComponent(state.profile?.emailAddress || '0') + '/#all/' + encodeURIComponent(threadId); }
   function clearPrivateData() { state.token = null; state.tokenExpires = 0; state.scope = null; state.profile = null; state.records = []; state.selectedId = null; state.pageToken = null; state.draftsByThread.clear(); state.textEdits.clear(); }
-  function showDemo() { live.hidden = true; main.hidden = false; demoButton.hidden = true; accountButton.textContent = state.token ? 'Gmail' : 'Connect Gmail'; }
-  function showLive() { main.hidden = true; live.hidden = false; demoButton.hidden = false; accountButton.textContent = 'Disconnect'; }
+  function showDemo() {
+    live.hidden = true; main.hidden = false; connectStrip.hidden = false;
+    demoButton.hidden = true;
+    accountButton.textContent = state.clientId ? 'Open my Gmail' : 'Connect Gmail';
+    connectionButton.textContent = state.clientId ? 'Open my Gmail inbox' : 'Connect my Gmail';
+    connectionText.textContent = state.clientId
+      ? 'Your Google client is configured, but this tab has not opened your Gmail session. Select Open my Gmail inbox to authorize and load real messages.'
+      : 'The envelopes below are fictional examples. Connect your Gmail to replace them with your own conversations.';
+  }
+  function showLive() {
+    main.hidden = true; live.hidden = false; connectStrip.hidden = true;
+    demoButton.hidden = false; accountButton.textContent = 'Disconnect';
+    connectionFeedback.textContent = '';
+  }
   function disconnect() { const previous = state.token; clearPrivateData(); if (previous && window.google?.accounts?.oauth2?.revoke) window.google.accounts.oauth2.revoke(previous, () => {}); showDemo(); status(''); }
   function openDialog() { error(''); read('mf-client-id').value = state.clientId; overlay.hidden = false; read('mf-client-id').focus(); }
   function closeDialog() { overlay.hidden = true; accountButton.focus(); }
@@ -495,18 +542,39 @@ render();
       renderLive();status('Saved to Gmail Drafts. Nothing sent.');
     }catch(e){status(e.message);}finally{btn.disabled=false;}
   }
+  async function connectMyGmail() {
+    if(!validClientId(state.clientId)){openDialog();return;}
+    connectionButton.disabled = true;
+    accountButton.disabled = true;
+    connectionFeedback.textContent = 'Opening Google authorization in Chrome…';
+    error('Opening Google…');
+    try {
+      await authorize(OAUTH_SCOPE_READ);
+      state.profile = await gmail('profile');
+      closeDialog();
+      showLive();
+      await reloadInbox(true);
+    } catch (e) {
+      clearPrivateData();
+      showDemo();
+      connectionFeedback.textContent = 'Connection did not finish: ' + e.message;
+      error(e.message);
+    } finally {
+      connectionButton.disabled = false;
+      accountButton.disabled = false;
+    }
+  }
   // Event handling. No sending endpoints are called anywhere.
   demoButton.addEventListener('click',showDemo);
-  accountButton.addEventListener('click',()=>{if(state.token){disconnect();return;}openDialog();});
+  accountButton.addEventListener('click',()=>{if(state.token){disconnect();return;}void connectMyGmail();});
+  connectionButton.addEventListener('click',()=>void connectMyGmail());
   read('mf-g-cancel').addEventListener('click',closeDialog);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeDialog();});
   read('mf-g-connect').addEventListener('click',async()=>{
     const id=read('mf-client-id').value.trim();
     if(!validClientId(id)){error('Paste the full OAuth Client ID from Google Cloud.');return;}
     state.clientId=id;try{localStorage.setItem(SETTINGS_KEY,id);}catch(_){/* non-essential */}
-    error('Opening Google…');
-    try {await authorize(OAUTH_SCOPE_READ); closeDialog();state.profile=await gmail('profile');showLive();await reloadInbox(true);}
-    catch(e){error(e.message);}
+    await connectMyGmail();
   });
   read('mf-g-filters').addEventListener('click',e=>{const b=e.target.closest('button[data-kind]');if(!b)return;state.filter=b.dataset.kind;read('mf-g-filters').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));state.view='read';renderLive();});
   read('mf-g-feature').addEventListener('click',()=>read('mf-g-letter').scrollIntoView({behavior:prefersLessMotion?'instant':'smooth',block:'start'}));
