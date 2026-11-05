@@ -1,0 +1,24 @@
+import assert from "node:assert/strict";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+const project = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const read = file => readFileSync(resolve(project, file), "utf8");
+const html = read("index.html");
+const manifest = JSON.parse(read("manifest.webmanifest"));
+const cap = JSON.parse(read("capacitor.config.json"));
+const sw = read("service-worker.js");
+assert.match(html, /rel="manifest" href="\.\/manifest\.webmanifest"/);
+assert.match(html, /serviceWorker\.register\('\.\/service-worker\.js'\)/);
+assert.match(html, /const collections\s*=\s*\[/);
+assert.match(html, /function submitAnswer\(/);
+assert.match(html, /localStorage/);
+assert.equal(manifest.display, "standalone");
+assert.ok(manifest.icons.length > 0);
+assert.equal(cap.webDir, "www");
+assert.equal(cap.appId, "io.bitfoundrylabs.andale");
+assert.match(sw, /caches\.open\(CACHE\)/);
+assert.ok(existsSync(resolve(project, "assets/andale-mark.svg")));
+console.log("Ándale checks passed: web, lessons, progress, install manifest, offline and native config");
