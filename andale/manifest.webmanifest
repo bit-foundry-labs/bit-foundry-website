@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "¡Ándale! · Español de México",
+  "short_name": "¡Ándale!",
+  "description": "Aprende español mexicano con expresiones reales, práctica y repaso.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff8f2",
+  "theme_color": "#b97d72",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "./assets/andale-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
