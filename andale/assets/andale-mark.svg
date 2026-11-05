@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+<title id="t">¡Ándale! · arco de concreto rosa</title>
+<defs>
+ <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff8f1"/><stop offset="1" stop-color="#f1d4cb"/></linearGradient>
+ <linearGradient id="wall" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#dbaaa1"/><stop offset="1" stop-color="#b97d72"/></linearGradient>
+ <linearGradient id="arch" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9d6055"/><stop offset="1" stop-color="#dfbdb1"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="106" fill="url(#sky)"/>
+<circle cx="372" cy="119" r="48" fill="#fffaf4" opacity=".9"/>
+<path d="M60 242 272 155 454 213v241H60Z" fill="url(#wall)"/>
+<path d="M171 453V327c0-78 45-125 112-125s112 47 112 125v126Z" fill="#f6dacf"/>
+<path d="M203 453V326c0-61 32-93 80-93s80 32 80 93v127Z" fill="url(#arch)"/>
+<path d="m203 453 160-145v145Z" fill="#a76e62" opacity=".22"/>
+<path d="M60 454h394" stroke="#f8ede5" stroke-width="9"/>
+<path d="M86 245c12-24 24-45 38-63m-38 60c-16-12-29-18-41-20m60-26c11 2 25 8 34 17m-38 8c-12-10-22-14-35-14" fill="none" stroke="#818b6e" stroke-linecap="round" stroke-width="9"/>
+</svg>
