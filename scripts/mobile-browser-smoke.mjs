@@ -336,7 +336,11 @@ try {
           machineWidth:machine.width,
           sequence,
           stageFits:bounds.left>=-2 && bounds.right<=innerWidth+2,
-          imageWithinMachine:machine.width<=innerWidth+2
+          imageWithinMachine:machine.width<=innerWidth+2,
+          panelsSeparated:(()=>{
+            const copy=document.querySelector(".project-network .project-copy").getBoundingClientRect();
+            return innerWidth<=760 ? copy.bottom<=bounds.top+2 : copy.right<=bounds.left-8;
+          })()
         };
       }).toString() + ")()",awaitPromise:true,returnByValue:true,
     });
@@ -348,6 +352,7 @@ try {
     assert.ok(flow.machineWidth>250);
     assert.equal(flow.stageFits,true,"Circuitry should fit the viewport");
     assert.equal(flow.imageWithinMachine,true);
+    assert.equal(flow.panelsSeparated,true,"Showcase copy and circuitry must not overlap");
     assert.deepEqual(flow.sequence.map(s=>s.pressed),["true","true","true"]);
     assert.deepEqual(flow.sequence.map(s=>s.className.split(" ").at(-1)),
       ["molten-circuit--pour","molten-circuit--temper","molten-circuit--conduct"]);

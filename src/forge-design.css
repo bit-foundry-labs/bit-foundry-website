@@ -519,6 +519,8 @@ footer {
 /* The circuit is a live inset instrument panel on desktop, part of normal
  * document layout on mobile, without any intersection-based scroll blocking. */
 .project-network .project-sticky { isolation: isolate; }
+.project-network .project-copy { width: min(42vw, 530px); }
+.project-network .project-copy h2 { font-size: clamp(47px, 5.9vw, 82px); }
 .project-network .project-wash { z-index: 1; }
 .project-network .project-copy { z-index: 3; }
 .molten-circuit {
@@ -671,7 +673,7 @@ footer {
     margin: 0 auto;
     transform: none;
   }
-  .project-sticky:not(.project-network .project-sticky) { min-height: 84svh; }
+  .project-fortran .project-sticky { min-height: 84svh; }
   .molten-circuit__readout { min-height: 0; }
 }
 @media (max-width: 390px) {
