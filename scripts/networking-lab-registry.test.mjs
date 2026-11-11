@@ -28,12 +28,23 @@ test("all 41 existing model selectors are unique and have named initializers", (
   assert.ok(Object.isFrozen(definitions));
 });
 
+test("every registry entry resolves to a real exported course-labs implementation", () => {
+  const labSource = readFileSync("learn/networking/course-labs.js", "utf8");
+  const labBrowser = { window: {} };
+  runInNewContext(labSource, labBrowser, { filename: "course-labs.js" });
+  const live = labBrowser.window.BIT_FOUNDRY_NETWORKING_LABS;
+  for (const [selector, binder] of definitions) {
+    assert.equal(typeof live[binder], "function", `${selector} must use an exported binder`);
+  }
+  assert.equal(typeof live.bindLanTrace, "function");
+});
+
 test("only present models are initialized once, with their actual DOM nodes", () => {
   const selectors = ["[data-queue-lab]", "[data-tcp-lab]", "[data-wifi-lab]"];
   const scene = fixture(selectors);
   scene.bind();
   assert.deepEqual(scene.calls.map((entry) => entry.name), [
-    "bindQueueLab", "bindTcpLab", "bindWifiLab",
+    "bindQueueLab", "bindTcpLab", "bindWifi",
   ]);
   for (const entry of scene.calls) {
     assert.strictEqual(entry.element, scene.elements.get(entry.element.selector));
