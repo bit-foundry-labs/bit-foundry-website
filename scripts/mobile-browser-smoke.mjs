@@ -224,6 +224,59 @@ try {
     console.log("✓ " + size.width + "px: forge castings fit the viewport and animate");
     console.log("✓ " + size.width + "px: foundry hero image, typography and embers");
 
+    const materialCheck = await connection.send("Runtime.evaluate", {
+      expression: "(" + (function () {
+        const nav = document.querySelector(".nav-shell");
+        const method = document.querySelector(".method-list article");
+        const archive = document.querySelector(".archive-section");
+        const button = document.querySelector(".soft-button");
+        return {
+          navBorder: getComputedStyle(nav).borderTopColor,
+          seam: getComputedStyle(document.querySelector(".about-section"), "::after").animationName,
+          methodRail: getComputedStyle(method, "::before").width,
+          paper: getComputedStyle(archive).backgroundColor,
+          buttonGlint: getComputedStyle(button, "::after").content,
+          token: getComputedStyle(document.documentElement).getPropertyValue("--forge-copper").trim(),
+        };
+      }).toString() + ")()", returnByValue: true,
+    });
+    if (materialCheck.exceptionDetails) throw new Error("Forge theme computed-style check failed");
+    const material = materialCheck.result.value;
+    assert.equal(material.token, "#dba16e");
+    assert.ok(material.seam.includes("forge-seam-pulse"));
+    assert.equal(material.methodRail, "2px");
+    assert.ok(material.buttonGlint && material.buttonGlint !== "none");
+    assert.ok(material.paper !== "rgba(0, 0, 0, 0)");
+    console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
+
+    await connection.send("Page.navigate", { url: origin + "/labs/?forge-theme=" + size.width });
+    const labsProbe = "(" + (async function () {
+      for(let i=0;i<100&&(!document.querySelector(".artifact-card")||document.readyState!=="complete");i++)
+        await new Promise(done=>setTimeout(done,60));
+      const cards = Array.from(document.querySelectorAll(".artifact-card"));
+      return {
+        className: document.body.className,
+        token: getComputedStyle(document.body).getPropertyValue("--forest").trim(),
+        cardCount: cards.length,
+        cardFits: cards.every(card=> {
+          const box = card.getBoundingClientRect();
+          return box.left>=-2 && box.right<=innerWidth+2;
+        }),
+        cardBorder: cards.length?getComputedStyle(cards[0]).borderTopColor:"",
+      };
+    }).toString() + ")()";
+    const labsResponse = await connection.send("Runtime.evaluate", {
+      expression: labsProbe, awaitPromise: true, returnByValue: true,
+    });
+    if(labsResponse.exceptionDetails) throw new Error("Labs theme probe: " +
+      (labsResponse.exceptionDetails.exception?.description || labsResponse.exceptionDetails.text));
+    const labs = labsResponse.result?.value;
+    assert.ok(labs?.className.includes("labs-page"));
+    assert.equal(labs.token, "#e8ac77");
+    assert.ok(labs.cardCount >= 5);
+    assert.equal(labs.cardFits, true, "Lab cards must fit without horizontal overflow");
+    console.log("✓ " + size.width + "px: labs forge theme and card reflow");
+
   }
 } finally {
   connection?.close();

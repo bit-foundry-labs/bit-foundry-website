@@ -1567,36 +1567,8 @@ footer {
 }
 
 
-/* Forge design language: these overrides apply only to the React landing page. */
-:root {
-  --ink:#0d0a09; --paper:#f0e5d7; --surface:#1b1410; --muted:#a99a8e;
-  --plum:#25160f; --violet:#ca9668; --rose:#e9b384;
-  --line-dark:rgba(239,202,164,.17); --line-light:rgba(47,29,18,.17);
-}
-.intro-layer{background:#0d0908}
-.nav-shell{
-  mix-blend-mode:normal; border-color:rgba(222,166,106,.3);
-  background:rgba(16,10,8,.74); box-shadow:0 6px 30px rgba(6,4,3,.13)
-}
-.nav-shell a:is(:hover,:focus-visible),.nav-shell button:is(:hover,:focus-visible){color:#ffc58a}
-.about-section{background:radial-gradient(ellipse at 79% 24%,rgba(102,52,28,.18),transparent 40%),#0e0b09}
-.method-section{
-  background:radial-gradient(ellipse at 74% 30%,rgba(168,80,35,.2),transparent 35%),
-  linear-gradient(145deg,#281a13,#100d0b 74%)
-}
-.lab-intro,.archive-section{background:#ece0d2}
-.forge-section{
-  background:radial-gradient(ellipse at 56% 40%,rgba(178,77,28,.19),transparent 32%),
-  radial-gradient(ellipse at 20% 85%,rgba(98,47,29,.24),transparent 44%),
-  linear-gradient(145deg,#241710,#0e0b09 75%)
-}
-.soft-button,.glass-button{border-color:rgba(231,162,104,.45);background:rgba(73,38,23,.12)}
-.soft-button:is(:hover,:focus-visible),.glass-button:is(:hover,:focus-visible){
-  background:#d8934b;color:#170c08;box-shadow:0 0 25px rgba(244,115,38,.18)
-}
-.method-list article{border-color:rgba(219,157,107,.24);background:rgba(22,14,11,.67)}
-.method-list article:is(:hover,:focus-within){border-color:rgba(246,146,75,.68)}
-::selection{color:#110a08;background:#ffc488}
+/* The unified forge palette and interactive treatments live in forge-design.css.
+   Keep casting-stage geometry below near its original narrative section. */
 
 /* The molten stream traces a mold and then cools into hand-drawn metal.
    animation-timeline follows the user's normal scrolling, without sticky holds. */
