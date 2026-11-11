@@ -412,11 +412,26 @@ export default function App() {
 
         <section className="artifact-scroll" data-scroll-scene>
           <div className="artifact-sticky">
-            <div className="artifact-image">
-              <img
-                src="/assets/retro-computer-front.webp"
-                alt="Vintage computer from the Bit Foundry field archive"
-              />
+            <div className="artifact-image artifact-image--cutout">
+              <svg
+                className="artifact-computer"
+                viewBox="0 0 1536 1024"
+                role="img"
+                aria-label="Vintage desktop computer isolated against the studio backdrop"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <defs>
+                  <clipPath id="artifact-computer-outline">
+                    <path d="M489 108 L483 118 L482 527 L492 537 L522 539 L527 549 L465 552 L404 588 L401 722 L340 730 L262 860 L263 882 L278 892 L276 898 L290 906 L323 910 L626 912 L695 922 L785 920 L807 925 L1162 921 L1175 916 L1196 888 L1198 866 L1157 732 L1129 725 L1128 591 L1071 552 L1005 549 L1010 539 L1037 538 L1049 529 L1048 111 L1037 104 Z" />
+                  </clipPath>
+                </defs>
+                <image
+                  href="/assets/retro-computer-front.webp"
+                  width="1536"
+                  height="1024"
+                  clipPath="url(#artifact-computer-outline)"
+                />
+              </svg>
             </div>
             <div className="artifact-copy">
               <h2>
