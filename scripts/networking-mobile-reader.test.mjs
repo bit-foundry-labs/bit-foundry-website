@@ -1,0 +1,29 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { readFileSync } from "node:fs";
+
+const css=readFileSync("learn/networking/course.css","utf8");
+const reader=readFileSync("learn/networking/course-reader.js","utf8");
+const page=readFileSync("learn/networking/index.html","utf8");
+
+test("reader content stays in normal vertical flow, even without an interactive model",()=>{
+  assert.doesNotMatch(css,/\.reader-page\{display:flex;align-items:center;justify-content:center/);
+  assert.match(css,/\.reader-page\{display:block;min-width:0;min-height:0;max-width:100%/);
+  assert.match(css,/\.module-reader \.reader-page\s*\{[^}]*display:block/s);
+  assert.match(css,/\.module-reader \.reader-page > \.network-lab\s*\{[^}]*margin-inline:auto/s);
+  assert.match(page,/<main class="reader-page" id="reader-page">/);
+});
+test("iPhone layout is scrollable, with full-width content and large close control",()=>{
+  assert.match(css,/\.module-reader \.reader-page\s*\{[^}]*overflow-y:auto/s);
+  assert.match(css,/\.module-reader \.reader-page\s*\{[^}]*overflow-x:hidden/s);
+  assert.match(css,/-webkit-overflow-scrolling:touch/);
+  assert.match(css,/\.module-reader \.reader-close\s*\{[^}]*min-height:44px/s);
+});
+test("the first networking lesson gets an actionable iPhone exercise",()=>{
+  assert.match(reader,/label\.textContent=liveModel\?"INTERACTIVE MODEL":"GUIDED EXERCISE"/);
+  assert.match(reader,/if\(liveModel\)page\.replaceChildren\(liveModel\)/);
+  assert.match(reader,/active\.id==="module-1-1"/);
+  assert.match(reader,/Show desktop network-inspection steps/);
+  assert.match(reader,/https:\/\/example\.invalid/);
+  assert.match(css,/\.reader-phone-guide/);
+});
