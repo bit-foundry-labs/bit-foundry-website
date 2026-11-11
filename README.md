@@ -21,4 +21,4 @@ Vercel should use framework **Vite**, build command `pnpm run build`, and output
 
 ## Forge landing image
 
-The homepage uses `/assets/forge-hall.avif`, an optimized 1152×648 local copy of the original Bit Foundry forge concept image. Ambient heat, sparks and sword highlights are CSS-only; `src/lib/forge-motion.mjs` provides bounded scroll-linked transforms. The site disables ambient movement for `prefers-reduced-motion` and keeps the existing short hero scroll duration.
+The homepage loads responsive WebP derivatives of `assets/forge-hall-upscaled.png`: `/assets/forge-hall-desktop.webp` (1672×941) and `/assets/forge-hall-mobile.webp` (1600×900). Regenerate from the original source with `python scripts/optimize-forge-image.py` after installing Pillow 11.3.0. The original PNG is preserved for future image upgrades. Ambient heat, sparks and sword highlights are CSS-only; `src/lib/forge-motion.mjs` provides bounded scroll-linked transforms. The site disables ambient movement for `prefers-reduced-motion` and keeps the existing short hero scroll duration.

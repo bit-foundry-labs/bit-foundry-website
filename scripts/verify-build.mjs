@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 const files = [
   "dist/index.html", "dist/legacy-theme.css", "dist/assets/retro-computer-front.webp",
-  "dist/assets/forge-hall.avif",
+  "dist/assets/forge-hall-desktop.webp", "dist/assets/forge-hall-mobile.webp",
   "dist/learn/networking/index.html", "dist/learn/networking/course-reader.js",
   "dist/learn/networking/course-lessons.js", "dist/learn/networking/course-lab-registry.js",
   "dist/learn/networking/course-reader.css", "dist/learn/networking/course-models.css",

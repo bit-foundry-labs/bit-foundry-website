@@ -204,7 +204,7 @@ try {
     const forge = forgeEvaluated.result?.value;
     assert.ok(forge?.heading.includes("Welcome to") && forge.heading.includes("the Foundry."));
     assert.equal(forge.imageLoaded, true, "Optimized local forge photo must load");
-    assert.ok(forge.imageSource.includes("forge-hall.avif"));
+    assert.ok(/forge-hall-(?:mobile|desktop)\.webp/.test(forge.imageSource));
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
     assert.equal(forge.embersAnimated, true, "Forge ambient animation should be enabled by default");

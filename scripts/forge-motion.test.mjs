@@ -22,7 +22,8 @@ test("motion is finite and clamped",()=>{
 test("new brand copy, imagery, motion and reduced-motion rules are present",()=>{
   const app=readFileSync("src/App.tsx","utf8");
   const css=readFileSync("src/index.css","utf8");
-  assert.match(app,/hero: "\/assets\/forge-hall\.avif"/);
+  assert.match(app,/hero: "\/assets\/forge-hall-desktop\.webp"/);
+  assert.match(app,/forge-hall-mobile\.webp 1600w/);
   assert.match(app,/<SplitText>Welcome to<\/SplitText>/);
   assert.match(app,/<SplitText className="hero-accent">the Foundry\.<\/SplitText>/);
   assert.match(app,/forge-embers--near/);

@@ -3,7 +3,7 @@ import { DecodeText, LetterRoll } from "./components/KineticText";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
-  hero: "/assets/forge-hall.avif",
+  hero: "/assets/forge-hall-desktop.webp",
   network:
     "https://images.unsplash.com/photo-1783683783819-e6cb806bba69?auto=format&fit=crop&w=2200&q=90",
   fortran:
@@ -351,6 +351,8 @@ export default function App() {
             <img
               className="cinematic-image forge-image"
               src={images.hero}
+              srcSet="/assets/forge-hall-mobile.webp 1600w, /assets/forge-hall-desktop.webp 1672w"
+              sizes="100vw"
               alt="Ornate ancient swords hanging over a vast foundry where molten metal runs into an anvil casting"
               fetchPriority="high"
               onLoad={() => setHeroReady(true)}
