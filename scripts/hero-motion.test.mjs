@@ -5,10 +5,13 @@ import { getHeroMotion } from "../src/lib/hero-motion.mjs";
 test("Earth moves more than distant stars (actual depth separation)", () => {
   const start = getHeroMotion(0);
   const end = getHeroMotion(1);
-  assert.ok(Math.abs(end.earthY - start.earthY) > 400);
+  const travel = Math.abs(end.earthY - start.earthY);
+  assert.ok(travel >= 300 && travel <= 400, "Earth movement remains substantial but controlled");
   assert.ok(Math.abs(end.distantStarsY - start.distantStarsY) < 125);
   assert.ok(Math.abs(end.nearStarsY - start.nearStarsY) > Math.abs(end.distantStarsY - start.distantStarsY));
   assert.ok(start.earthScale > end.earthScale);
+  assert.ok(Math.abs(end.orbitOuterY - start.orbitOuterY) <= travel);
+  assert.ok(Math.abs(end.copyY - start.copyY) < travel);
 });
 
 test("scroll progress stays bounded and produces finite transforms", () => {

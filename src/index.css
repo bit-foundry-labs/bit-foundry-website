@@ -1424,7 +1424,7 @@ footer {
 }
 
 /* Independent parallax layers make the Earth scene feel dimensional without another runtime library. */
-.hero-scroll { height: 285vh; }
+.hero-scroll { height: 235vh; }
 .hero-starfield,
 .hero-near-stars,
 .hero-atmosphere,
@@ -1528,7 +1528,7 @@ footer {
     transform: translate3d(0, var(--earth-mobile-y, 112px), 0)
       scale(var(--earth-mobile-scale, 1.36));
   }
-  .hero-scroll { height: 210vh; }
+  .hero-scroll { height: 175vh; }
   .hero-kicker { max-width: 32ch; font-size: 8px; letter-spacing: 0.07em; }
   .hero-coordinate--left { bottom: 10%; left: 18px; font-size: 8px; }
   .hero-starfield { opacity: 0.28; }
