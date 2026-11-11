@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
+import { getHeroMotion } from "./lib/hero-motion.mjs";
 
 const images = {
   hero: "https://images.unsplash.com/photo-1643330683233-ff2ac89b002c?auto=format&fit=crop&w=2400&q=92",
@@ -138,6 +139,21 @@ export default function App() {
           "--scene-radius",
           `${Math.max(0, (1 - progress) * 16).toFixed(2)}px`,
         );
+        if (scene.classList.contains("hero-scroll")) {
+          const motion = getHeroMotion(progress);
+          const units: Record<keyof typeof motion, string> = {
+            earthX: "px", earthY: "px", earthScale: "", earthRotation: "deg",
+            earthMobileY: "px", earthMobileScale: "", distantStarsY: "px",
+            nearStarsY: "px", haloY: "px", orbitOuterY: "px",
+            orbitInnerY: "px", copyY: "px", copyOpacity: "",
+          };
+          for (const key of Object.keys(motion) as Array<keyof typeof motion>) {
+            scene.style.setProperty(
+              `--${key.replace(/[A-Z]/g, (letter) => "-" + letter.toLowerCase())}`,
+              `${motion[key].toFixed(3)}${units[key]}`,
+            );
+          }
+        }
       });
       frame = 0;
     };
@@ -334,6 +350,8 @@ export default function App() {
               onLoad={() => setHeroReady(true)}
             />
             <div className="hero-starfield" aria-hidden="true" />
+            <div className="hero-near-stars" aria-hidden="true" />
+            <div className="hero-atmosphere" aria-hidden="true" />
             <div className="hero-orbit hero-orbit--outer" aria-hidden="true" />
             <div className="hero-orbit hero-orbit--inner" aria-hidden="true" />
             <div className="hero-tint" />
