@@ -18,11 +18,12 @@ const fail = (message) => {
 };
 const pass = (message) => console.log("✓ " + message);
 
-const [manifest, index, lessons, labs, storage, config, progress, reader, models] = await Promise.all([
+const [manifest, index, lessons, labs, registry, storage, config, progress, reader, models] = await Promise.all([
   read(resolve(courseRoot, "course-manifest.js")),
   read(resolve(courseRoot, "index.html")),
   read(resolve(courseRoot, "course-lessons.js")),
   read(resolve(courseRoot, "course-labs.js")),
+  read(resolve(courseRoot, "course-lab-registry.js")),
   read(resolve(courseRoot, "course-storage.js")),
   read(resolve(courseRoot, "course-config.js")),
   read(resolve(courseRoot, "course-progress.js")),
@@ -92,6 +93,7 @@ const scriptOrder = [
   "course-content.js",
   "course-lessons.js",
   "course-labs.js",
+  "course-lab-registry.js",
   "course-storage.js",
   "course-config.js",
   "course-progress.js",
@@ -120,6 +122,8 @@ if (
 if (
   !/BIT_FOUNDRY_NETWORKING_LABS/.test(labs) ||
   !/BIT_FOUNDRY_NETWORKING_LABS/.test(reader) ||
+  !/BIT_FOUNDRY_NETWORKING_LAB_REGISTRY/.test(registry) ||
+  !/BIT_FOUNDRY_NETWORKING_LAB_REGISTRY/.test(reader) ||
   /function bind[A-Z]/.test(reader)
 ) {
   fail("reader and interactive lab binders are not separated cleanly.");
@@ -168,6 +172,7 @@ if (!/window\.networkingContentReady\.then/.test(reader)) {
 const courseScripts = [
   ["course-lessons.js", lessons],
   ["course-labs.js", labs],
+  ["course-lab-registry.js", registry],
   ["course-storage.js", storage],
   ["course-config.js", config],
   ["course-progress.js", progress],
