@@ -68,13 +68,35 @@ window.networkingContentReady.then(() => {
   if(journalPanel)journalPanel.hidden=true;
   const chapter=active.id.split("-")[1];
   kicker.textContent="NETWORK SYSTEMS LAB · "+active.id.replace("module-","EXPERIMENT ").replace("-",".");
-  label.textContent=index===3?"INTERACTIVE MODEL":"CONTEXT & NOTES";bar.style.width=((index+1)*20)+"%";
+  label.textContent="GUIDED EXERCISE";bar.style.width=((index+1)*20)+"%";
   back.disabled=true;back.textContent="";next.textContent="";
   page.innerHTML=pages()[3];
   // The public lab opens only the thing to manipulate. Course copy, prompts,
   // reflection fields, and progression controls stay out of the experience.
   const liveModel=page.querySelector(".network-lab");
   if(liveModel)page.replaceChildren(liveModel);
+  label.textContent=liveModel?"INTERACTIVE MODEL":"GUIDED EXERCISE";
+  // Mobile Safari cannot expose desktop Network DevTools. Give phone users
+  // an observable diagnosis task, keeping the original steps accessible.
+  if(active.id==="module-1-1"&&!liveModel&&window.matchMedia("(max-width: 640px)").matches){
+    const originalSteps=page.querySelector("ol");
+    if(originalSteps){
+      const desktopSteps=document.createElement("details");
+      desktopSteps.className="reader-desktop-steps";
+      const summary=document.createElement("summary");
+      summary.textContent="Show desktop network-inspection steps";
+      originalSteps.replaceWith(desktopSteps);
+      desktopSteps.append(summary,originalSteps);
+    }
+    const guide=document.createElement("aside");
+    guide.className="reader-phone-guide";
+    guide.innerHTML="<strong>Try this on your iPhone</strong>"
+      +"<p>Mobile Safari does not provide the desktop Network panel. Compare two failure boundaries now, and inspect timings and protocols on a computer later.</p>"
+      +"<ol><li>Open <a href='https://example.com' target='_blank' rel='noopener noreferrer'>example.com</a> in Safari. Does the HTTPS page load?</li>"
+      +"<li>In another tab try <code>https://example.invalid</code>. This reserved name should not resolve; observe Safari's error.</li>"
+      +"<li>Why is name resolution failing different from receiving an HTTP error response? What would you inspect with desktop Network tools?</li></ol>";
+    page.querySelector(".reader-intro")?.insertAdjacentElement("afterend",guide);
+  }
   const sectionType=page.querySelector(".section-kicker")?.textContent||"";
   if(false&&index===1&&sectionType.includes("SYSTEM MODEL"))makeTraceExplorer(page);
   if(false&&index===2&&sectionType.includes("ENGINEERING CASE"))makeCaseWorkbench(page);
