@@ -105,7 +105,7 @@
   background: var(--rose);
   transform: scaleX(0);
   transform-origin: left;
-  animation: introProgress 1.45s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation: introProgress 1.75s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
 .intro-layer small {
@@ -239,7 +239,7 @@ a:hover .arrow {
   --scene-inset: 28px;
   --scene-radius: 16px;
   position: relative;
-  height: 200vh;
+  height: 140vh;
 }
 
 .hero-sticky,
@@ -248,8 +248,8 @@ a:hover .arrow {
 .closing-sticky {
   position: sticky;
   top: 0;
-  height: 100vh;
-  min-height: 650px;
+  height: 100svh;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -1424,7 +1424,7 @@ footer {
 }
 
 /* Independent parallax layers make the Earth scene feel dimensional without another runtime library. */
-.hero-scroll { height: 235vh; }
+.hero-scroll { height: 160vh; }
 .hero-starfield,
 .hero-near-stars,
 .hero-atmosphere,
@@ -1528,7 +1528,8 @@ footer {
     transform: translate3d(0, var(--earth-mobile-y, 112px), 0)
       scale(var(--earth-mobile-scale, 1.36));
   }
-  .hero-scroll { height: 175vh; }
+  .hero-scroll { height: 135vh; }
+  .artifact-scroll, .project-scroll, .closing-scroll { height: 125vh; }
   .hero-kicker { max-width: 32ch; font-size: 8px; letter-spacing: 0.07em; }
   .hero-coordinate--left { bottom: 10%; left: 18px; font-size: 8px; }
   .hero-starfield { opacity: 0.28; }
@@ -1538,7 +1539,10 @@ footer {
   .hero-copy { transform: translateY(var(--copy-y, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-scroll { height: 100vh; }
+  .hero-scroll, .artifact-scroll, .project-scroll, .closing-scroll { height: 100svh; }
+  .intro-layer { transition: none; }
+  .intro-brand span { animation: none; opacity: 1; transform: none; }
+  .intro-progress span { animation: none; transform: scaleX(1); }
   .hero-sticky > img { transform: none !important; }
   .hero-starfield, .hero-near-stars, .hero-atmosphere, .hero-orbit, .hero-coordinate { transform: none !important; }
   .hero-copy { transform: none !important; opacity: 1 !important; }

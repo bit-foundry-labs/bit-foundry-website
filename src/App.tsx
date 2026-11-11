@@ -93,6 +93,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
+  const introStartedAt = useRef<number | null>(null);
   const [activeSection, setActiveSection] = useState("About");
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -114,8 +115,13 @@ export default function App() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const delay = reducedMotion ? 0 : heroReady ? 650 : 1200;
-    const timer = window.setTimeout(() => setIntroComplete(true), delay);
+    const now = performance.now();
+    // Hold for a consistent minimum from mount; never extend the wait on image load.
+    if (introStartedAt.current === null) introStartedAt.current = now;
+    const elapsed = now - introStartedAt.current;
+    const revealAfter = reducedMotion ? 0 : heroReady ? 1750 : 2400;
+    const remaining = Math.max(0, revealAfter - elapsed);
+    const timer = window.setTimeout(() => setIntroComplete(true), remaining);
     return () => window.clearTimeout(timer);
   }, [heroReady]);
 
