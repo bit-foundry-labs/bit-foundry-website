@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
 
-const css=readFileSync("learn/networking/course.css","utf8");
+const styles = ["course.css", "course-reader.css", "course-models.css", "course-reader-mobile.css"];
+const css = styles.map(name => readFileSync("learn/networking/" + name, "utf8")).join("\n");
 const reader=readFileSync("learn/networking/course-reader.js","utf8");
 const page=readFileSync("learn/networking/index.html","utf8");
 
@@ -26,4 +27,12 @@ test("the first networking lesson gets an actionable iPhone exercise",()=>{
   assert.match(reader,/Show desktop network-inspection steps/);
   assert.match(reader,/https:\/\/example\.invalid/);
   assert.match(css,/\.reader-phone-guide/);
+});
+
+test("split stylesheets preserve cascade order and isolate mobile overrides",()=>{
+  const order=styles.map(name=>page.indexOf(name));
+  assert.ok(order.every(pos=>pos>=0));
+  assert.ok(order.every((pos,i)=>i===0||pos>order[i-1]));
+  assert.doesNotMatch(readFileSync("learn/networking/course.css","utf8"),/\.reader-phone-guide/);
+  assert.match(readFileSync("learn/networking/course-reader-mobile.css","utf8"),/\.reader-phone-guide/);
 });

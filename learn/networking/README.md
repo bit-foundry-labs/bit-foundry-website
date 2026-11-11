@@ -55,3 +55,10 @@ The check verifies the manifest, all 41 module cards, lesson content, launch tar
 ### Interactive model initialization
 
 `course-reader.js` renders the existing lesson content. `course-labs.js` owns the model implementations, while `course-lab-registry.js` maps model markers to initializers. The registry preserves the original page-scoped LAN trace behavior and is loaded before the reader. Test its behavior with `pnpm test`; verify script dependencies with `node learn/networking/scripts/validate-course.mjs`.
+
+
+### Networking styles and browser smoke tests
+
+The network course keeps its original CSS cascade across four ordered files: `course.css` (course layout), `course-reader.css` (dialog foundation), `course-models.css` (models and course responsive rules), and `course-reader-mobile.css` (iPhone reader refinements). The split is source-level only; no appearance changes are intended.
+
+After `pnpm run build`, run `node scripts/mobile-browser-smoke.mjs` with Chrome/Chromium installed. It exercises real DOM layout and an interactive model at 390px and 1280px using Node's built-in WebSocket and Chrome DevTools Protocol, without extra npm dependencies. Chromium mobile emulation is not a substitute for manual Safari-on-iPhone testing.

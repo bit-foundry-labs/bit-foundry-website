@@ -1,0 +1,182 @@
+/**
+ * Headless Chromium browser smoke tests (Node 22+, no third-party packages).
+ * Exercises the built networking reader and model at 390px and 1280px widths.
+ */
+import assert from "node:assert/strict";
+import { spawn, spawnSync } from "node:child_process";
+import { createServer } from "node:http";
+import { readFile, mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { extname, join, resolve, sep } from "node:path";
+import { once } from "node:events";
+
+const root = resolve("dist");
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const types = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".json": "application/json", ".webp": "image/webp", ".svg": "image/svg+xml" };
+const server = createServer(async (request, response) => {
+  try {
+    const requested = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
+    const target = resolve(root, "." + (requested.endsWith("/") ? requested + "index.html" : requested));
+    if (!target.startsWith(root + sep)) return response.writeHead(403).end();
+    const bytes = await readFile(target);
+    response.writeHead(200, { "content-type": types[extname(target)] || "application/octet-stream" }).end(bytes);
+  } catch {
+    response.writeHead(404).end();
+  }
+});
+function chromeBinary() {
+  if (process.env.CHROME_BIN) return process.env.CHROME_BIN;
+  for (const candidate of ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"]) {
+    if (spawnSync("which", [candidate], { stdio: "ignore" }).status === 0) return candidate;
+  }
+  throw new Error("Install Chrome or Chromium to run browser smoke tests");
+}
+async function chromePort(dir, child) {
+  for (let i = 0; i < 120; i += 1) {
+    if (child.exitCode !== null) throw new Error("Chrome exited before starting DevTools");
+    try {
+      const port = Number.parseInt((await readFile(join(dir, "DevToolsActivePort"), "utf8")).split("\n")[0], 10);
+      if (port > 0) return port;
+    } catch {}
+    await sleep(90);
+  }
+  throw new Error("Timed out waiting for Chrome DevTools");
+}
+async function connect(endpoint) {
+  const socket = new WebSocket(endpoint);
+  await new Promise((resolve, reject) => {
+    socket.addEventListener("open", resolve, { once: true });
+    socket.addEventListener("error", reject, { once: true });
+  });
+  let nextId = 0;
+  const waiting = new Map();
+  socket.addEventListener("message", (event) => {
+    const message = JSON.parse(event.data);
+    const item = waiting.get(message.id);
+    if (!item) return;
+    waiting.delete(message.id);
+    if (message.error) item.reject(new Error(JSON.stringify(message.error)));
+    else item.resolve(message.result);
+  });
+  return {
+    send(method, params = {}) {
+      return new Promise((resolve, reject) => {
+        const id = ++nextId;
+        waiting.set(id, { resolve, reject });
+        socket.send(JSON.stringify({ id, method, params }));
+      });
+    },
+    close() { socket.close(); },
+  };
+}
+const probe = "(" + (async function () {
+  const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
+  for (let i = 0; i < 120 && !window.networkingContentReady; i += 1) await sleep(60);
+  if (!window.networkingContentReady) throw new Error("Course loader missing");
+  await Promise.race([
+    window.networkingContentReady,
+    sleep(9000).then(() => { throw new Error("Course content timed out"); }),
+  ]);
+  const first = document.querySelector('[data-module-open="module-1-1"]');
+  const second = document.querySelector('[data-module-open="module-1-4"]');
+  if (!first || !second) throw new Error("Lesson launch buttons missing");
+  first.click();
+  await sleep(75);
+  const dialog = document.getElementById("module-reader");
+  const page = document.getElementById("reader-page");
+  const title = page.querySelector("h2");
+  const intro = page.querySelector(".reader-intro");
+  const titleBox = title?.getBoundingClientRect();
+  const introBox = intro?.getBoundingClientRect();
+  const mobile = innerWidth <= 640;
+  const content = {
+    width: innerWidth,
+    open: dialog.open,
+    display: getComputedStyle(page).display,
+    paragraphWidth: introBox?.width || 0,
+    vertical: Boolean(titleBox && introBox && titleBox.bottom <= introBox.top + 8),
+    fits: Boolean(introBox && introBox.left >= -1 && introBox.right <= innerWidth + 2),
+    mobileGuide: Boolean(page.querySelector(".reader-phone-guide")),
+  };
+  second.click();
+  await sleep(75);
+  const lab = page.querySelector("[data-encapsulation-lab]");
+  const action = lab?.querySelector("[data-encapsulation-next]");
+  const unit = lab?.querySelector("[data-encapsulation-unit]");
+  const before = unit?.textContent;
+  action?.click();
+  await sleep(20);
+  return { content, model: {
+    found: Boolean(lab), button: Boolean(action),
+    before, after: unit?.textContent || "",
+    width: lab?.getBoundingClientRect().width || 0,
+  } };
+}).toString() + ")()";
+
+await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+const origin = "http://127.0.0.1:" + server.address().port;
+const directory = await mkdtemp(join(tmpdir(), "bitfoundry-browser-"));
+const child = spawn(chromeBinary(), [
+  "--headless=new", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu",
+  "--remote-debugging-port=0", "--no-first-run", "--no-default-browser-check",
+  "--user-data-dir=" + directory, "about:blank",
+], { stdio: "ignore" });
+let connection;
+try {
+  const port = await chromePort(directory, child);
+  const targets = await (await fetch("http://127.0.0.1:" + port + "/json")).json();
+  const target = targets.find((candidate) => candidate.type === "page");
+  assert.ok(target, "Chrome must expose a page");
+  connection = await connect(target.webSocketDebuggerUrl);
+  await connection.send("Page.enable");
+  await connection.send("Runtime.enable");
+  for (const size of [{ width: 390, height: 844, mobile: true }, { width: 1280, height: 800, mobile: false }]) {
+    await connection.send("Emulation.setDeviceMetricsOverride", {
+      width: size.width, height: size.height, mobile: size.mobile,
+      deviceScaleFactor: size.mobile ? 3 : 1,
+    });
+    await connection.send("Emulation.setTouchEmulationEnabled", { enabled: size.mobile });
+    await connection.send("Page.navigate", { url: origin + "/learn/networking/?test=" + size.width });
+    let ready = false;
+    for (let i = 0; i < 140; i += 1) {
+      try {
+        const state = await connection.send("Runtime.evaluate", {
+          expression: "({ready:document.readyState,route:location.pathname})", returnByValue: true,
+        });
+        if (state.result?.value?.ready === "complete" && state.result.value.route === "/learn/networking/") {
+          ready = true;
+          break;
+        }
+      } catch {}
+      await sleep(70);
+    }
+    assert.equal(ready, true, "Networking document should load in Chrome");
+    const evaluated = await connection.send("Runtime.evaluate", {
+      expression: probe, awaitPromise: true, returnByValue: true,
+    });
+    if (evaluated.exceptionDetails) {
+      throw new Error("Browser probe: " + (evaluated.exceptionDetails.exception?.description || evaluated.exceptionDetails.text));
+    }
+    const actual = evaluated.result?.value;
+    assert.ok(actual, "Browser probe must return results");
+    assert.equal(actual.content.width, size.width, "Emulated viewport width");
+    assert.equal(actual.content.open, true, "Reader dialog should open");
+    assert.equal(actual.content.display, "block", "Reader content should flow vertically");
+    assert.equal(actual.content.vertical, true, "Text should stack below its title");
+    assert.equal(actual.content.fits, true, "Lesson text should fit the viewport");
+    assert.ok(actual.content.paragraphWidth >= (size.mobile ? 250 : 350), "Text should not be squeezed");
+    assert.equal(actual.content.mobileGuide, size.mobile);
+    assert.equal(actual.model.found, true, "Interactive encapsulation model should render");
+    assert.equal(actual.model.button, true);
+    assert.notEqual(actual.model.before, actual.model.after, "Model button should advance the simulation");
+    assert.ok(actual.model.width > 200);
+    console.log("✓ " + size.width + "px: reader layout and interactive model");
+  }
+} finally {
+  connection?.close();
+  child.kill("SIGTERM");
+  await Promise.race([once(child, "exit"), sleep(2000)]);
+  if (child.exitCode === null) child.kill("SIGKILL");
+  await rm(directory, { recursive: true, force: true, maxRetries: 8, retryDelay: 200 });
+  await new Promise((resolve) => server.close(resolve));
+}
