@@ -18,3 +18,7 @@ The Figma favicon is kept at `public/favicon.png`. The `build` script runs Vite 
 ## Deployment
 
 Vercel should use framework **Vite**, build command `pnpm run build`, and output directory `dist`. Review a preview deployment and validate the legacy routes before promoting to the production domain.
+
+## Forge landing image
+
+The homepage uses `/assets/forge-hall.avif`, an optimized 1152×648 local copy of the original Bit Foundry forge concept image. Ambient heat, sparks and sword highlights are CSS-only; `src/lib/forge-motion.mjs` provides bounded scroll-linked transforms. The site disables ambient movement for `prefers-reduced-motion` and keeps the existing short hero scroll duration.
