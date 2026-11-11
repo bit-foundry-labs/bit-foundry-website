@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
-import { getHeroMotion } from "./lib/hero-motion.mjs";
+import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
-  hero: "https://images.unsplash.com/photo-1643330683233-ff2ac89b002c?auto=format&fit=crop&w=2400&q=92",
+  hero: "/assets/forge-hall.avif",
   network:
     "https://images.unsplash.com/photo-1783683783819-e6cb806bba69?auto=format&fit=crop&w=2200&q=90",
   fortran:
@@ -146,12 +146,11 @@ export default function App() {
           `${Math.max(0, (1 - progress) * 16).toFixed(2)}px`,
         );
         if (scene.classList.contains("hero-scroll")) {
-          const motion = getHeroMotion(progress);
+          const motion = getForgeMotion(progress);
           const units: Record<keyof typeof motion, string> = {
-            earthX: "px", earthY: "px", earthScale: "", earthRotation: "deg",
-            earthMobileY: "px", earthMobileScale: "", distantStarsY: "px",
-            nearStarsY: "px", haloY: "px", orbitOuterY: "px",
-            orbitInnerY: "px", copyY: "px", copyOpacity: "",
+            forgeX: "px", forgeY: "px", forgeScale: "",
+            embersFarY: "px", embersNearY: "px", smokeY: "px",
+            glintOpacity: "", copyY: "px", copyOpacity: "",
           };
           for (const key of Object.keys(motion) as Array<keyof typeof motion>) {
             scene.style.setProperty(
@@ -348,42 +347,42 @@ export default function App() {
 
       <main>
         <section className="hero-scroll" id="top" data-scroll-scene>
-          <div className="hero-sticky">
+          <div className="hero-sticky forge-scene">
             <img
-              className="cinematic-image"
+              className="cinematic-image forge-image"
               src={images.hero}
-              alt="Planet Earth suspended in a dark field of stars"
+              alt="Ornate ancient swords hanging over a vast foundry where molten metal runs into an anvil casting"
+              fetchPriority="high"
               onLoad={() => setHeroReady(true)}
             />
-            <div className="hero-starfield" aria-hidden="true" />
-            <div className="hero-near-stars" aria-hidden="true" />
-            <div className="hero-atmosphere" aria-hidden="true" />
-            <div className="hero-orbit hero-orbit--outer" aria-hidden="true" />
-            <div className="hero-orbit hero-orbit--inner" aria-hidden="true" />
-            <div className="hero-tint" />
-            <div className="hero-grain" />
+            <div className="forge-smoke" aria-hidden="true" />
+            <div className="forge-heat" aria-hidden="true" />
+            <div className="forge-embers forge-embers--far" aria-hidden="true" />
+            <div className="forge-embers forge-embers--near" aria-hidden="true" />
+            <div className="forge-sword-glint" aria-hidden="true" />
+            <div className="hero-tint" aria-hidden="true" />
+            <div className="hero-grain" aria-hidden="true" />
             <div className="hero-coordinate hero-coordinate--left" aria-hidden="true">
-              <span>01 / ORBITAL VIEW</span>
-              <span>EARTH · HOME</span>
+              <span>01 / THE FOUNDRY</span>
+              <span>FORM · FIRE · FUNCTION</span>
             </div>
             <div className="hero-coordinate hero-coordinate--right" aria-hidden="true">
-              <span>OBSERVATION / EARTH</span>
-              <span>LOCAL SYSTEM: ACTIVE</span>
+              <span>CRAFT / PRECISION</span>
+              <span>IDEAS INTO SYSTEMS</span>
             </div>
             <div className="hero-copy">
-              <span className="hero-kicker">BIT FOUNDRY LABS / HUMAN-CENTERED COMPUTING</span>
+              <span className="hero-kicker">BIT FOUNDRY LABS / SOFTWARE & SYSTEMS STUDIO</span>
               <h1>
-                <SplitText>Welcome, Human</SplitText>
-                <SplitText className="hero-accent">Look beneath the surface.</SplitText>
+                <SplitText>Welcome to</SplitText>
+                <SplitText className="hero-accent">the Foundry.</SplitText>
               </h1>
               <p>
-                Beautiful tools and interactive lessons
-                <br />
-                about the machinery inside computing.
+                Look beneath the surface.
+                <span> Beautiful tools and interactive lessons about the machinery inside computing.</span>
               </p>
             </div>
             <a className="scroll-cue" href="#about">
-              <span>Scroll down</span>
+              <span>Enter the foundry</span>
               <i>↓</i>
             </a>
           </div>
