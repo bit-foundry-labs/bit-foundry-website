@@ -1,0 +1,146 @@
+/* Bit Foundry / visual bridge
+   Applied only to existing standalone lessons, labs and disk archive pages.
+   Original interactions and source styles stay intact. */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Onest:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&family=Unbounded:wght@300;400;500&display=swap");
+
+:root {
+  color-scheme: dark;
+  --paper: #0c0b0e;
+  --paper-light: #211a26;
+  --ink: #ebe9e6;
+  --forest: #bd79e5;
+  --forest-dark: #392843;
+  --orange: #dca6ca;
+  --blue: #291b2e;
+  --muted: #b8b0bb;
+  --rule: #463848;
+  --mono: "Unbounded", system-ui, sans-serif;
+  --sans: "Onest", system-ui, sans-serif;
+  --display: "Space Grotesk", system-ui, sans-serif;
+  --accent: "Instrument Serif", Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+body:not(.disk-page) {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  background-image: radial-gradient(ellipse at 74% -15%, #bd79e51c, transparent 50%);
+}
+body:not(.disk-page) :is(h1, h2, h3) { font-family: var(--display); letter-spacing: -.035em; }
+body:not(.disk-page) :is(.section-kicker, .section-tag, .lesson-index, .artifact-top, .labs-eyebrow) {
+  color: var(--orange);
+  font-family: var(--mono);
+  letter-spacing: .055em;
+}
+body:not(.disk-page) :is(.site-header, .labs-nav) {
+  color: var(--ink);
+  background: #130f16eb;
+  border-color: #eee4ef25;
+  backdrop-filter: blur(16px);
+}
+body:not(.disk-page) :is(.brand, .labs-nav > a:first-child) {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: .67rem;
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+body:not(.disk-page) :is(.brand-mark i, .brand-mark i:first-child) { border-color: var(--violet, #bd79e5); }
+body:not(.disk-page) .brand-mark i:first-child { background: var(--violet, #bd79e5); }
+body:not(.disk-page) :is(.nav-cta, .control-button, .osi-trace-next) {
+  border-radius: 6px;
+  border-color: #dca6ca7a;
+  transition: border-color .2s, background .2s, color .2s;
+}
+body:not(.disk-page) :is(.nav-cta:hover, .control-button:hover) {
+  background: var(--orange);
+  color: #160f19;
+  border-color: var(--orange);
+}
+body:not(.disk-page) :is(.learn-hero, .labs-hero) {
+  background: radial-gradient(ellipse at 84% 15%, #bd79e529, transparent 52%), #17111c;
+  border-color: #dca6ca3b;
+}
+body:not(.disk-page) .learn-hero h1,
+body:not(.disk-page) .labs-hero h1 { text-transform: none; font-weight: 500; }
+body:not(.disk-page) .labs-hero h1 em { color: var(--orange); font-family: var(--accent); font-weight: 400; }
+body:not(.disk-page) :is(.lesson-card, .concept, .artifact-card, .osi-detail, .course-map-list li) {
+  background: #1c1621;
+  border-color: #dca6ca36;
+  box-shadow: none;
+  border-radius: 8px;
+}
+body:not(.disk-page) :is(.lesson-card:hover, .artifact-card:hover, .concept:hover) {
+  border-color: #bd79e590;
+}
+body:not(.disk-page) :is(.section-kicker, .control-button[aria-pressed="true"], .run-button) {
+  --forest: #bd79e5;
+}
+body:not(.disk-page) .lesson-card :is(button, input, select, textarea) { accent-color: #bd79e5; }
+body:not(.disk-page) :is(.build-diagram, .diagram-frame, .osi-layout, .queue-lab) {
+  border-color: #6c526d;
+}
+body:not(.disk-page) :is(.course-intro, .course-resume, .course-path, .lesson-detail) { border-color: #dca6ca40; }
+body:not(.disk-page) :is(.course-map-list a, .course-resume button, .artifact-card) { transition: border-color .2s, background .2s, transform .2s; }
+body:not(.disk-page) :is(a, button, input, select):focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+body:not(.disk-page) .labs-footer { border-color: #dca6ca36; }
+
+/* The field disks are deliberately a warm paper chapter within the dark studio. */
+body.disk-page {
+  color-scheme: light;
+  background: #ebe9e6;
+  color: #291b2e;
+  background-image: none;
+  font-family: var(--sans);
+}
+body.disk-page :is(h1, h2, h3) { font-family: var(--display); letter-spacing: -.035em; text-transform: none; }
+body.disk-page .site-header {
+  min-height: 68px;
+  background: #e8e4e4ee;
+  color: #291b2e;
+  border-bottom: 1px solid #291b2e25;
+  backdrop-filter: blur(12px);
+}
+body.disk-page .brand { font: 500 .68rem var(--mono); letter-spacing: -.025em; }
+body.disk-page .brand-mark i { border-color: #8c4bac; }
+body.disk-page .brand-mark i:first-child { background: #8c4bac; }
+body.disk-page .nav-cta {
+  padding: .75rem 1rem;
+  border-color: #291b2e6b;
+  border-radius: 6px;
+  background: transparent;
+  color: #291b2e;
+}
+body.disk-page .nav-cta:hover { background: #291b2e; color: #ebe9e6; }
+body.disk-page .disk-hero { border-color: #291b2e50; }
+body.disk-page .disk-hero h1 { color: #291b2e; font-weight: 500; }
+body.disk-page .disk-hero p,
+body.disk-page .fact-card p,
+body.disk-page .history-row p { color: #4f4057; }
+body.disk-page .disk-kicker,
+body.disk-page .fact-index,
+body.disk-page .disk-breadcrumb,
+body.disk-page .back-link { color: #783d9a; font-family: var(--mono); }
+body.disk-page :is(.fact-card, .history-row, .game-panel, .classic-game) {
+  border-color: #291b2e38;
+  border-radius: 7px;
+  background: #f7f4f1;
+  box-shadow: none;
+}
+body.disk-page :is(.fact-card summary, .history-year, .game-panel h2) { color: #291b2e; }
+body.disk-page :is(.game-stat, .river-choice) { background: #f1e9ef; border-color: #291b2e4d; }
+body.disk-page :is(.game-controls button, .game-mode button) { border-radius: 5px; }
+body.disk-page :is(.game-controls button:hover, .game-mode button:hover) { background: #291b2e; color: white; }
+body.disk-page .game-log { background: #211528; color: #dec5e8; }
+body.disk-page a { color: #703c8d; }
+body.disk-page a:focus-visible,
+body.disk-page button:focus-visible { outline: 2px solid #783d9a; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body:not(.disk-page) :is(.artifact-card, .concept, .control-button) { transition: none; }
+}
