@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
+import { ForgeCasting } from "./components/ForgeCasting";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
@@ -391,6 +392,7 @@ export default function App() {
         </section>
 
         <section className="about-section" id="about">
+          <ForgeCasting tool="hammer" number="01" />
           <div className="section-number">
             <span>(01)</span>
             <span><DecodeText text="About the foundry" /></span>
@@ -454,6 +456,7 @@ export default function App() {
         </section>
 
         <section className="method-section" id="method">
+          <ForgeCasting tool="calipers" number="02" />
           <div className="section-number light">
             <span>(02)</span>
             <span><DecodeText text="How we shape understanding" /></span>
@@ -477,6 +480,7 @@ export default function App() {
         </section>
 
         <section className="lab-intro" id="labs">
+          <ForgeCasting tool="key" number="03" />
           <span>(03) <DecodeText text="Interactive environments" /></span>
           <h2>
             <SplitText>Two ways</SplitText>
@@ -553,6 +557,7 @@ export default function App() {
         </section>
 
         <section className="archive-section" id="archive">
+          <ForgeCasting tool="compass" number="04" />
           <div className="archive-heading">
             <span className="archive-count">(04)</span>
             <h2><DecodeText text="Field archive" /></h2>
@@ -588,6 +593,7 @@ export default function App() {
         </section>
 
         <section className="forge-section" id="products">
+          <ForgeCasting tool="blade" number="05" />
           <div className="forge-heading">
             <span>Currently in development</span>
             <h2><DecodeText text="ForgeLoop" /></h2>
@@ -634,8 +640,8 @@ export default function App() {
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Bit Foundry Labs LLC</span>
-          <span>Photography via Unsplash</span>
-          <a href="#top">Back to Earth ↑</a>
+          <span>Forge artwork · Bit Foundry Labs</span>
+          <a href="#top">Back to the Foundry ↑</a>
         </div>
       </footer>
     </div>

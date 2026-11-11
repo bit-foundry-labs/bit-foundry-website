@@ -1565,3 +1565,106 @@ footer {
   .artifact-image--cutout { height: 49vh; }
   .artifact-computer { filter: drop-shadow(0 15px 18px rgba(0,0,0,.3)); }
 }
+
+
+/* Forge design language: these overrides apply only to the React landing page. */
+:root {
+  --ink:#0d0a09; --paper:#f0e5d7; --surface:#1b1410; --muted:#a99a8e;
+  --plum:#25160f; --violet:#ca9668; --rose:#e9b384;
+  --line-dark:rgba(239,202,164,.17); --line-light:rgba(47,29,18,.17);
+}
+.intro-layer{background:#0d0908}
+.nav-shell{
+  mix-blend-mode:normal; border-color:rgba(222,166,106,.3);
+  background:rgba(16,10,8,.74); box-shadow:0 6px 30px rgba(6,4,3,.13)
+}
+.nav-shell a:is(:hover,:focus-visible),.nav-shell button:is(:hover,:focus-visible){color:#ffc58a}
+.about-section{background:radial-gradient(ellipse at 79% 24%,rgba(102,52,28,.18),transparent 40%),#0e0b09}
+.method-section{
+  background:radial-gradient(ellipse at 74% 30%,rgba(168,80,35,.2),transparent 35%),
+  linear-gradient(145deg,#281a13,#100d0b 74%)
+}
+.lab-intro,.archive-section{background:#ece0d2}
+.forge-section{
+  background:radial-gradient(ellipse at 56% 40%,rgba(178,77,28,.19),transparent 32%),
+  radial-gradient(ellipse at 20% 85%,rgba(98,47,29,.24),transparent 44%),
+  linear-gradient(145deg,#241710,#0e0b09 75%)
+}
+.soft-button,.glass-button{border-color:rgba(231,162,104,.45);background:rgba(73,38,23,.12)}
+.soft-button:is(:hover,:focus-visible),.glass-button:is(:hover,:focus-visible){
+  background:#d8934b;color:#170c08;box-shadow:0 0 25px rgba(244,115,38,.18)
+}
+.method-list article{border-color:rgba(219,157,107,.24);background:rgba(22,14,11,.67)}
+.method-list article:is(:hover,:focus-within){border-color:rgba(246,146,75,.68)}
+::selection{color:#110a08;background:#ffc488}
+
+/* The molten stream traces a mold and then cools into hand-drawn metal.
+   animation-timeline follows the user's normal scrolling, without sticky holds. */
+.forge-casting{
+  position:absolute;top:3%;right:clamp(15px,4.1vw,85px);z-index:0;
+  width:clamp(104px,11vw,158px);pointer-events:none;opacity:.86;
+  view-timeline-name:--forge-cast-progress;view-timeline-axis:block
+}
+.forge-casting__graphic{display:block;width:100%;height:auto;overflow:visible}
+.forge-casting__channel{stroke:#49342a;stroke-width:2.8;opacity:.55}
+.forge-casting__stream{stroke-width:3.5;filter:drop-shadow(0 0 5px rgba(255,112,17,.9))}
+.forge-casting__mold{stroke:#69412d;stroke-width:5;opacity:.38}
+.forge-casting__heat-trace{stroke-width:3;opacity:.68;filter:drop-shadow(0 0 4px rgba(255,112,37,.65))}
+.forge-casting__metal{stroke:#edcba5;stroke-width:1.45;opacity:.94}
+.forge-casting__drop{filter:drop-shadow(0 0 7px rgba(254,103,20,.74))}
+.forge-casting__caption{
+  display:grid;gap:7px;padding-left:8px;text-align:left;
+  font:400 8px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.09em
+}
+.forge-casting__caption strong{color:#f1ad6b;font-size:9px}
+.forge-casting__caption span{color:#937e70}
+.lab-intro .forge-casting__channel,.archive-section .forge-casting__channel{stroke:#946747}
+.lab-intro .forge-casting__mold,.archive-section .forge-casting__mold{stroke:#a7684d}
+.lab-intro .forge-casting__metal,.archive-section .forge-casting__metal{stroke:#724535}
+.lab-intro .forge-casting__caption span,.archive-section .forge-casting__caption span{color:#674e41}
+.forge-casting--calipers{top:4%}
+.forge-casting--key{top:8%}
+.forge-casting--compass{top:5%}
+.forge-casting--blade{top:4%}
+.about-section > :not(.forge-casting),.method-section > :not(.forge-casting),
+.lab-intro > :not(.forge-casting),.archive-section > :not(.forge-casting),
+.forge-section > :not(.forge-casting){position:relative;z-index:1}
+
+@keyframes forge-stream-cast{
+  from{stroke-dasharray:500;stroke-dashoffset:500;opacity:.05}
+  to{stroke-dasharray:500;stroke-dashoffset:0;opacity:1}
+}
+@keyframes forge-tool-cast{
+  0%,24%{stroke-dasharray:1000;stroke-dashoffset:1000;opacity:0}
+  82%,100%{stroke-dasharray:1000;stroke-dashoffset:0;opacity:1}
+}
+@keyframes forge-tool-cool{
+  0%,45%{opacity:0}
+  85%,100%{opacity:1}
+}
+@supports(animation-timeline:view()){
+  .forge-casting__stream{
+    animation:forge-stream-cast 1s linear both;
+    animation-timeline:--forge-cast-progress;animation-range:entry 0% cover 60%
+  }
+  .forge-casting__heat-trace{
+    animation:forge-tool-cast 1s linear both;
+    animation-timeline:--forge-cast-progress;animation-range:entry 10% cover 90%
+  }
+  .forge-casting__metal{
+    animation:forge-tool-cool 1s linear both;
+    animation-timeline:--forge-cast-progress;animation-range:entry 25% cover 100%
+  }
+}
+@media(max-width:620px){
+  .forge-casting{width:92px;right:3px;top:8%;opacity:.34}
+  .forge-casting__caption{display:none}
+  .forge-casting--key{top:1%}
+  .forge-casting--compass{top:4%}
+}
+@media(prefers-reduced-motion:reduce){
+  .forge-casting__stream,.forge-casting__heat-trace,.forge-casting__metal{
+    animation:none!important;stroke-dasharray:none!important;
+    stroke-dashoffset:0!important;opacity:1!important;filter:none!important
+  }
+}
