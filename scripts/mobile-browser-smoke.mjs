@@ -249,6 +249,62 @@ try {
     assert.ok(material.paper !== "rgba(0, 0, 0, 0)");
     console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
 
+    // Real interaction check: the original photograph is preserved, and a
+    // keyboard/touch-accessible control reveals a clipped technical layer.
+    const xrayCheck = await connection.send("Runtime.evaluate", {
+      expression: "(" + (async function () {
+        const sleep = (ms) => new Promise(done => setTimeout(done,ms));
+        const button=document.querySelector(".xray-toggle");
+        const stage=document.querySelector(".xray-stage");
+        const machine=stage?.querySelector("svg");
+        if(!button||!machine)throw new Error("X-ray controls missing");
+        const before=button.getAttribute("aria-pressed");
+        const image=machine.querySelector('image[href="/assets/retro-computer-front.webp"]');
+        const clip=machine.querySelector("#xray-inspection-lens circle");
+        button.click();
+        await sleep(50);
+        const opened={
+          pressed:button.getAttribute("aria-pressed"),
+          active:stage.getAttribute("data-inspecting"),
+          radius:Number(clip.getAttribute("r")),
+          label:document.querySelector(".xray-panel-readout strong")?.textContent,
+        };
+        const rect=machine.getBoundingClientRect();
+        machine.dispatchEvent(new PointerEvent("pointermove",{
+          bubbles:true, pointerType:"mouse",
+          clientX:rect.left+rect.width*.63,
+          clientY:rect.top+rect.height*.39,
+        }));
+        await sleep(50);
+        const moved={
+          radius:Number(clip.getAttribute("r")),
+          label:document.querySelector(".xray-panel-readout strong")?.textContent,
+          x:Number(clip.getAttribute("cx")),
+        };
+        button.click();
+        await sleep(50);
+        return {
+          before, image:!!image, opened, moved,
+          closed:button.getAttribute("aria-pressed"),
+          fits: (()=>{ const r=button.getBoundingClientRect();return r.left>=-2&&r.right<=innerWidth+2; })(),
+        };
+      }).toString() + ")()", awaitPromise: true, returnByValue: true,
+    });
+    if(xrayCheck.exceptionDetails)throw new Error("X-ray browser probe: "+
+      (xrayCheck.exceptionDetails.exception?.description||xrayCheck.exceptionDetails.text));
+    const xr=xrayCheck.result?.value;
+    assert.equal(xr.before,"false");
+    assert.equal(xr.image,true);
+    assert.equal(xr.opened.pressed,"true");
+    assert.equal(xr.opened.active,"true");
+    assert.equal(xr.opened.radius,226);
+    assert.ok(xr.opened.label.length>0);
+    assert.equal(xr.moved.radius,226);
+    assert.ok(xr.moved.x>=270&&xr.moved.x<=1190);
+    assert.equal(xr.closed,"false");
+    assert.equal(xr.fits,true,"Inspect control fits the viewport");
+    console.log("✓ " + size.width + "px: x-ray inspector toggle, lens tracking and layout");
+
     await connection.send("Page.navigate", { url: origin + "/labs/?forge-theme=" + size.width });
     const labsProbe = "(" + (async function () {
       for(let i=0;i<100&&(!document.querySelector(".artifact-card")||document.readyState!=="complete");i++)
