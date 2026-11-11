@@ -25,3 +25,4 @@ jobs:
       - run: pnpm run build
       - run: pnpm run verify
       - run: node learn/networking/scripts/validate-course.mjs
+      - run: node scripts/mobile-browser-smoke.mjs

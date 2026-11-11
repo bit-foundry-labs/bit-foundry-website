@@ -1,0 +1,44 @@
+/* Reader pages are documents, not a horizontal flex row; model children center independently. */
+.module-reader .reader-shell { min-width:0;min-height:0;max-width:100%; }
+.module-reader .reader-page {
+  display:block;flex:1 1 auto;box-sizing:border-box;
+  min-width:0;min-height:0;max-width:100%;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.module-reader .reader-page > .network-lab {
+  box-sizing:border-box;display:block;
+  width:min(100%,920px);max-width:100%;margin-inline:auto;
+}
+.module-reader .reader-page :is(p,li) {overflow-wrap:break-word;}
+.module-reader .reader-page :is(pre,code) {overflow-wrap:anywhere;}
+.module-reader .reader-phone-guide {
+  margin:1.25rem 0;padding:1rem 1.1rem;
+  border:1px solid #799b8d;border-left:4px solid #a9c4a4;
+  border-radius:5px;background:#1c2a24;
+}
+.module-reader .reader-phone-guide strong {
+  display:block;color:#e0f0df;font:700 .85rem/1.35 "Source Sans 3",Arial,sans-serif;
+}
+.module-reader .reader-phone-guide p {margin:.5rem 0 .75rem;color:#d8e5d6;}
+.module-reader .reader-desktop-steps {margin:1rem 0 1.5rem;padding:1rem;border:1px solid #637d70;}
+.module-reader .reader-desktop-steps summary {cursor:pointer;color:#cbe7c8;}
+@media (max-width:640px) {
+  .module-reader {box-sizing:border-box;width:100%;height:100dvh;}
+  .module-reader .reader-header {align-items:center;gap:.75rem;padding:.8rem 1rem;}
+  .module-reader .reader-header > div {min-width:0;}
+  .module-reader .reader-header .section-kicker {
+    font-size:.64rem;letter-spacing:.07em;overflow-wrap:break-word;
+  }
+  .module-reader .reader-close {min-height:44px;min-width:72px;flex:0 0 auto;}
+  .module-reader .reader-page {width:100%;padding:1.1rem 1rem 2rem;}
+  .module-reader .reader-page > * {max-width:100%;}
+  .module-reader .reader-page h2 {font-size:clamp(1.45rem,6vw,2rem);}
+  .module-reader .reader-page :is(ol,ul) {padding-left:1.4rem;}
+  .module-reader .reader-page > .network-lab {padding:1rem;}
+  .module-reader .network-lab-controls > * {min-width:0;max-width:100%;}
+  .module-reader .network-table {
+    display:block;max-width:100%;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+}
