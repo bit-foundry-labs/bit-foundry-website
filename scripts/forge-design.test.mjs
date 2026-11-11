@@ -11,7 +11,7 @@ test("forge theme is loaded after base styles, without editing animation choreog
   assert.ok(main.indexOf('import "./index.css"') < main.indexOf('import "./forge-design.css"'));
   assert.match(homepage,/--forge-ember: #f68b43/);
   assert.match(homepage,/--forge-bone: #efe1d1/);
-  assert.doesNotMatch(foundation,//\* Forge design language: these overrides/);
+  assert.ok(!foundation.includes("Forge design language: these overrides"));
   assert.match(foundation,/\.forge-casting__stream/);
 });
 test("narrative sections, navigation and archive share material tokens",()=>{
@@ -33,5 +33,5 @@ test("motion respects reduced preferences and hover polish does not run indefini
   assert.match(homepage,/@media \(prefers-reduced-motion: reduce\)/);
   assert.match(homepage,/\.about-section::after, \.forge-section::after \{ animation: none !important/);
   assert.match(homepage,/:is\(\.soft-button,\.glass-button\):is\(:hover,:focus-visible\)::after/);
-  assert.match(legacy,/body\.labs-page \.artifact-card::after \{ transition: none !important/);
+  assert.match(legacy,/body\.labs-page \.artifact-card, body\.labs-page \.artifact-card::after \{ transition: none !important/);
 });
