@@ -50,3 +50,8 @@ node learn/networking/scripts/validate-course.mjs
 ```
 
 The check verifies the manifest, all 41 module cards, lesson content, launch targets, and script order. Run it whenever lesson IDs, chapter files, or the course shell changes.
+
+
+### Interactive model initialization
+
+`course-reader.js` renders the existing lesson content. `course-labs.js` owns the model implementations, while `course-lab-registry.js` maps model markers to initializers. The registry preserves the original page-scoped LAN trace behavior and is loaded before the reader. Test its behavior with `pnpm test`; verify script dependencies with `node learn/networking/scripts/validate-course.mjs`.

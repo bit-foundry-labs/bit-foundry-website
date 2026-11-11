@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 const files = [
   "dist/index.html", "dist/legacy-theme.css", "dist/assets/retro-computer-front.webp",
   "dist/learn/networking/index.html", "dist/learn/networking/course-reader.js",
-  "dist/learn/networking/course-lessons.js", "dist/learn/fortran/index.html",
+  "dist/learn/networking/course-lessons.js", "dist/learn/networking/course-lab-registry.js", "dist/learn/fortran/index.html",
   "dist/labs/index.html", "dist/labs/lan/index.html", "dist/disks/internet/index.html",
   "dist/disks/gaming-history/index.html", "dist/disks/oregon-trail/index.html",
   "dist/disks/oregon-trail/game.js", "dist/learn.js", "dist/styles.css"
