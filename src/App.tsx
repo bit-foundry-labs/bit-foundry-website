@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
 
 const images = {
@@ -94,7 +94,22 @@ export default function App() {
   const [heroReady, setHeroReady] = useState(false);
   const [activeSection, setActiveSection] = useState("About");
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
-  const [previewPosition, setPreviewPosition] = useState({ x: 0, y: 0 });
+  const previewRef = useRef<HTMLDivElement>(null);
+  const previewFrame = useRef<number | null>(null);
+  const previewPosition = useRef({ x: 0, y: 0 });
+
+  const movePreview = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    previewPosition.current = { x: event.clientX, y: event.clientY };
+    if (previewFrame.current !== null) return;
+    previewFrame.current = window.requestAnimationFrame(() => {
+      const position = previewPosition.current;
+      previewRef.current?.style.setProperty(
+        "transform",
+        `translate3d(${position.x}px, ${position.y}px, 0)`,
+      );
+      previewFrame.current = null;
+    });
+  };
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -181,6 +196,10 @@ export default function App() {
     };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     return () => window.removeEventListener("pointermove", onPointerMove);
+  }, []);
+
+  useEffect(() => () => {
+    if (previewFrame.current !== null) window.cancelAnimationFrame(previewFrame.current);
   }, []);
 
   useEffect(() => {
@@ -280,7 +299,7 @@ export default function App() {
         </button>
       </header>
 
-      <div className={`menu-layer ${menuOpen ? "is-open" : ""}`}>
+      <div className={`menu-layer ${menuOpen ? "is-open" : ""}`} inert={!menuOpen}>
         <nav aria-label="Main navigation">
           {[
             ["01", "About", "#about"],
@@ -498,9 +517,7 @@ export default function App() {
                 style={{ "--reveal-index": index } as React.CSSProperties}
                 onPointerEnter={() => setArchivePreview(index)}
                 onPointerLeave={() => setArchivePreview(null)}
-                onPointerMove={(event) =>
-                  setPreviewPosition({ x: event.clientX, y: event.clientY })
-                }
+                onPointerMove={movePreview}
               >
                 <span>{item.year}</span>
                 <strong>{item.title}</strong>
@@ -510,10 +527,8 @@ export default function App() {
             ))}
           </div>
           <div
+            ref={previewRef}
             className={`archive-preview ${archivePreview !== null ? "is-visible" : ""}`}
-            style={{
-              transform: `translate3d(${previewPosition.x}px, ${previewPosition.y}px, 0)`,
-            }}
             aria-hidden="true"
           >
             {archivePreview !== null && <img src={archiveItems[archivePreview].preview} alt="" />}
