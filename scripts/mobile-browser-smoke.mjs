@@ -186,7 +186,7 @@ try {
       const section = hero.querySelector(".hero-copy");
       const embers = hero.querySelector(".forge-embers--near");
       return {
-        heading: h1.textContent,
+        heading: Array.from(h1.querySelectorAll(".split-text")).map((node) => node.getAttribute("aria-label")).join(" "),
         imageLoaded: img.complete && img.naturalWidth > 0,
         imageSource: img.currentSrc,
         lettersFit: words.every((box) => box.left >= -2 && box.right <= innerWidth + 2),
