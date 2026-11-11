@@ -305,6 +305,55 @@ try {
     assert.equal(xr.fits,true,"Inspect control fits the viewport");
     console.log("✓ " + size.width + "px: x-ray inspector toggle, lens tracking and layout");
 
+    // Normal page flow, central exhibit, and a three-state SVG instrument.
+    const flowResponse = await connection.send("Runtime.evaluate", {
+      expression: "(" + (async function () {
+        const pause=(ms)=>new Promise(done=>setTimeout(done,ms));
+        const sceneClasses=["hero-sticky","artifact-sticky","project-sticky","closing-sticky"];
+        const positions=sceneClasses.map(name=>({
+          name,position:getComputedStyle(document.querySelector("."+name)).position
+        }));
+        const exhibit=document.querySelector(".artifact-sticky--xray");
+        const machine=exhibit.querySelector(".xray-stage").getBoundingClientRect();
+        const exhibitBox=exhibit.getBoundingClientRect();
+        const centered=Math.abs((machine.left+machine.right)/2-(exhibitBox.left+exhibitBox.right)/2);
+        const circuit=document.querySelector(".molten-circuit");
+        const buttons=Array.from(circuit.querySelectorAll(".molten-circuit__phase"));
+        const sequence=[];
+        for (const button of buttons) {
+          button.click();
+          await pause(40);
+          sequence.push({
+            name:button.textContent,
+            pressed:button.getAttribute("aria-pressed"),
+            className:circuit.className,
+            title:circuit.querySelector(".molten-circuit__readout strong").textContent
+          });
+        }
+        const bounds=circuit.getBoundingClientRect();
+        return {
+          positions,centered,
+          machineWidth:machine.width,
+          sequence,
+          stageFits:bounds.left>=-2 && bounds.right<=innerWidth+2,
+          imageWithinMachine:machine.width<=innerWidth+2
+        };
+      }).toString() + ")()",awaitPromise:true,returnByValue:true,
+    });
+    if(flowResponse.exceptionDetails)throw new Error("Flow and circuitry: "+
+      (flowResponse.exceptionDetails.exception?.description||flowResponse.exceptionDetails.text));
+    const flow=flowResponse.result?.value;
+    assert.ok(flow.positions.every(s=>s.position==="relative"),"No scene may pin the page");
+    assert.ok(flow.centered<=2,"X-ray computer should be horizontally centered");
+    assert.ok(flow.machineWidth>250);
+    assert.equal(flow.stageFits,true,"Circuitry should fit the viewport");
+    assert.equal(flow.imageWithinMachine,true);
+    assert.deepEqual(flow.sequence.map(s=>s.pressed),["true","true","true"]);
+    assert.deepEqual(flow.sequence.map(s=>s.className.split(" ").at(-1)),
+      ["molten-circuit--pour","molten-circuit--temper","molten-circuit--conduct"]);
+    assert.ok(flow.sequence.every(s=>s.title.length>8));
+    console.log("✓ " + size.width + "px: natural scroll, centered X-ray, and three-stage molten circuitry");
+
     await connection.send("Page.navigate", { url: origin + "/labs/?forge-theme=" + size.width });
     const labsProbe = "(" + (async function () {
       for(let i=0;i<100&&(!document.querySelector(".artifact-card")||document.readyState!=="complete");i++)

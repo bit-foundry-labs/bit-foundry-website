@@ -36,3 +36,8 @@ Standalone learning and archive routes retain their independent HTML and scripts
 The vintage computer on the homepage now hosts an optional, conceptual systems-inspection layer (`src/components/ComputerXRay.tsx`). It retains the original photographic silhouette and reveals a vector circuit diagram using a clipped SVG lens. Move a mouse/pen over the machine to inspect; tap the machine or use the accessible *Inspect internals* button for a persistent mobile/keyboard-friendly view. Component descriptions come from `src/lib/xray-model.mjs` and are deliberately educational, not a claim that this illustration is a physical teardown of the pictured machine.
 
 The effect uses native SVG and React only; it has no dependency on shaders, paid services, images, or 3D libraries. The signal animation pauses for reduced-motion preferences. Browser CI checks the real toggle, lens and viewport fit at phone and desktop sizes.
+
+
+## Natural scrolling & molten circuitry
+
+The React landing page no longer holds visitors in sticky viewport-sized scroll tracks. The original scene sections are in normal document flow, with short incidental visual changes. The vintage computer is horizontally centered as a full-width exhibit on mobile and desktop. The networking preview now includes `src/components/MoltenCircuit.tsx`, a three-stage SVG experiment (pour, cool, conduct) that visualizes metal becoming copper paths and then propagating conceptual DNS/TCP/TLS/HTTP signals. The controls are explicit, keyboard-accessible, mobile-friendly, and stop continuous motion when reduced motion is requested. Neither interaction uses a third-party animation library or captures wheel/touch scroll events.

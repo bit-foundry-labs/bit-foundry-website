@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
 import { ForgeCasting } from "./components/ForgeCasting";
 import { ComputerXRay } from "./components/ComputerXRay";
+import { MoltenCircuit } from "./components/MoltenCircuit";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
@@ -136,7 +137,9 @@ export default function App() {
       document.documentElement.style.setProperty("--page-progress", documentProgress.toFixed(4));
       document.querySelectorAll<HTMLElement>("[data-scroll-scene]").forEach((scene) => {
         const rect = scene.getBoundingClientRect();
-        const travel = Math.max(1, rect.height - window.innerHeight);
+        // Normal document flow: progress describes the scene leaving the viewport,
+        // not a long sticky track that holds the visitor on the same section.
+        const travel = Math.max(1, rect.height);
         const progress = Math.min(1, Math.max(0, -rect.top / travel));
         scene.style.setProperty("--scene-progress", progress.toFixed(4));
         scene.style.setProperty(
@@ -493,15 +496,7 @@ export default function App() {
                 <Arrow />
               </a>
             </div>
-            <div className="project-code">
-              <span>DNS</span>
-              <i />
-              <span>TCP</span>
-              <i />
-              <span>TLS</span>
-              <i />
-              <span>HTTP</span>
-            </div>
+            <MoltenCircuit />
           </div>
         </section>
 
