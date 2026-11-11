@@ -333,12 +333,24 @@ export default function App() {
               alt="Planet Earth suspended in a dark field of stars"
               onLoad={() => setHeroReady(true)}
             />
+            <div className="hero-starfield" aria-hidden="true" />
+            <div className="hero-orbit hero-orbit--outer" aria-hidden="true" />
+            <div className="hero-orbit hero-orbit--inner" aria-hidden="true" />
             <div className="hero-tint" />
             <div className="hero-grain" />
+            <div className="hero-coordinate hero-coordinate--left" aria-hidden="true">
+              <span>01 / ORBITAL VIEW</span>
+              <span>EARTH · HOME</span>
+            </div>
+            <div className="hero-coordinate hero-coordinate--right" aria-hidden="true">
+              <span>OBSERVATION / EARTH</span>
+              <span>LOCAL SYSTEM: ACTIVE</span>
+            </div>
             <div className="hero-copy">
+              <span className="hero-kicker">BIT FOUNDRY LABS / HUMAN-CENTERED COMPUTING</span>
               <h1>
-                <SplitText>Hello, Human</SplitText>
-                <SplitText className="hero-accent">trace, question and understand</SplitText>
+                <SplitText>Welcome, Human</SplitText>
+                <SplitText className="hero-accent">Look beneath the surface.</SplitText>
               </h1>
               <p>
                 Beautiful tools and interactive lessons
