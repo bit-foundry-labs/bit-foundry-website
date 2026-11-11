@@ -133,6 +133,12 @@ if (fibLesson) {
     button.setAttribute("aria-pressed", "false");
   }
 
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden || !fib.timer) return;
+    stopFib();
+    renderFib("Paused while the tab is inactive. Run loop to continue.");
+  });
+
   fibLesson.querySelector('[data-action="fib-step"]').addEventListener("click", stepFib);
   fibLesson.querySelector('[data-action="fib-run"]').addEventListener("click", (event) => {
     if (fib.timer) { stopFib(); return; }

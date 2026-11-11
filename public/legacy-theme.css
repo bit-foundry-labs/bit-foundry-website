@@ -144,3 +144,144 @@ body.disk-page button:focus-visible { outline: 2px solid #783d9a; outline-offset
   html { scroll-behavior: auto; }
   body:not(.disk-page) :is(.artifact-card, .concept, .control-button) { transition: none; }
 }
+/* Interactive learning labs / visual QA.
+   Fortran uses dark surfaces; actual code cards retain their original warm paper.
+   These overrides cannot change the lesson engines or their state transitions. */
+body.fortran-page {
+  color-scheme: dark;
+  --paper: #0c0c0d;
+  --paper-light: #171d26;
+  --ink: #f2f2f0;
+  --forest: #bcd9ff;
+  --forest-dark: #293c54;
+  --orange: #d4e4ff;
+  --blue: #253247;
+  --muted: #b9c5d5;
+  --rule: #3a4a5d;
+  background: #0c0c0d;
+  background-image: radial-gradient(ellipse at 90% 10%, rgba(120,150,195,.14), transparent 50%);
+}
+body.fortran-page .learn-hero { background: #151b23; border-color: #40506a; }
+body.fortran-page .learn-hero h1 { font-size: clamp(3rem, 6.7vw, 5.5rem); }
+body.fortran-page .lesson-intro h2 { font-size: clamp(1.6rem, 2.75vw, 2.5rem); }
+body.fortran-page .lesson-card {
+  background: #14191f;
+  border-color: #40506a;
+}
+body.fortran-page .diagram-frame {
+  background: #0c1015;
+  border-color: #334459;
+}
+body.fortran-page .build-stage {
+  color: #f3f6fa;
+  background: #1a222d;
+  border-color: #50647c;
+  transition: background-color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+}
+body.fortran-page .build-stage strong,
+body.fortran-page .build-stage code { color: #f4f7ff; }
+body.fortran-page .build-stage small { color: #d3dce8; }
+body.fortran-page .build-stage.is-complete { background: #243a51; border-color: #a9c9f3; }
+body.fortran-page .build-stage:is(.is-active,:focus-visible) {
+  background: #29415a;
+  box-shadow: inset 0 0 0 1px #d4e4ff, 0 0 26px rgba(153,185,235,.17);
+  transform: translateY(-2px);
+}
+body.fortran-page .build-stage .stage-step {
+  color: #e4efff;
+  border-color: #8aaccd;
+}
+body.fortran-page .build-stage.is-passed .stage-step {
+  background: #d4e4ff;
+  color: #132034;
+}
+body.fortran-page .build-arrow { color: #bcd9ff; }
+body.fortran-page .build-console {
+  background: #0a111b;
+  border-color: #50647c;
+  color: #e3f0ff;
+}
+body.fortran-page .build-console > span,
+body.fortran-page .build-console b { color: #bfdaff; }
+body.fortran-page .build-status {
+  background: #dce9f8;
+  color: #172438 !important;
+  border-left-color: #6085bb;
+}
+body.fortran-page .flow-status { color: #d4e4ff; }
+body.fortran-page .value-chip,
+body.fortran-page .answer-button { color: #edf2fa; background: #202b37; border-color: #536882; }
+body.fortran-page .value-chip b { color: #c6e0ff; }
+body.fortran-page .detail-copy h3 { color: #f2f2f0; }
+body.fortran-page .detail-copy p,
+body.fortran-page .quick-check p { color: #c8d2df; }
+body.fortran-page .coding-sheet,
+body.fortran-page .punch-card { color-scheme: light; }
+body.fortran-page .coding-sheet .code-line.is-active {
+  background: #d2e5f3;
+  outline-color: #6282ab;
+}
+body.fortran-page .coding-sheet .code-line:hover { background: #d2e5f3; }
+body.fortran-page .coding-sheet .code-line code,
+body.fortran-page .coding-sheet .code-line small { color: #342a20; }
+body.fortran-page .flow-node { background: #d4e4ff; color: #18212f; }
+body.fortran-page .flow-node:is(.start-stop,.test) { background: #293e57; color: #f2f2f0; }
+body.fortran-page .flow-node.initialize { background: #f2f2f0; color: #18212f; }
+
+/* Keep wide network tables readable, without crowding the OSI model at tablet widths. */
+body.learn-page:not(.fortran-page) :is(.osi-stack,.osi-detail,.osi-trace) { min-width: 0; }
+body.learn-page:not(.fortran-page) .osi-layer {
+  min-width: 0;
+  border-radius: 6px;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+body.learn-page:not(.fortran-page) .osi-layer:is(:focus-visible,.is-active) {
+  outline: 2px solid var(--osi-color, #9dbce5);
+  outline-offset: 1px;
+}
+body.learn-page:not(.fortran-page) :is(.osi-name,.osi-job,.osi-examples) {
+  overflow-wrap: anywhere;
+}
+body.learn-page:not(.fortran-page) .osi-stack .osi-layer {
+  background: var(--osi-tint, #f0f3f8);
+  color: #263444;
+}
+body.learn-page:not(.fortran-page) .osi-stack .osi-name { color: #1b2a3b; }
+body.learn-page:not(.fortran-page) .osi-stack .osi-job { color: #384c62; }
+body.learn-page:not(.fortran-page) .osi-stack .osi-examples { color: #526276; }
+body.learn-page:not(.fortran-page) .osi-detail {
+  background: #f4f7fc;
+  color: #172638;
+  border-color: #9eb5d4;
+}
+body.learn-page:not(.fortran-page) .osi-detail h3 { color: #1b2a3b; }
+body.learn-page:not(.fortran-page) .osi-detail p { color: #35475b; }
+body.learn-page:not(.fortran-page) .osi-trace {
+  border-color: #8da8cd;
+  border-top-color: var(--trace-color, #8da8cd);
+  background: #f4f7fc;
+}
+body.learn-page:not(.fortran-page) .osi-trace :is(h3,.osi-trace-position) { color: #1b2a3b; }
+body.learn-page:not(.fortran-page) .osi-trace p { color: #35475b; }
+body.learn-page:not(.fortran-page) .osi-trace-status {
+  background: #dce9f8 !important;
+  color: #1b2a3b !important;
+}
+@media (min-width: 821px) and (max-width: 1120px) {
+  body.learn-page:not(.fortran-page) .osi-layout { grid-template-columns: minmax(0, 1fr); }
+  body.learn-page:not(.fortran-page) .osi-layer {
+    grid-template-columns: 3rem minmax(120px, .8fr) minmax(175px, 1.15fr) minmax(100px, .7fr);
+  }
+  body.learn-page:not(.fortran-page) .osi-examples { display: none; }
+}
+@media (max-width: 640px) {
+  body.fortran-page .build-diagram { scroll-snap-type: x proximity; }
+  body.fortran-page .build-stage { scroll-snap-align: start; }
+  body.fortran-page .lesson-intro h2 { font-size: clamp(1.45rem, 6.2vw, 2.1rem); }
+  body.learn-page:not(.fortran-page) .osi-layer { padding: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.fortran-page :is(.build-stage,.flow-node,.code-line),
+  body.learn-page:not(.fortran-page) .osi-layer { transition: none !important; animation: none !important; }
+  body.fortran-page .build-stage.is-active { transform: none; }
+}

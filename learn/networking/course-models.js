@@ -137,6 +137,12 @@ if(!storage||!progress)return;
       resetButton.addEventListener("click", reset);
       mode.addEventListener("change", reset);
       lost.addEventListener("change", reset);
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && timer) {
+          stop();
+          status.textContent = "Paused while tab is inactive. Run slowly to continue.";
+        }
+      });
       reset();
     })();
 

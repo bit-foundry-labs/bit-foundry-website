@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { DecodeText, LetterRoll } from "./components/KineticText";
+import { getHeroMotion } from "./lib/hero-motion.mjs";
 
 const images = {
   hero: "https://images.unsplash.com/photo-1643330683233-ff2ac89b002c?auto=format&fit=crop&w=2400&q=92",
@@ -91,14 +93,35 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
+  const introStartedAt = useRef<number | null>(null);
   const [activeSection, setActiveSection] = useState("About");
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
-  const [previewPosition, setPreviewPosition] = useState({ x: 0, y: 0 });
+  const previewRef = useRef<HTMLDivElement>(null);
+  const previewFrame = useRef<number | null>(null);
+  const previewPosition = useRef({ x: 0, y: 0 });
+
+  const movePreview = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    previewPosition.current = { x: event.clientX, y: event.clientY };
+    if (previewFrame.current !== null) return;
+    previewFrame.current = window.requestAnimationFrame(() => {
+      const position = previewPosition.current;
+      previewRef.current?.style.setProperty(
+        "transform",
+        `translate3d(${position.x}px, ${position.y}px, 0)`,
+      );
+      previewFrame.current = null;
+    });
+  };
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const delay = reducedMotion ? 50 : heroReady ? 1150 : 4000;
-    const timer = window.setTimeout(() => setIntroComplete(true), delay);
+    const now = performance.now();
+    // Hold for a consistent minimum from mount; never extend the wait on image load.
+    if (introStartedAt.current === null) introStartedAt.current = now;
+    const elapsed = now - introStartedAt.current;
+    const revealAfter = reducedMotion ? 0 : heroReady ? 1750 : 2400;
+    const remaining = Math.max(0, revealAfter - elapsed);
+    const timer = window.setTimeout(() => setIntroComplete(true), remaining);
     return () => window.clearTimeout(timer);
   }, [heroReady]);
 
@@ -106,6 +129,9 @@ export default function App() {
     let frame = 0;
 
     const update = () => {
+      const documentTravel = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const documentProgress = Math.min(1, Math.max(0, window.scrollY / documentTravel));
+      document.documentElement.style.setProperty("--page-progress", documentProgress.toFixed(4));
       document.querySelectorAll<HTMLElement>("[data-scroll-scene]").forEach((scene) => {
         const rect = scene.getBoundingClientRect();
         const travel = Math.max(1, rect.height - window.innerHeight);
@@ -119,6 +145,21 @@ export default function App() {
           "--scene-radius",
           `${Math.max(0, (1 - progress) * 16).toFixed(2)}px`,
         );
+        if (scene.classList.contains("hero-scroll")) {
+          const motion = getHeroMotion(progress);
+          const units: Record<keyof typeof motion, string> = {
+            earthX: "px", earthY: "px", earthScale: "", earthRotation: "deg",
+            earthMobileY: "px", earthMobileScale: "", distantStarsY: "px",
+            nearStarsY: "px", haloY: "px", orbitOuterY: "px",
+            orbitInnerY: "px", copyY: "px", copyOpacity: "",
+          };
+          for (const key of Object.keys(motion) as Array<keyof typeof motion>) {
+            scene.style.setProperty(
+              `--${key.replace(/[A-Z]/g, (letter) => "-" + letter.toLowerCase())}`,
+              `${motion[key].toFixed(3)}${units[key]}`,
+            );
+          }
+        }
       });
       frame = 0;
     };
@@ -144,6 +185,7 @@ export default function App() {
       method: "Method",
       labs: "Labs",
       archive: "Archive",
+      products: "Products",
     };
     const sections = document.querySelectorAll<HTMLElement>("main section[id]");
     const observer = new IntersectionObserver(
@@ -178,6 +220,10 @@ export default function App() {
     return () => window.removeEventListener("pointermove", onPointerMove);
   }, []);
 
+  useEffect(() => () => {
+    if (previewFrame.current !== null) window.cancelAnimationFrame(previewFrame.current);
+  }, []);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
@@ -204,6 +250,36 @@ export default function App() {
     return () => observer.disconnect();
   }, [introComplete]);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const root = document.querySelector<HTMLElement>(".site");
+    const elements = document.querySelectorAll<HTMLElement>(".chapter-reveal");
+    if (!root || elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+    );
+    elements.forEach((element) => observer.observe(element));
+    root.classList.add("motion-ready");
+
+    return () => {
+      observer.disconnect();
+      root.classList.remove("motion-ready");
+    };
+  }, []);
+
+  const chapterNames = ["Home", "About", "Method", "Labs", "Archive", "Products"];
+  const chapterNumber = Math.max(1, chapterNames.indexOf(activeSection) + 1);
+
   return (
     <div className="site">
       <div className={`intro-layer ${introComplete ? "is-complete" : ""}`} aria-hidden="true">
@@ -219,6 +295,12 @@ export default function App() {
         </div>
         <small>Connecting to system</small>
       </div>
+
+      <aside className="chapter-progress" aria-hidden="true">
+        <span className="chapter-progress__name">{activeSection}</span>
+        <span className="chapter-progress__track"><span className="chapter-progress__fill" /></span>
+        <span className="chapter-progress__count">{String(chapterNumber).padStart(2, "0")} / 06</span>
+      </aside>
 
       <header className="nav-shell">
         <a className="nav-location" href="#labs">
@@ -239,7 +321,7 @@ export default function App() {
         </button>
       </header>
 
-      <div className={`menu-layer ${menuOpen ? "is-open" : ""}`}>
+      <div className={`menu-layer ${menuOpen ? "is-open" : ""}`} inert={!menuOpen}>
         <nav aria-label="Main navigation">
           {[
             ["01", "About", "#about"],
@@ -249,7 +331,7 @@ export default function App() {
           ].map(([index, label, href]) => (
             <a href={href} key={label} onClick={() => setMenuOpen(false)}>
               <small>{index}</small>
-              <span>{label}</span>
+              <span className="menu-link-label"><LetterRoll text={label} /></span>
               <Arrow />
             </a>
           ))}
@@ -273,12 +355,26 @@ export default function App() {
               alt="Planet Earth suspended in a dark field of stars"
               onLoad={() => setHeroReady(true)}
             />
+            <div className="hero-starfield" aria-hidden="true" />
+            <div className="hero-near-stars" aria-hidden="true" />
+            <div className="hero-atmosphere" aria-hidden="true" />
+            <div className="hero-orbit hero-orbit--outer" aria-hidden="true" />
+            <div className="hero-orbit hero-orbit--inner" aria-hidden="true" />
             <div className="hero-tint" />
             <div className="hero-grain" />
+            <div className="hero-coordinate hero-coordinate--left" aria-hidden="true">
+              <span>01 / ORBITAL VIEW</span>
+              <span>EARTH · HOME</span>
+            </div>
+            <div className="hero-coordinate hero-coordinate--right" aria-hidden="true">
+              <span>OBSERVATION / EARTH</span>
+              <span>LOCAL SYSTEM: ACTIVE</span>
+            </div>
             <div className="hero-copy">
+              <span className="hero-kicker">BIT FOUNDRY LABS / HUMAN-CENTERED COMPUTING</span>
               <h1>
-                <SplitText>Hello, Human</SplitText>
-                <SplitText className="hero-accent">trace, question and understand</SplitText>
+                <SplitText>Welcome, Human</SplitText>
+                <SplitText className="hero-accent">Look beneath the surface.</SplitText>
               </h1>
               <p>
                 Beautiful tools and interactive lessons
@@ -296,7 +392,7 @@ export default function App() {
         <section className="about-section" id="about">
           <div className="section-number">
             <span>(01)</span>
-            <span>About the foundry</span>
+            <span><DecodeText text="About the foundry" /></span>
           </div>
           <div className="about-intro">
             <p>
@@ -305,11 +401,11 @@ export default function App() {
             </p>
           </div>
           <div className="about-columns">
-            <p>
+            <p className="chapter-reveal">
               We build systems software, developer tools, and educational experiences for people who
               want to know what is really happening beneath the screen.
             </p>
-            <p>
+            <p className="chapter-reveal" style={{ "--reveal-index": 1 } as React.CSSProperties}>
               Every project begins with the same act: opening the black box. We preserve the depth,
               remove the intimidation, and turn invisible behavior into something you can touch.
             </p>
@@ -322,11 +418,26 @@ export default function App() {
 
         <section className="artifact-scroll" data-scroll-scene>
           <div className="artifact-sticky">
-            <div className="artifact-image">
-              <img
-                src="/assets/retro-computer-front.webp"
-                alt="Vintage computer from the Bit Foundry field archive"
-              />
+            <div className="artifact-image artifact-image--cutout">
+              <svg
+                className="artifact-computer"
+                viewBox="0 0 1536 1024"
+                role="img"
+                aria-label="Vintage desktop computer isolated against the studio backdrop"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <defs>
+                  <clipPath id="artifact-computer-outline">
+                    <path d="M489 108 L483 118 L482 527 L492 537 L522 539 L527 549 L465 552 L404 588 L401 722 L340 730 L262 860 L263 882 L278 892 L276 898 L290 902 L323 904 L626 902 L695 908 L785 906 L807 910 L1162 906 L1175 900 L1196 878 L1198 856 L1157 726 L1129 719 L1128 591 L1071 552 L1005 549 L1010 539 L1037 538 L1049 529 L1048 111 L1037 104 Z" />
+                  </clipPath>
+                </defs>
+                <image
+                  href="/assets/retro-computer-front.webp"
+                  width="1536"
+                  height="1024"
+                  clipPath="url(#artifact-computer-outline)"
+                />
+              </svg>
             </div>
             <div className="artifact-copy">
               <h2>
@@ -344,20 +455,20 @@ export default function App() {
         <section className="method-section" id="method">
           <div className="section-number light">
             <span>(02)</span>
-            <span>How we shape understanding</span>
+            <span><DecodeText text="How we shape understanding" /></span>
           </div>
           <div className="method-lead">
             <p>We don’t simplify the subject.</p>
             <p>We change the way you meet it.</p>
           </div>
           <div className="method-list">
-            {products.map((item) => (
-              <article key={item.number}>
+            {products.map((item, index) => (
+              <article className="chapter-reveal" style={{ "--reveal-index": index } as React.CSSProperties} key={item.number}>
                 <div className="method-index">
                   <span>{item.number}</span>
                   <span>— {item.label}</span>
                 </div>
-                <h3>{item.title}</h3>
+                <h3><LetterRoll text={item.title} /></h3>
                 <p>{item.text}</p>
               </article>
             ))}
@@ -365,7 +476,7 @@ export default function App() {
         </section>
 
         <section className="lab-intro" id="labs">
-          <span>(03) Interactive environments</span>
+          <span>(03) <DecodeText text="Interactive environments" /></span>
           <h2>
             <SplitText>Two ways</SplitText>
             <br />
@@ -443,7 +554,7 @@ export default function App() {
         <section className="archive-section" id="archive">
           <div className="archive-heading">
             <span className="archive-count">(04)</span>
-            <h2>Field archive</h2>
+            <h2><DecodeText text="Field archive" /></h2>
             <p>Fragments from the systems that brought us here.</p>
           </div>
           <div className="archive-list">
@@ -453,11 +564,11 @@ export default function App() {
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noreferrer" : undefined}
                 key={item.title}
+                className="chapter-reveal"
+                style={{ "--reveal-index": index } as React.CSSProperties}
                 onPointerEnter={() => setArchivePreview(index)}
                 onPointerLeave={() => setArchivePreview(null)}
-                onPointerMove={(event) =>
-                  setPreviewPosition({ x: event.clientX, y: event.clientY })
-                }
+                onPointerMove={movePreview}
               >
                 <span>{item.year}</span>
                 <strong>{item.title}</strong>
@@ -467,10 +578,8 @@ export default function App() {
             ))}
           </div>
           <div
+            ref={previewRef}
             className={`archive-preview ${archivePreview !== null ? "is-visible" : ""}`}
-            style={{
-              transform: `translate3d(${previewPosition.x}px, ${previewPosition.y}px, 0)`,
-            }}
             aria-hidden="true"
           >
             {archivePreview !== null && <img src={archiveItems[archivePreview].preview} alt="" />}
@@ -480,9 +589,9 @@ export default function App() {
         <section className="forge-section" id="products">
           <div className="forge-heading">
             <span>Currently in development</span>
-            <h2>ForgeLoop</h2>
+            <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
-          <div className="forge-detail">
+          <div className="forge-detail chapter-reveal">
             <p>
               An autonomous engineering workspace with bounded agents, explicit objectives, and
               human oversight.
