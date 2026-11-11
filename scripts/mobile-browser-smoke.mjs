@@ -192,6 +192,16 @@ try {
         lettersFit: words.every((box) => box.left >= -2 && box.right <= innerWidth + 2),
         titleVisible: getComputedStyle(section).display !== "none",
         embersAnimated: getComputedStyle(embers).animationName.includes("forge-ember-drift"),
+        castings: Array.from(document.querySelectorAll(".forge-casting")).map((casting) => {
+          const bounds = casting.getBoundingClientRect();
+          return {
+            tool: casting.className,
+            decorative: casting.getAttribute("aria-hidden") === "true",
+            fits: bounds.left >= -2 && bounds.right <= innerWidth + 2,
+            paths: casting.querySelectorAll("svg path").length,
+            animated: getComputedStyle(casting.querySelector(".forge-casting__stream")).animationName.includes("forge-stream-cast"),
+          };
+        }),
       };
     }).toString() + ")()";
     const forgeEvaluated = await connection.send("Runtime.evaluate", {
@@ -208,6 +218,10 @@ try {
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
     assert.equal(forge.embersAnimated, true, "Forge ambient animation should be enabled by default");
+    assert.equal(forge.castings.length, 5, "Five editorial castings must be present");
+    assert.ok(forge.castings.every((casting) => casting.decorative && casting.fits && casting.paths >= 4));
+    assert.ok(forge.castings.every((casting) => casting.animated), "Native scroll-timeline effects should initialize");
+    console.log("✓ " + size.width + "px: forge castings fit the viewport and animate");
     console.log("✓ " + size.width + "px: foundry hero image, typography and embers");
 
   }
