@@ -1269,3 +1269,138 @@ footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Character decoding preserves the final line width even when glyph widths differ. */
+.decode-text {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  white-space: pre;
+}
+.decode-text__measure {
+  display: block;
+  visibility: hidden;
+}
+.decode-text__visual {
+  position: absolute;
+  inset: 0;
+  display: block;
+  white-space: pre;
+  pointer-events: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Duplicated glyphs roll in their own masks; whole words can wrap normally. */
+.letter-roll,
+.letter-roll__letters,
+.letter-roll__word {
+  display: inline-flex;
+  align-items: baseline;
+}
+.letter-roll__letters { flex-wrap: wrap; }
+.letter-roll__word { white-space: nowrap; }
+.letter-roll__space { white-space: pre; }
+.letter-roll__cell {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  vertical-align: top;
+}
+.letter-roll__stack {
+  display: block;
+  transition: transform 620ms cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: calc(var(--letter-index) * 19ms);
+}
+.letter-roll__stack > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+.menu-layer nav a:is(:hover, :focus-visible) .letter-roll__stack,
+.method-list article:hover .letter-roll__stack,
+.method-list article:focus-within .letter-roll__stack {
+  transform: translateY(-50%);
+}
+
+/* A quiet chapter rail tracks document progress using the existing scroll RAF. */
+.chapter-progress {
+  position: fixed;
+  z-index: 60;
+  top: 50%;
+  right: clamp(14px, 1.6vw, 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  transform: translateY(-50%);
+  color: #efe9ed;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.chapter-progress__name {
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font: 400 8px/1.2 var(--mono);
+}
+.chapter-progress__track {
+  width: 1px;
+  height: clamp(60px, 12vh, 132px);
+  background: rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+.chapter-progress__fill {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: scaleY(var(--page-progress, 0));
+  transform-origin: top;
+}
+.chapter-progress__count {
+  font: 400 8px/1 var(--mono);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+
+/* Scene entrances: no hidden content until JS successfully attaches an observer. */
+.site.motion-ready .chapter-reveal {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition:
+    opacity 730ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 730ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 300ms ease;
+  transition-delay: calc(var(--reveal-index, 0) * 95ms);
+}
+.site.motion-ready .chapter-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (max-width: 900px) {
+  .chapter-progress { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .letter-roll__stack { transform: none !important; transition: none !important; }
+  .site.motion-ready .chapter-reveal { opacity: 1; transform: none; }
+  .hero-sticky > img,
+  .project-sticky > img,
+  .artifact-image,
+  .hero-copy { transform: none !important; transition: none !important; }
+  .hero-sticky > img,
+  .project-sticky > img { clip-path: none !important; }
+  .hero-copy { opacity: 1 !important; }
+}

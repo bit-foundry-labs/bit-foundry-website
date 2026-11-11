@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DecodeText, LetterRoll } from "./components/KineticText";
 
 const images = {
   hero: "https://images.unsplash.com/photo-1643330683233-ff2ac89b002c?auto=format&fit=crop&w=2400&q=92",
@@ -97,7 +98,7 @@ export default function App() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const delay = reducedMotion ? 50 : heroReady ? 1150 : 4000;
+    const delay = reducedMotion ? 0 : heroReady ? 650 : 1200;
     const timer = window.setTimeout(() => setIntroComplete(true), delay);
     return () => window.clearTimeout(timer);
   }, [heroReady]);
@@ -106,6 +107,9 @@ export default function App() {
     let frame = 0;
 
     const update = () => {
+      const documentTravel = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const documentProgress = Math.min(1, Math.max(0, window.scrollY / documentTravel));
+      document.documentElement.style.setProperty("--page-progress", documentProgress.toFixed(4));
       document.querySelectorAll<HTMLElement>("[data-scroll-scene]").forEach((scene) => {
         const rect = scene.getBoundingClientRect();
         const travel = Math.max(1, rect.height - window.innerHeight);
@@ -144,6 +148,7 @@ export default function App() {
       method: "Method",
       labs: "Labs",
       archive: "Archive",
+      products: "Products",
     };
     const sections = document.querySelectorAll<HTMLElement>("main section[id]");
     const observer = new IntersectionObserver(
@@ -204,6 +209,36 @@ export default function App() {
     return () => observer.disconnect();
   }, [introComplete]);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const root = document.querySelector<HTMLElement>(".site");
+    const elements = document.querySelectorAll<HTMLElement>(".chapter-reveal");
+    if (!root || elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+    );
+    elements.forEach((element) => observer.observe(element));
+    root.classList.add("motion-ready");
+
+    return () => {
+      observer.disconnect();
+      root.classList.remove("motion-ready");
+    };
+  }, []);
+
+  const chapterNames = ["Home", "About", "Method", "Labs", "Archive", "Products"];
+  const chapterNumber = Math.max(1, chapterNames.indexOf(activeSection) + 1);
+
   return (
     <div className="site">
       <div className={`intro-layer ${introComplete ? "is-complete" : ""}`} aria-hidden="true">
@@ -219,6 +254,12 @@ export default function App() {
         </div>
         <small>Connecting to system</small>
       </div>
+
+      <aside className="chapter-progress" aria-hidden="true">
+        <span className="chapter-progress__name">{activeSection}</span>
+        <span className="chapter-progress__track"><span className="chapter-progress__fill" /></span>
+        <span className="chapter-progress__count">{String(chapterNumber).padStart(2, "0")} / 06</span>
+      </aside>
 
       <header className="nav-shell">
         <a className="nav-location" href="#labs">
@@ -249,7 +290,7 @@ export default function App() {
           ].map(([index, label, href]) => (
             <a href={href} key={label} onClick={() => setMenuOpen(false)}>
               <small>{index}</small>
-              <span>{label}</span>
+              <span className="menu-link-label"><LetterRoll text={label} /></span>
               <Arrow />
             </a>
           ))}
@@ -296,7 +337,7 @@ export default function App() {
         <section className="about-section" id="about">
           <div className="section-number">
             <span>(01)</span>
-            <span>About the foundry</span>
+            <span><DecodeText text="About the foundry" /></span>
           </div>
           <div className="about-intro">
             <p>
@@ -305,11 +346,11 @@ export default function App() {
             </p>
           </div>
           <div className="about-columns">
-            <p>
+            <p className="chapter-reveal">
               We build systems software, developer tools, and educational experiences for people who
               want to know what is really happening beneath the screen.
             </p>
-            <p>
+            <p className="chapter-reveal" style={{ "--reveal-index": 1 } as React.CSSProperties}>
               Every project begins with the same act: opening the black box. We preserve the depth,
               remove the intimidation, and turn invisible behavior into something you can touch.
             </p>
@@ -344,20 +385,20 @@ export default function App() {
         <section className="method-section" id="method">
           <div className="section-number light">
             <span>(02)</span>
-            <span>How we shape understanding</span>
+            <span><DecodeText text="How we shape understanding" /></span>
           </div>
           <div className="method-lead">
             <p>We don’t simplify the subject.</p>
             <p>We change the way you meet it.</p>
           </div>
           <div className="method-list">
-            {products.map((item) => (
-              <article key={item.number}>
+            {products.map((item, index) => (
+              <article className="chapter-reveal" style={{ "--reveal-index": index } as React.CSSProperties} key={item.number}>
                 <div className="method-index">
                   <span>{item.number}</span>
                   <span>— {item.label}</span>
                 </div>
-                <h3>{item.title}</h3>
+                <h3><LetterRoll text={item.title} /></h3>
                 <p>{item.text}</p>
               </article>
             ))}
@@ -365,7 +406,7 @@ export default function App() {
         </section>
 
         <section className="lab-intro" id="labs">
-          <span>(03) Interactive environments</span>
+          <span>(03) <DecodeText text="Interactive environments" /></span>
           <h2>
             <SplitText>Two ways</SplitText>
             <br />
@@ -443,7 +484,7 @@ export default function App() {
         <section className="archive-section" id="archive">
           <div className="archive-heading">
             <span className="archive-count">(04)</span>
-            <h2>Field archive</h2>
+            <h2><DecodeText text="Field archive" /></h2>
             <p>Fragments from the systems that brought us here.</p>
           </div>
           <div className="archive-list">
@@ -453,6 +494,8 @@ export default function App() {
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noreferrer" : undefined}
                 key={item.title}
+                className="chapter-reveal"
+                style={{ "--reveal-index": index } as React.CSSProperties}
                 onPointerEnter={() => setArchivePreview(index)}
                 onPointerLeave={() => setArchivePreview(null)}
                 onPointerMove={(event) =>
@@ -480,9 +523,9 @@ export default function App() {
         <section className="forge-section" id="products">
           <div className="forge-heading">
             <span>Currently in development</span>
-            <h2>ForgeLoop</h2>
+            <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
-          <div className="forge-detail">
+          <div className="forge-detail chapter-reveal">
             <p>
               An autonomous engineering workspace with bounded agents, explicit objectives, and
               human oversight.
