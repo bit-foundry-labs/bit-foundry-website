@@ -6,7 +6,6 @@ import { MoltenCircuit } from "./components/MoltenCircuit";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
-  hero: "/assets/forge-hall-desktop.webp",
   network:
     "https://images.unsplash.com/photo-1783683783819-e6cb806bba69?auto=format&fit=crop&w=2200&q=90",
   fortran:
@@ -74,7 +73,7 @@ function SplitText({ children, className = "" }: { children: string; className?:
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
-  const [heroReady, setHeroReady] = useState(false);
+  const [heroReady] = useState(true);
   const introStartedAt = useRef<number | null>(null);
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -292,20 +291,11 @@ export default function App() {
       <main>
         <section className="hero-scroll" id="top" data-scroll-scene>
           <div className="hero-sticky forge-scene">
-            <img
-              className="cinematic-image forge-image"
-              src={images.hero}
-              srcSet="/assets/forge-hall-mobile.webp 1600w, /assets/forge-hall-desktop.webp 1672w"
-              sizes="100vw"
-              alt="Ornate ancient swords hanging over a vast foundry where molten metal runs into an anvil casting"
-              fetchPriority="high"
-              onLoad={() => setHeroReady(true)}
-            />
-            <div className="forge-smoke" aria-hidden="true" />
-            <div className="forge-heat" aria-hidden="true" />
-            <div className="forge-embers forge-embers--far" aria-hidden="true" />
-            <div className="forge-embers forge-embers--near" aria-hidden="true" />
-            <div className="forge-sword-glint" aria-hidden="true" />
+            <div className="forge-art" aria-hidden="true">
+              <img className="forge-art__image" src="/assets/molten-foundry-hero.webp" alt="" fetchPriority="high" />
+              <div className="forge-art__heat" />
+              <div className="forge-art__reflection" />
+            </div>
             <div className="hero-tint" aria-hidden="true" />
             <div className="hero-grain" aria-hidden="true" />
             <div className="hero-copy">

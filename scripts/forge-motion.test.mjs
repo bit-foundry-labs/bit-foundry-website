@@ -22,13 +22,13 @@ test("motion is finite and clamped",()=>{
 test("new brand copy, imagery, motion and reduced-motion rules are present",()=>{
   const app=readFileSync("src/App.tsx","utf8");
   const css=readFileSync("src/index.css","utf8");
-  assert.match(app,/hero: "\/assets\/forge-hall-desktop\.webp"/);
-  assert.match(app,/forge-hall-mobile\.webp 1600w/);
-  assert.match(app,/<SplitText>Welcome to<\/SplitText>/);
-  assert.match(app,/<SplitText className="hero-accent">the Foundry\.<\/SplitText>/);
-  assert.match(app,/forge-embers--near/);
-  assert.match(css,/@keyframes forge-heat-breathe/);
-  assert.match(css,/@keyframes forge-blade-shimmer/);
+  const design = readFileSync("src/forge-design.css", "utf8");
+  assert.match(app, /className="forge-art" aria-hidden="true"/);
+  assert.match(app, /molten-foundry-hero\.webp/);
+  assert.match(app, /forge-art__reflection/);
+  assert.match(app, /<SplitText>Welcome to<\/SplitText>/);
+  assert.match(design, /@keyframes casting-reflection/);
+  assert.match(design, /@media \(prefers-reduced-motion:reduce\)/);
   assert.match(css, /\.hero-scroll \{ height: 160vh; \}/);
   assert.match(css, /\.hero-scroll \{ height: 135vh; \}/);
 });
