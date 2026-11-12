@@ -231,7 +231,7 @@ try {
         const button = document.querySelector(".soft-button");
         return {
           navBorder: getComputedStyle(nav).borderTopColor,
-          seam: getComputedStyle(document.querySelector(".about-section"), "::after").animationName,
+          seam: getComputedStyle(document.querySelector(".about-section"), "::after").backgroundImage,
           archiveSurface: getComputedStyle(archive).backgroundColor,
           buttonGlint: getComputedStyle(button, "::after").content,
           token: getComputedStyle(document.documentElement).getPropertyValue("--forge-ember").trim(),
@@ -241,7 +241,7 @@ try {
     if (materialCheck.exceptionDetails) throw new Error("Forge theme computed-style check failed");
     const material = materialCheck.result.value;
     assert.equal(material.token, "#ff742f");
-    assert.ok(material.seam !== "none");
+    assert.ok(material.seam.includes("linear-gradient"),"Thin ember seam should separate the scenes");
     assert.ok(material.buttonGlint && material.buttonGlint !== "none");
     assert.ok(material.archiveSurface !== "rgba(0, 0, 0, 0)");
     console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
