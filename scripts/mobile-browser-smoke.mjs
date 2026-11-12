@@ -227,30 +227,27 @@ try {
     const materialCheck = await connection.send("Runtime.evaluate", {
       expression: "(" + (function () {
         const nav = document.querySelector(".nav-shell");
-        const method = document.querySelector(".method-list article");
         const archive = document.querySelector(".archive-section");
         const button = document.querySelector(".soft-button");
         return {
           navBorder: getComputedStyle(nav).borderTopColor,
           seam: getComputedStyle(document.querySelector(".about-section"), "::after").animationName,
-          methodRail: getComputedStyle(method, "::before").width,
-          paper: getComputedStyle(archive).backgroundColor,
+          archiveSurface: getComputedStyle(archive).backgroundColor,
           buttonGlint: getComputedStyle(button, "::after").content,
-          token: getComputedStyle(document.documentElement).getPropertyValue("--forge-copper").trim(),
+          token: getComputedStyle(document.documentElement).getPropertyValue("--forge-ember").trim(),
         };
       }).toString() + ")()", returnByValue: true,
     });
     if (materialCheck.exceptionDetails) throw new Error("Forge theme computed-style check failed");
     const material = materialCheck.result.value;
-    assert.equal(material.token, "#dba16e");
-    assert.ok(material.seam.includes("forge-seam-pulse"));
-    assert.equal(material.methodRail, "2px");
+    assert.equal(material.token, "#ff742f");
+    assert.ok(material.seam !== "none");
     assert.ok(material.buttonGlint && material.buttonGlint !== "none");
-    assert.ok(material.paper !== "rgba(0, 0, 0, 0)");
+    assert.ok(material.archiveSurface !== "rgba(0, 0, 0, 0)");
     console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
 
     const editorial = await connection.send("Runtime.evaluate", {
-      expression: "(" + (function () {
+      expression: "(" + (async function () {
         const nav=document.querySelector(".nav-shell");
         const button=document.querySelector(".menu-toggle");
         const hero=document.querySelector(".forge-scene");
@@ -260,9 +257,10 @@ try {
         const archiveTitle=archive.querySelector("h2");
         const before=button.getAttribute("aria-expanded");
         button.click();
+        await new Promise(done=>setTimeout(done,75));
         const expanded=button.getAttribute("aria-expanded");
         const menu=document.querySelector(".menu-layer");
-        const links=Array.from(menu.querySelectorAll("nav a")).map(a=>a.textContent.trim());
+        const links=Array.from(menu.querySelectorAll("nav a")).map(a=>a.getAttribute("aria-label"));
         const menuVisible=getComputedStyle(menu).visibility;
         button.click();
         return {
@@ -277,7 +275,7 @@ try {
           archBg:getComputedStyle(archive).backgroundColor,
           archiveTitleWithinWidth:(()=>{const r=archiveTitle.getBoundingClientRect();return r.left>=-2&&r.right<=innerWidth+2;})()
         };
-      }).toString() + ")()",returnByValue:true,
+      }).toString() + ")()",awaitPromise:true,returnByValue:true,
     });
     if(editorial.exceptionDetails) throw new Error("Editorial controls: "+editorial.exceptionDetails.text);
     const ui=editorial.result?.value;

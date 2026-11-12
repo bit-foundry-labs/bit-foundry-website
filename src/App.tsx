@@ -277,7 +277,7 @@ export default function App() {
             ["Projects", "#products"],
             ["Archive", "#archive"],
           ].map(([label, href]) => (
-            <a href={href} key={label} onClick={() => setMenuOpen(false)}>
+            <a href={href} key={label} aria-label={label} onClick={() => setMenuOpen(false)}>
               <span className="menu-link-label"><LetterRoll text={label} /></span>
               <Arrow />
             </a>
