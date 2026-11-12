@@ -27,7 +27,7 @@ const tools = {
 
 export type ForgeTool = keyof typeof tools;
 
-export function ForgeCasting({ tool, number }: { tool: ForgeTool; number: string }) {
+export function ForgeCasting({ tool }: { tool: ForgeTool }) {
   const shape = tools[tool];
   const gradientId = "forge-metal-" + tool;
   const channel = "M74 -8 C74 24 55 39 69 66 C89 92 74 100 74 111";
@@ -50,10 +50,6 @@ export function ForgeCasting({ tool, number }: { tool: ForgeTool; number: string
         <path className="forge-casting__metal" d={shape.path}/>
         <circle className="forge-casting__drop" cx="74" cy="110" r="3" fill="#ffbf64"/>
       </svg>
-      <span className="forge-casting__caption">
-        <strong>CAST / {number}</strong>
-        <span>{shape.name} / {shape.concept}</span>
-      </span>
     </aside>
   );
 }

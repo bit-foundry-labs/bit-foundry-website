@@ -136,9 +136,6 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
                 <circle cx="905" cy="360" r="8" />
                 <circle cx="735" cy="750" r="9" />
               </g>
-              <text x="486" y="175" fontFamily="monospace" fontSize="18" fill="#d8c0a0">
-                CONCEPTUAL SYSTEM MAP / NOT A HARDWARE TEARDOWN
-              </text>
             </g>
           </g>
           {active && (
@@ -153,19 +150,12 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
             </g>
           )}
         </svg>
-        <span className="xray-stage-label" aria-hidden="true">
-          BF / 001 <span>⊕</span> INSPECTABLE OBJECT
-        </span>
       </div>
       <div className="artifact-copy">
         {children}
         <div className="xray-panel" id="xray-inspection-details">
-          <div className="xray-panel-heading">
-            <span>01 / X-RAY FOUNDRY</span>
-            <span className="xray-panel-status">{active ? "SCANNING" : "STANDBY"}</span>
-          </div>
           <div className="xray-panel-readout" aria-live={pinned ? "polite" : "off"}>
-            <strong>{active ? selected.label : "BEYOND THE CASING"}</strong>
+            <strong>{active ? selected.label : "Beyond the casing"}</strong>
             <p>{active ? selected.description :
               "Reveal a conceptual map of processing, memory, signal paths and input."}</p>
           </div>
@@ -178,10 +168,10 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
             <span>{pinned ? "Close inspection" : "Inspect internals"}</span>
             <span aria-hidden="true">{pinned ? "×" : "↗"}</span>
           </button>
-          <small className="xray-instructions">
+          <p className="xray-instructions">
             {pinned ? "Tap or move across the machine to examine another system" :
               "Move over the machine, or tap to open the inspection lens"}
-          </small>
+          </p>
         </div>
       </div>
     </>

@@ -1,23 +1,23 @@
 /** Educational system-map coordinates in the original 1536×1024 artifact viewBox. */
 export const INSPECTABLE_PARTS = Object.freeze([
   Object.freeze({
-    id: "cpu", label: "PROCESSOR / CPU", x: 656, y: 287,
+    id: "cpu", label: "Processor (CPU)", x: 656, y: 287,
     description: "Interprets instructions and coordinates the work of the machine.",
   }),
   Object.freeze({
-    id: "memory", label: "WORKING MEMORY", x: 853, y: 258,
+    id: "memory", label: "Working memory", x: 853, y: 258,
     description: "Holds data and instructions while programs are running.",
   }),
   Object.freeze({
-    id: "bus", label: "SYSTEM BUS", x: 741, y: 398,
+    id: "bus", label: "System bus", x: 741, y: 398,
     description: "Carries addresses, data and control signals between components.",
   }),
   Object.freeze({
-    id: "io", label: "INPUT / OUTPUT", x: 906, y: 435,
+    id: "io", label: "Input and output", x: 906, y: 435,
     description: "Connects computation to devices and the outside world.",
   }),
   Object.freeze({
-    id: "input", label: "USER INPUT", x: 735, y: 790,
+    id: "input", label: "User input", x: 735, y: 790,
     description: "Turns keystrokes into signals a program can process.",
   }),
 ]);
