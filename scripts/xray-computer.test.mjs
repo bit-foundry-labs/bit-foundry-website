@@ -27,7 +27,7 @@ test("computer inspection keeps its original silhouette and photograph", () => {
   assert.match(source,/aria-pressed=\{pinned\}/);
   assert.match(source,/onPointerDown=\{touchLens\}/);
   assert.match(source,/onPointerMove=\{moveLens\}/);
-  assert.match(source,/CONCEPTUAL SYSTEM MAP \/ NOT A HARDWARE TEARDOWN/);
+  assert.doesNotMatch(source,/INSPECTABLE OBJECT|CONCEPTUAL SYSTEM MAP \/ NOT A HARDWARE TEARDOWN/);
   assert.match(app,/<ComputerXRay>/);
   assert.match(css,/@keyframes xray-signal-flow/);
   assert.match(css,/@media \(prefers-reduced-motion: reduce\)/);
