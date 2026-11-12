@@ -423,7 +423,7 @@ try {
       (labsResponse.exceptionDetails.exception?.description || labsResponse.exceptionDetails.text));
     const labs = labsResponse.result?.value;
     assert.ok(labs?.className.includes("labs-page"));
-    assert.equal(labs.token, "#e8ac77");
+    assert.equal(labs.token, "#ff8239");
     assert.ok(labs.cardCount >= 5);
     assert.equal(labs.cardFits, true, "Lab cards must fit without horizontal overflow");
     console.log("✓ " + size.width + "px: labs forge theme and card reflow");
