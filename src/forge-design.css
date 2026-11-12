@@ -778,3 +778,15 @@ footer {
   .molten-circuit__phase strong { font-size:15px; }
   .molten-circuit__readout > strong { font-size:18px; }
 }
+
+/* An abstract casting: a steel crucible feeds paths that become a circuit. */
+.forge-art { position:absolute; inset:0; overflow:hidden; pointer-events:none; background:radial-gradient(ellipse at 75% 58%,#2a170f 0,#111315 40%,#080b0d 80%); }
+.forge-art svg { position:absolute; width:100%; height:100%; inset:0; }
+.forge-art__pour { filter:drop-shadow(0 0 13px #ff6c13); animation:casting-flow 3s ease-in-out infinite alternate; transform-origin: center; }
+.forge-art__heat { animation:casting-heat 4s ease-in-out infinite alternate; }
+.forge-art__traces > path:nth-child(2) { stroke-dasharray:100; animation:casting-traces 8s ease-in-out infinite; }
+@keyframes casting-flow { from { opacity:.8; } to { opacity:1; filter:drop-shadow(0 0 23px #ff7d18); } }
+@keyframes casting-heat { from { opacity:.5; } to { opacity:1; } }
+@keyframes casting-traces { 0%, 10% { stroke-dashoffset:100; opacity:.3; } 55%, 85% { stroke-dashoffset:0; opacity:1; } 100% { stroke-dashoffset:0; opacity:.55; } }
+@media (max-width:760px) { .forge-art svg { width:160%; left:-52%; height:80%; } }
+@media (prefers-reduced-motion:reduce) { .forge-art__pour,.forge-art__heat,.forge-art__traces > path:nth-child(2) { animation:none; } }
