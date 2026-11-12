@@ -6,7 +6,6 @@ import { MoltenCircuit } from "./components/MoltenCircuit";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
-  hero: "/assets/forge-hall-desktop.webp",
   network:
     "https://images.unsplash.com/photo-1783683783819-e6cb806bba69?auto=format&fit=crop&w=2200&q=90",
   fortran:
@@ -74,7 +73,7 @@ function SplitText({ children, className = "" }: { children: string; className?:
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
-  const [heroReady, setHeroReady] = useState(false);
+  const [heroReady] = useState(true);
   const introStartedAt = useRef<number | null>(null);
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -292,20 +291,32 @@ export default function App() {
       <main>
         <section className="hero-scroll" id="top" data-scroll-scene>
           <div className="hero-sticky forge-scene">
-            <img
-              className="cinematic-image forge-image"
-              src={images.hero}
-              srcSet="/assets/forge-hall-mobile.webp 1600w, /assets/forge-hall-desktop.webp 1672w"
-              sizes="100vw"
-              alt="Ornate ancient swords hanging over a vast foundry where molten metal runs into an anvil casting"
-              fetchPriority="high"
-              onLoad={() => setHeroReady(true)}
-            />
-            <div className="forge-smoke" aria-hidden="true" />
-            <div className="forge-heat" aria-hidden="true" />
-            <div className="forge-embers forge-embers--far" aria-hidden="true" />
-            <div className="forge-embers forge-embers--near" aria-hidden="true" />
-            <div className="forge-sword-glint" aria-hidden="true" />
+            <div className="forge-art" aria-hidden="true">
+              <svg viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <defs>
+                  <linearGradient id="steel" x1="0" x2="1" y1="0" y2="1">
+                    <stop stopColor="#080b0d"/><stop offset=".36" stopColor="#3c4143"/><stop offset=".5" stopColor="#969b98"/><stop offset=".57" stopColor="#292e30"/><stop offset="1" stopColor="#090c0e"/>
+                  </linearGradient>
+                  <linearGradient id="pour" x1="0" x2="1" y1="0" y2="0">
+                    <stop stopColor="#b12e06"/><stop offset=".27" stopColor="#ff7a05"/><stop offset=".55" stopColor="#fff0a2"/><stop offset=".8" stopColor="#ff950d"/><stop offset="1" stopColor="#a92c04"/>
+                  </linearGradient>
+                  <radialGradient id="heat"><stop stopColor="#ff9b1a" stopOpacity=".5"/><stop offset="1" stopColor="#fa4400" stopOpacity="0"/></radialGradient>
+                </defs>
+                <ellipse cx="694" cy="547" rx="310" ry="220" fill="url(#heat)" className="forge-art__heat"/>
+                <path d="M430 -85 L995 -85 L934 87 Q908 169 819 214 L749 228 L689 183 Q563 167 492 99 Z" fill="url(#steel)" stroke="#80837e" strokeOpacity=".45" strokeWidth="3"/>
+                <path d="M679 182 Q731 204 799 203 Q794 232 772 249 Q760 259 753 285 L723 285 Q719 254 699 238 Q679 220 679 182Z" fill="#160b08" stroke="#b3693d" strokeWidth="3"/>
+                <path className="forge-art__pour" d="M708 227 Q737 239 772 228 C763 300 785 339 762 409 Q750 448 745 488 L700 488 Q719 428 709 384 C699 335 719 285 708 227Z" fill="url(#pour)"/>
+                <ellipse cx="721" cy="501" rx="156" ry="33" fill="#6a1c05" stroke="#343b3d" strokeWidth="16"/>
+                <ellipse cx="721" cy="493" rx="135" ry="23" fill="#ff8c13" opacity=".83"/>
+                <ellipse cx="721" cy="490" rx="89" ry="12" fill="#ffe7a1" opacity=".8"/>
+                <g className="forge-art__traces" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M718 504 V560 H610 L562 608 H475 M718 560 H834 L882 608 H948 M718 560 V683 M610 560 V645 H545 M834 560 V645 H898" stroke="#71361b" strokeWidth="13"/>
+                  <path d="M718 504 V560 H610 L562 608 H475 M718 560 H834 L882 608 H948 M718 560 V683 M610 560 V645 H545 M834 560 V645 H898" stroke="url(#pour)" strokeWidth="4" pathLength="100"/>
+                  <g fill="#d48a50" stroke="none"><circle cx="475" cy="608" r="7"/><circle cx="948" cy="608" r="7"/><circle cx="718" cy="683" r="7"/><circle cx="545" cy="645" r="7"/><circle cx="898" cy="645" r="7"/></g>
+                </g>
+                <path d="M425 704 H972" stroke="#8e7e70" strokeOpacity=".22"/>
+              </svg>
+            </div>
             <div className="hero-tint" aria-hidden="true" />
             <div className="hero-grain" aria-hidden="true" />
             <div className="hero-copy">
