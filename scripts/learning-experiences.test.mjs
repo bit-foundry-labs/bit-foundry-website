@@ -6,10 +6,12 @@ const read = (file) => readFileSync(file, "utf8");
 
 test("computer artifact clips the original foreground without a rectangular backdrop", () => {
   const app = read("src/App.tsx");
+  const computer = read("src/components/ComputerXRay.tsx");
   const css = read("src/index.css");
-  assert.match(app, /id="artifact-computer-outline"/);
-  assert.match(app, /<image\s+href="\/assets\/retro-computer-front.webp"/);
-  assert.match(app, /clipPath="url\(#artifact-computer-outline\)"/);
+  assert.match(app, /<ComputerXRay>/);
+  assert.match(computer, /id="xray-computer-outline"/);
+  assert.match(computer, /<image href="\/assets\/retro-computer-front.webp"/);
+  assert.match(computer, /clipPath="url\(#xray-computer-outline\)"/);
   assert.match(css, /\.artifact-image--cutout\s*\{/);
   assert.match(css, /mask-image: none/);
 });

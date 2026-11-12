@@ -249,6 +249,116 @@ try {
     assert.ok(material.paper !== "rgba(0, 0, 0, 0)");
     console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
 
+    // Real interaction check: the original photograph is preserved, and a
+    // keyboard/touch-accessible control reveals a clipped technical layer.
+    const xrayCheck = await connection.send("Runtime.evaluate", {
+      expression: "(" + (async function () {
+        const sleep = (ms) => new Promise(done => setTimeout(done,ms));
+        const button=document.querySelector(".xray-toggle");
+        const stage=document.querySelector(".xray-stage");
+        const machine=stage?.querySelector("svg");
+        if(!button||!machine)throw new Error("X-ray controls missing");
+        const before=button.getAttribute("aria-pressed");
+        const image=machine.querySelector('image[href="/assets/retro-computer-front.webp"]');
+        const clip=machine.querySelector("#xray-inspection-lens circle");
+        button.click();
+        await sleep(50);
+        const opened={
+          pressed:button.getAttribute("aria-pressed"),
+          active:stage.getAttribute("data-inspecting"),
+          radius:Number(clip.getAttribute("r")),
+          label:document.querySelector(".xray-panel-readout strong")?.textContent,
+        };
+        const rect=machine.getBoundingClientRect();
+        machine.dispatchEvent(new PointerEvent("pointermove",{
+          bubbles:true, pointerType:"mouse",
+          clientX:rect.left+rect.width*.63,
+          clientY:rect.top+rect.height*.39,
+        }));
+        await sleep(50);
+        const moved={
+          radius:Number(clip.getAttribute("r")),
+          label:document.querySelector(".xray-panel-readout strong")?.textContent,
+          x:Number(clip.getAttribute("cx")),
+        };
+        button.click();
+        await sleep(50);
+        return {
+          before, image:!!image, opened, moved,
+          closed:button.getAttribute("aria-pressed"),
+          fits: (()=>{ const r=button.getBoundingClientRect();return r.left>=-2&&r.right<=innerWidth+2; })(),
+        };
+      }).toString() + ")()", awaitPromise: true, returnByValue: true,
+    });
+    if(xrayCheck.exceptionDetails)throw new Error("X-ray browser probe: "+
+      (xrayCheck.exceptionDetails.exception?.description||xrayCheck.exceptionDetails.text));
+    const xr=xrayCheck.result?.value;
+    assert.equal(xr.before,"false");
+    assert.equal(xr.image,true);
+    assert.equal(xr.opened.pressed,"true");
+    assert.equal(xr.opened.active,"true");
+    assert.equal(xr.opened.radius,226);
+    assert.ok(xr.opened.label.length>0);
+    assert.equal(xr.moved.radius,226);
+    assert.ok(xr.moved.x>=270&&xr.moved.x<=1190);
+    assert.equal(xr.closed,"false");
+    assert.equal(xr.fits,true,"Inspect control fits the viewport");
+    console.log("✓ " + size.width + "px: x-ray inspector toggle, lens tracking and layout");
+
+    // Normal page flow, central exhibit, and a three-state SVG instrument.
+    const flowResponse = await connection.send("Runtime.evaluate", {
+      expression: "(" + (async function () {
+        const pause=(ms)=>new Promise(done=>setTimeout(done,ms));
+        const sceneClasses=["hero-sticky","artifact-sticky","project-sticky","closing-sticky"];
+        const positions=sceneClasses.map(name=>({
+          name,position:getComputedStyle(document.querySelector("."+name)).position
+        }));
+        const exhibit=document.querySelector(".artifact-sticky--xray");
+        const machine=exhibit.querySelector(".xray-stage").getBoundingClientRect();
+        const exhibitBox=exhibit.getBoundingClientRect();
+        const centered=Math.abs((machine.left+machine.right)/2-(exhibitBox.left+exhibitBox.right)/2);
+        const circuit=document.querySelector(".molten-circuit");
+        const buttons=Array.from(circuit.querySelectorAll(".molten-circuit__phase"));
+        const sequence=[];
+        for (const button of buttons) {
+          button.click();
+          await pause(40);
+          sequence.push({
+            name:button.textContent,
+            pressed:button.getAttribute("aria-pressed"),
+            className:circuit.className,
+            title:circuit.querySelector(".molten-circuit__readout strong").textContent
+          });
+        }
+        const bounds=circuit.getBoundingClientRect();
+        return {
+          positions,centered,
+          machineWidth:machine.width,
+          sequence,
+          stageFits:bounds.left>=-2 && bounds.right<=innerWidth+2,
+          imageWithinMachine:machine.width<=innerWidth+2,
+          panelsSeparated:(()=>{
+            const copy=document.querySelector(".project-network .project-copy").getBoundingClientRect();
+            return innerWidth<=760 ? copy.bottom<=bounds.top+2 : copy.right<=bounds.left-8;
+          })()
+        };
+      }).toString() + ")()",awaitPromise:true,returnByValue:true,
+    });
+    if(flowResponse.exceptionDetails)throw new Error("Flow and circuitry: "+
+      (flowResponse.exceptionDetails.exception?.description||flowResponse.exceptionDetails.text));
+    const flow=flowResponse.result?.value;
+    assert.ok(flow.positions.every(s=>s.position==="relative"),"No scene may pin the page");
+    assert.ok(flow.centered<=2,"X-ray computer should be horizontally centered");
+    assert.ok(flow.machineWidth>250);
+    assert.equal(flow.stageFits,true,"Circuitry should fit the viewport");
+    assert.equal(flow.imageWithinMachine,true);
+    assert.equal(flow.panelsSeparated,true,"Showcase copy and circuitry must not overlap");
+    assert.deepEqual(flow.sequence.map(s=>s.pressed),["true","true","true"]);
+    assert.deepEqual(flow.sequence.map(s=>s.className.split(" ").at(-1)),
+      ["molten-circuit--pour","molten-circuit--temper","molten-circuit--conduct"]);
+    assert.ok(flow.sequence.every(s=>s.title.length>8));
+    console.log("✓ " + size.width + "px: natural scroll, centered X-ray, and three-stage molten circuitry");
+
     await connection.send("Page.navigate", { url: origin + "/labs/?forge-theme=" + size.width });
     const labsProbe = "(" + (async function () {
       for(let i=0;i<100&&(!document.querySelector(".artifact-card")||document.readyState!=="complete");i++)

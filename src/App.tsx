@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
 import { ForgeCasting } from "./components/ForgeCasting";
+import { ComputerXRay } from "./components/ComputerXRay";
+import { MoltenCircuit } from "./components/MoltenCircuit";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
 
 const images = {
@@ -135,7 +137,9 @@ export default function App() {
       document.documentElement.style.setProperty("--page-progress", documentProgress.toFixed(4));
       document.querySelectorAll<HTMLElement>("[data-scroll-scene]").forEach((scene) => {
         const rect = scene.getBoundingClientRect();
-        const travel = Math.max(1, rect.height - window.innerHeight);
+        // Normal document flow: progress describes the scene leaving the viewport,
+        // not a long sticky track that holds the visitor on the same section.
+        const travel = Math.max(1, rect.height);
         const progress = Math.min(1, Math.max(0, -rect.top / travel));
         scene.style.setProperty("--scene-progress", progress.toFixed(4));
         scene.style.setProperty(
@@ -420,38 +424,18 @@ export default function App() {
         </section>
 
         <section className="artifact-scroll" data-scroll-scene>
-          <div className="artifact-sticky">
-            <div className="artifact-image artifact-image--cutout">
-              <svg
-                className="artifact-computer"
-                viewBox="0 0 1536 1024"
-                role="img"
-                aria-label="Vintage desktop computer isolated against the studio backdrop"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <defs>
-                  <clipPath id="artifact-computer-outline">
-                    <path d="M489 108 L483 118 L482 527 L492 537 L522 539 L527 549 L465 552 L404 588 L401 722 L340 730 L262 860 L263 882 L278 892 L276 898 L290 902 L323 904 L626 902 L695 908 L785 906 L807 910 L1162 906 L1175 900 L1196 878 L1198 856 L1157 726 L1129 719 L1128 591 L1071 552 L1005 549 L1010 539 L1037 538 L1049 529 L1048 111 L1037 104 Z" />
-                  </clipPath>
-                </defs>
-                <image
-                  href="/assets/retro-computer-front.webp"
-                  width="1536"
-                  height="1024"
-                  clipPath="url(#artifact-computer-outline)"
-                />
-              </svg>
-            </div>
-            <div className="artifact-copy">
+          <div className="artifact-sticky artifact-sticky--xray">
+            <ComputerXRay>
               <h2>
                 <SplitText>The machine</SplitText>
                 <br />
                 <SplitText className="artifact-accent">is the story.</SplitText>
               </h2>
               <p>
-                Hardware, software, protocols, and people—each layer leaves a trace. We follow it.
+                Hardware, software, protocols, and people: each layer leaves a trace.
+                Explore the architecture underneath.
               </p>
-            </div>
+            </ComputerXRay>
           </div>
         </section>
 
@@ -512,15 +496,7 @@ export default function App() {
                 <Arrow />
               </a>
             </div>
-            <div className="project-code">
-              <span>DNS</span>
-              <i />
-              <span>TCP</span>
-              <i />
-              <span>TLS</span>
-              <i />
-              <span>HTTP</span>
-            </div>
+            <MoltenCircuit />
           </div>
         </section>
 
