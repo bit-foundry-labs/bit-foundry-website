@@ -74,9 +74,9 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
               <path d="M32 0H0V32" stroke="#bc8056" strokeWidth="1" opacity=".18" fill="none" />
             </pattern>
             <linearGradient id="xray-machine-metal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#132121" />
-              <stop offset=".57" stopColor="#182825" />
-              <stop offset="1" stopColor="#2c1d15" />
+              <stop offset="0" stopColor="#1c2733" />
+              <stop offset=".57" stopColor="#202b36" />
+              <stop offset="1" stopColor="#151d25" />
             </linearGradient>
           </defs>
           <image href="/assets/retro-computer-front.webp" width="1536" height="1024"
@@ -85,12 +85,12 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
           <g className="xray-internals" aria-hidden="true"
             clipPath="url(#xray-computer-outline)" pointerEvents="none">
             <g clipPath="url(#xray-inspection-lens)">
-              <rect x="250" y="98" width="952" height="815" fill="#0a1515" />
+              <rect x="250" y="98" width="952" height="815" fill="#101922" />
               <rect x="250" y="98" width="952" height="815" fill="url(#xray-circuit-grid)" />
               <rect x="492" y="115" width="548" height="424" rx="13"
-                fill="url(#xray-machine-metal)" stroke="#e3a56c" strokeWidth="5" />
+                fill="url(#xray-machine-metal)" stroke="#ff8140" strokeWidth="5" />
               <rect x="524" y="150" width="480" height="345" rx="4"
-                fill="#081512" stroke="#7d5136" strokeWidth="2" />
+                fill="#101820" stroke="#7d5136" strokeWidth="2" />
               <g className="xray-circuit-traces" stroke="#dc955d" strokeWidth="4"
                 strokeLinecap="round" strokeLinejoin="round" fill="none" opacity=".82">
                 <path d="M636 225 V186 H766 V244 H790" />
@@ -107,24 +107,24 @@ export function ComputerXRay({ children }: ComputerXRayProps) {
                 <path d="M610 340 V387 H793 V436" />
                 <path d="M750 289 H795 V330 H905 V360" />
               </g>
-              <rect x="564" y="220" width="182" height="120" rx="7" fill="#253c34"
-                stroke="#f2b77d" strokeWidth="5" />
-              <rect x="581" y="237" width="149" height="86" fill="#112522"
-                stroke="#759080" strokeWidth="2" />
-              <g fill="#f5c69a" fontFamily="monospace" fontSize="22">
+              <rect x="564" y="220" width="182" height="120" rx="7" fill="#26313d"
+                stroke="#ff9a58" strokeWidth="5" />
+              <rect x="581" y="237" width="149" height="86" fill="#17222d"
+                stroke="#8b9ba7" strokeWidth="2" />
+              <g fill="#f0f3f6" fontFamily="monospace" fontSize="22">
                 <text x="601" y="272">CPU / 01</text>
-                <text x="600" y="300" fontSize="15" fill="#a4c6b7">EXECUTE</text>
+                <text x="600" y="300" fontSize="15" fill="#b9c5d3">EXECUTE</text>
               </g>
-              <g fill="#304f42" stroke="#f0b881" strokeWidth="3">
+              <g fill="#323f4d" stroke="#f0b881" strokeWidth="3">
                 <rect x="784" y="191" width="197" height="81" rx="4" />
                 <path d="M805 199V261M827 199V261M849 199V261M871 199V261M893 199V261M915 199V261M937 199V261M959 199V261" />
               </g>
-              <text x="808" y="307" fontFamily="monospace" fill="#f9c492" fontSize="21">WORKING MEMORY</text>
-              <path d="M554 365H985" stroke="#f5b278" strokeWidth="8" strokeDasharray="15 13" />
-              <text x="551" y="402" fontFamily="monospace" fill="#ffd09b" fontSize="20">ADDRESS / DATA / CONTROL</text>
-              <rect x="790" y="415" width="202" height="70" rx="5" fill="#2a372e"
-                stroke="#eeac72" strokeWidth="3" />
-              <text x="817" y="456" fontSize="24" fontFamily="monospace" fill="#ffe0ae">I/O PORTS</text>
+              <text x="808" y="307" fontFamily="monospace" fill="#ffc088" fontSize="21">WORKING MEMORY</text>
+              <path d="M554 365H985" stroke="#ff9853" strokeWidth="8" strokeDasharray="15 13" />
+              <text x="551" y="402" fontFamily="monospace" fill="#ffcc94" fontSize="20">ADDRESS / DATA / CONTROL</text>
+              <rect x="790" y="415" width="202" height="70" rx="5" fill="#283440"
+                stroke="#ff9e56" strokeWidth="3" />
+              <text x="817" y="456" fontSize="24" fontFamily="monospace" fill="#fff1dc">I/O PORTS</text>
               <g stroke="#e4a267" fill="none" strokeWidth="4">
                 <path d="M303 852 H1156 L1121 742 H402 Z" />
                 <path d="M339 854 L415 777 H1083 L1124 854" />

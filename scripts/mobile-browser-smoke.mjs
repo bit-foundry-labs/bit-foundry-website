@@ -218,7 +218,7 @@ try {
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
     assert.equal(forge.embersAnimated, true, "Forge ambient animation should be enabled by default");
-    assert.equal(forge.castings.length, 5, "Five editorial castings must be present");
+    assert.equal(forge.castings.length, 3, "Only three illustrative casts remain after deleting filler sections");
     assert.ok(forge.castings.every((casting) => casting.decorative && casting.fits && casting.paths >= 4));
     assert.ok(forge.castings.every((casting) => casting.animated), "Native scroll-timeline effects should initialize");
     console.log("✓ " + size.width + "px: forge castings fit the viewport and animate");
@@ -248,6 +248,49 @@ try {
     assert.ok(material.buttonGlint && material.buttonGlint !== "none");
     assert.ok(material.paper !== "rgba(0, 0, 0, 0)");
     console.log("✓ " + size.width + "px: forge materials, metallic seams and interaction styling");
+
+    const editorial = await connection.send("Runtime.evaluate", {
+      expression: "(" + (function () {
+        const nav=document.querySelector(".nav-shell");
+        const button=document.querySelector(".menu-toggle");
+        const hero=document.querySelector(".forge-scene");
+        const labs=document.querySelector("#labs");
+        const archive=document.querySelector(".archive-section");
+        const navRect=nav.getBoundingClientRect();
+        const archiveTitle=archive.querySelector("h2");
+        const before=button.getAttribute("aria-expanded");
+        button.click();
+        const expanded=button.getAttribute("aria-expanded");
+        const menu=document.querySelector(".menu-layer");
+        const links=Array.from(menu.querySelectorAll("nav a")).map(a=>a.textContent.trim());
+        const menuVisible=getComputedStyle(menu).visibility;
+        button.click();
+        return {
+          before,expanded,menuVisible,links,
+          buttonLabel:button.textContent.trim(),
+          navWidth:navRect.width,
+          navRight:navRect.right,
+          heroMetadata:hero.querySelectorAll(".hero-coordinate,.hero-kicker").length,
+          fillerSections:document.querySelectorAll(".method-section,.lab-intro").length,
+          labsId:labs.className,
+          archColor:getComputedStyle(archive).color,
+          archBg:getComputedStyle(archive).backgroundColor,
+          archiveTitleWithinWidth:(()=>{const r=archiveTitle.getBoundingClientRect();return r.left>=-2&&r.right<=innerWidth+2;})()
+        };
+      }).toString() + ")()",returnByValue:true,
+    });
+    if(editorial.exceptionDetails) throw new Error("Editorial controls: "+editorial.exceptionDetails.text);
+    const ui=editorial.result?.value;
+    assert.equal(ui.before,"false");
+    assert.equal(ui.expanded,"true");
+    assert.equal(ui.menuVisible,"visible");
+    assert.ok(ui.links.includes("Networking")&&ui.links.includes("Fortran"));
+    assert.ok(ui.navWidth<=220&&ui.navRight<=size.width+2,"Only small floating menu should cover the hero");
+    assert.equal(ui.heroMetadata,0);
+    assert.equal(ui.fillerSections,0);
+    assert.ok(ui.labsId.includes("project-network"));
+    assert.equal(ui.archiveTitleWithinWidth,true);
+    console.log("✓ " + size.width + "px: floating menu, no microcopy, no filler and readable dark archive");
 
     // Real interaction check: the original photograph is preserved, and a
     // keyboard/touch-accessible control reveals a clipped technical layer.
