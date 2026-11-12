@@ -32,7 +32,9 @@ function chromeBinary() {
   throw new Error("Install Chrome or Chromium to run browser smoke tests");
 }
 async function chromePort(dir, child) {
-  for (let i = 0; i < 120; i += 1) {
+  // Shared CI workers can be slow to launch Chromium after pnpm and Vite.
+  // Still fail explicitly if DevTools never starts; do not skip browser checks.
+  for (let i = 0; i < 300; i += 1) {
     if (child.exitCode !== null) throw new Error("Chrome exited before starting DevTools");
     try {
       const port = Number.parseInt((await readFile(join(dir, "DevToolsActivePort"), "utf8")).split("\n")[0], 10);
