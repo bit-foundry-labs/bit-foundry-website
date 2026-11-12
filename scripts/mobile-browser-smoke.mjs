@@ -262,11 +262,15 @@ try {
         await new Promise(done=>setTimeout(done,75));
         const expanded=button.getAttribute("aria-expanded");
         const menu=document.querySelector(".menu-layer");
-        const links=Array.from(menu.querySelectorAll("nav a")).map(a=>a.getAttribute("aria-label"));
+        const navLinks=Array.from(menu.querySelectorAll("nav a"));
+        const links=navLinks.map(a=>a.getAttribute("aria-label"));
+        const hubPath=navLinks.find(a=>a.getAttribute("aria-label")==="Labs")?.getAttribute("href");
+        const footerHubPath=document.querySelector("footer a[href='/labs/']")?.getAttribute("href");
+        const aboutHubPath=document.querySelector(".about-section a.soft-button")?.getAttribute("href");
         const menuVisible=getComputedStyle(menu).visibility;
         button.click();
         return {
-          before,expanded,menuVisible,links,
+          before,expanded,menuVisible,links,hubPath,footerHubPath,aboutHubPath,
           buttonLabel:button.textContent.trim(),
           navWidth:navRect.width,
           navRight:navRect.right,
@@ -285,6 +289,9 @@ try {
     assert.equal(ui.expanded,"true");
     assert.equal(ui.menuVisible,"visible");
     assert.ok(ui.links.includes("Networking")&&ui.links.includes("Fortran"));
+    assert.equal(ui.hubPath,"/labs/","Labs menu item should reach the actual hub");
+    assert.equal(ui.footerHubPath,"/labs/","Footer Labs link should reach the hub");
+    assert.equal(ui.aboutHubPath,"/labs/","About CTA should reach the hub");
     assert.ok(ui.navWidth<=220&&ui.navRight<=size.width+2,"Only small floating menu should cover the hero");
     assert.equal(ui.heroMetadata,0);
     assert.equal(ui.fillerSections,0);

@@ -271,7 +271,7 @@ export default function App() {
           {[
             ["Home", "#top"],
             ["About", "#about"],
-            ["Labs", "#labs"],
+            ["Labs", "/labs/"],
             ["Networking", "/learn/networking/"],
             ["Fortran", "/learn/fortran/"],
             ["Projects", "#products"],
@@ -342,8 +342,8 @@ export default function App() {
               remove the intimidation, and turn invisible behavior into something you can touch.
             </p>
           </div>
-          <a className="soft-button" href="#labs">
-            <span>See the labs</span>
+          <a className="soft-button" href="/labs/">
+            <span>Explore interactive labs</span>
             <Arrow />
           </a>
         </section>
@@ -488,7 +488,7 @@ export default function App() {
         <div className="footer-mark">Bit Foundry</div>
         <div className="footer-links">
           <a href="#about">About</a>
-          <a href="#labs">Labs</a>
+          <a href="/labs/">Labs</a>
           <a href="#archive">Archive</a>
           <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">
             GitHub ↗
