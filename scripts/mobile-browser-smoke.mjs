@@ -174,26 +174,27 @@ try {
     assert.ok(actual.model.width > 200);
     console.log("✓ " + size.width + "px: reader layout and interactive model");
     // The same real browser also checks the React homepage and the first-party
-    // foundry image. This catches broken paths and mobile headline overflow.
+    // foundry illustration. This catches missing artwork and mobile headline overflow.
     await connection.send("Page.navigate", { url: origin + "/?forge-test=" + size.width });
     const forgeProbe = "(" + (async function () {
       const pause = (ms) => new Promise((done) => setTimeout(done, ms));
       for (let i = 0; i < 90 && !document.querySelector(".forge-scene"); i += 1) await pause(55);
       const hero = document.querySelector(".forge-scene");
       if (!hero) throw new Error("Foundry scene did not mount");
-      const img = hero.querySelector(".forge-image");
-      for (let i = 0; i < 80 && !img.complete; i += 1) await pause(55);
+      const art = hero.querySelector(".forge-art");
+      const pour = art?.querySelector(".forge-art__pour");
+      const traces = art?.querySelector(".forge-art__traces path:nth-child(2)");
       const h1 = hero.querySelector("h1");
       const words = Array.from(h1.querySelectorAll(".split-text")).map((node) => node.getBoundingClientRect());
       const section = hero.querySelector(".hero-copy");
-      const embers = hero.querySelector(".forge-embers--near");
+
       return {
         heading: Array.from(h1.querySelectorAll(".split-text")).map((node) => node.getAttribute("aria-label")).join(" "),
-        imageLoaded: img.complete && img.naturalWidth > 0,
-        imageSource: img.currentSrc,
+        artworkPresent: !!art?.querySelector("svg") && art.getAttribute("aria-hidden") === "true",
+        pourAnimated: !!pour && getComputedStyle(pour).animationName.includes("casting-flow"),
+        tracesAnimated: !!traces && getComputedStyle(traces).animationName.includes("casting-traces"),
         lettersFit: words.every((box) => box.left >= -2 && box.right <= innerWidth + 2),
         titleVisible: getComputedStyle(section).display !== "none",
-        embersAnimated: getComputedStyle(embers).animationName.includes("forge-ember-drift"),
         castings: Array.from(document.querySelectorAll(".forge-casting")).map((casting) => {
           const bounds = casting.getBoundingClientRect();
           return {
@@ -215,16 +216,16 @@ try {
     }
     const forge = forgeEvaluated.result?.value;
     assert.ok(forge?.heading.includes("Welcome to") && forge.heading.includes("the Foundry."));
-    assert.equal(forge.imageLoaded, true, "Optimized local forge photo must load");
-    assert.ok(/forge-hall-(?:mobile|desktop)\.webp/.test(forge.imageSource));
+    assert.equal(forge.artworkPresent, true, "Decorative forge artwork must render");
+    assert.equal(forge.pourAnimated, true, "Molten pour should animate");
+    assert.equal(forge.tracesAnimated, true, "Circuit traces should animate");
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
-    assert.equal(forge.embersAnimated, true, "Forge ambient animation should be enabled by default");
     assert.equal(forge.castings.length, 3, "Only three illustrative casts remain after deleting filler sections");
     assert.ok(forge.castings.every((casting) => casting.decorative && casting.fits && casting.paths >= 4));
     assert.ok(forge.castings.every((casting) => casting.animated), "Native scroll-timeline effects should initialize");
     console.log("✓ " + size.width + "px: forge castings fit the viewport and animate");
-    console.log("✓ " + size.width + "px: foundry hero image, typography and embers");
+    console.log("✓ " + size.width + "px: foundry hero artwork, typography and animation");
 
     const materialCheck = await connection.send("Runtime.evaluate", {
       expression: "(" + (function () {
