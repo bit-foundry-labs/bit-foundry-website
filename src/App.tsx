@@ -46,27 +46,6 @@ const archiveItems = [
   },
 ];
 
-const products = [
-  {
-    number: "001",
-    label: "Origin",
-    title: "Observe the system",
-    text: "We start at the layer most software hides: packets, memory, compilers, processes, and protocols.",
-  },
-  {
-    number: "002",
-    label: "Translation",
-    title: "Make it tangible",
-    text: "Dense technical behavior becomes motion, space, cause and effect—without losing its truth.",
-  },
-  {
-    number: "003",
-    label: "Release",
-    title: "Invite exploration",
-    text: "The result is not a diagram to study, but a living environment that rewards curiosity.",
-  },
-];
-
 function Arrow() {
   return (
     <span className="arrow" aria-hidden="true">
@@ -97,7 +76,6 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
   const introStartedAt = useRef<number | null>(null);
-  const [activeSection, setActiveSection] = useState("About");
   const [archivePreview, setArchivePreview] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const previewFrame = useRef<number | null>(null);
@@ -183,29 +161,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const labels: Record<string, string> = {
-      top: "Home",
-      about: "About",
-      method: "Method",
-      labs: "Labs",
-      archive: "Archive",
-      products: "Products",
-    };
-    const sections = document.querySelectorAll<HTMLElement>("main section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(labels[visible.target.id] ?? "Explore");
-      },
-      { rootMargin: "-35% 0px -50% 0px", threshold: [0, 0.2, 0.5] },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
       const x = (event.clientX / window.innerWidth - 0.5) * 12;
       const y = (event.clientY / window.innerHeight - 0.5) * 12;
@@ -281,9 +236,6 @@ export default function App() {
     };
   }, []);
 
-  const chapterNames = ["Home", "About", "Method", "Labs", "Archive", "Products"];
-  const chapterNumber = Math.max(1, chapterNames.indexOf(activeSection) + 1);
-
   return (
     <div className="site">
       <div className={`intro-layer ${introComplete ? "is-complete" : ""}`} aria-hidden="true">
@@ -300,54 +252,41 @@ export default function App() {
         <small>Connecting to system</small>
       </div>
 
-      <aside className="chapter-progress" aria-hidden="true">
-        <span className="chapter-progress__name">{activeSection}</span>
-        <span className="chapter-progress__track"><span className="chapter-progress__fill" /></span>
-        <span className="chapter-progress__count">{String(chapterNumber).padStart(2, "0")} / 06</span>
-      </aside>
-
       <header className="nav-shell">
-        <a className="nav-location" href="#labs">
-          Labs
-        </a>
-        <a className="wordmark" href="#top" aria-label="Bit Foundry Labs home">
-          <span>Bit Foundry</span>
-        </a>
         <button
           className="menu-toggle"
           type="button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-controls="primary-navigation"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <span>{menuOpen ? "Close" : activeSection}</span>
-          <i />
+          <span>{menuOpen ? "Close" : "Menu"}</span>
+          <span className="menu-toggle__icon" aria-hidden="true"><i /><i /></span>
         </button>
       </header>
 
-      <div className={`menu-layer ${menuOpen ? "is-open" : ""}`} inert={!menuOpen}>
+      <div id="primary-navigation" className={`menu-layer ${menuOpen ? "is-open" : ""}`} inert={!menuOpen}>
         <nav aria-label="Main navigation">
           {[
-            ["01", "About", "#about"],
-            ["02", "Method", "#method"],
-            ["03", "Labs", "#labs"],
-            ["04", "Archive", "#archive"],
-          ].map(([index, label, href]) => (
-            <a href={href} key={label} onClick={() => setMenuOpen(false)}>
-              <small>{index}</small>
+            ["Home", "#top"],
+            ["About", "#about"],
+            ["Labs", "#labs"],
+            ["Networking", "/learn/networking/"],
+            ["Fortran", "/learn/fortran/"],
+            ["Projects", "#products"],
+            ["Archive", "#archive"],
+          ].map(([label, href]) => (
+            <a href={href} key={label} aria-label={label} onClick={() => setMenuOpen(false)}>
               <span className="menu-link-label"><LetterRoll text={label} /></span>
               <Arrow />
             </a>
           ))}
         </nav>
-        <a
-          className="menu-social"
-          href="https://github.com/bit-foundry-labs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          GitHub <Arrow />
-        </a>
+        <div className="menu-social">
+          <a href="mailto:hello@bitfoundrylabs.io">Contact</a>
+          <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
+        </div>
       </div>
 
       <main>
@@ -369,16 +308,7 @@ export default function App() {
             <div className="forge-sword-glint" aria-hidden="true" />
             <div className="hero-tint" aria-hidden="true" />
             <div className="hero-grain" aria-hidden="true" />
-            <div className="hero-coordinate hero-coordinate--left" aria-hidden="true">
-              <span>01 / THE FOUNDRY</span>
-              <span>FORM · FIRE · FUNCTION</span>
-            </div>
-            <div className="hero-coordinate hero-coordinate--right" aria-hidden="true">
-              <span>CRAFT / PRECISION</span>
-              <span>IDEAS INTO SYSTEMS</span>
-            </div>
             <div className="hero-copy">
-              <span className="hero-kicker">BIT FOUNDRY LABS / SOFTWARE & SYSTEMS STUDIO</span>
               <h1>
                 <SplitText>Welcome to</SplitText>
                 <SplitText className="hero-accent">the Foundry.</SplitText>
@@ -388,19 +318,14 @@ export default function App() {
                 <span> Beautiful tools and interactive lessons about the machinery inside computing.</span>
               </p>
             </div>
-            <a className="scroll-cue" href="#about">
-              <span>Enter the foundry</span>
-              <i>↓</i>
+            <a className="scroll-cue" href="#about" aria-label="Scroll to discover Bit Foundry">
+              <span aria-hidden="true">↓</span>
             </a>
           </div>
         </section>
 
         <section className="about-section" id="about">
-          <ForgeCasting tool="hammer" number="01" />
-          <div className="section-number">
-            <span>(01)</span>
-            <span><DecodeText text="About the foundry" /></span>
-          </div>
+          <ForgeCasting tool="hammer" />
           <div className="about-intro">
             <p>
               Bit Foundry is one idea, and the studio built around it:
@@ -439,41 +364,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="method-section" id="method">
-          <ForgeCasting tool="calipers" number="02" />
-          <div className="section-number light">
-            <span>(02)</span>
-            <span><DecodeText text="How we shape understanding" /></span>
-          </div>
-          <div className="method-lead">
-            <p>We don’t simplify the subject.</p>
-            <p>We change the way you meet it.</p>
-          </div>
-          <div className="method-list">
-            {products.map((item, index) => (
-              <article className="chapter-reveal" style={{ "--reveal-index": index } as React.CSSProperties} key={item.number}>
-                <div className="method-index">
-                  <span>{item.number}</span>
-                  <span>— {item.label}</span>
-                </div>
-                <h3><LetterRoll text={item.title} /></h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="lab-intro" id="labs">
-          <ForgeCasting tool="key" number="03" />
-          <span>(03) <DecodeText text="Interactive environments" /></span>
-          <h2>
-            <SplitText>Two ways</SplitText>
-            <br />
-            <SplitText>into the system.</SplitText>
-          </h2>
-        </section>
-
-        <section className="project-scroll project-network" data-scroll-scene>
+        <section className="project-scroll project-network" id="labs" data-scroll-scene>
           <div className="project-sticky">
             <img
               className="cinematic-image"
@@ -482,7 +373,6 @@ export default function App() {
             />
             <div className="project-wash" />
             <div className="project-copy">
-              <span>External system / 001</span>
               <h2>Computer Networking</h2>
               <p>
                 Follow one page load through DNS, TCP, TLS, and HTTP. Every request leaves a visible
@@ -509,7 +399,6 @@ export default function App() {
             />
             <div className="project-wash" />
             <div className="project-copy">
-              <span>Compiled system / 002</span>
               <h2>Fortran</h2>
               <p>
                 Meet the compiler, edit the source, and run a Fibonacci loop in a language that
@@ -523,19 +412,12 @@ export default function App() {
                 <Arrow />
               </a>
             </div>
-            <div className="code-whisper" aria-hidden="true">
-              <span>PROGRAM FIBONACCI</span>
-              <span>DO I = 1, 8</span>
-              <span>PRINT *, A</span>
-              <span>END DO</span>
-            </div>
           </div>
         </section>
 
         <section className="archive-section" id="archive">
-          <ForgeCasting tool="compass" number="04" />
+          <ForgeCasting tool="compass" />
           <div className="archive-heading">
-            <span className="archive-count">(04)</span>
             <h2><DecodeText text="Field archive" /></h2>
             <p>Fragments from the systems that brought us here.</p>
           </div>
@@ -554,7 +436,6 @@ export default function App() {
               >
                 <span>{item.year}</span>
                 <strong>{item.title}</strong>
-                <span>{item.type}</span>
                 <Arrow />
               </a>
             ))}
@@ -569,9 +450,8 @@ export default function App() {
         </section>
 
         <section className="forge-section" id="products">
-          <ForgeCasting tool="blade" number="05" />
+          <ForgeCasting tool="blade" />
           <div className="forge-heading">
-            <span>Currently in development</span>
             <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
           <div className="forge-detail chapter-reveal">
@@ -616,7 +496,6 @@ export default function App() {
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Bit Foundry Labs LLC</span>
-          <span>Forge artwork · Bit Foundry Labs</span>
           <a href="#top">Back to the Foundry ↑</a>
         </div>
       </footer>

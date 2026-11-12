@@ -408,3 +408,83 @@ body.disk-page a:focus-visible, body.disk-page button:focus-visible { outline: 2
 @media (prefers-reduced-motion: reduce) {
   body.labs-page .artifact-card, body.labs-page .artifact-card::after { transition: none !important; }
 }
+
+
+/* Steel and fire across standalone content. Data-visualization layer colors
+   are preserved for comprehension; branding/panels use cold graphite. */
+body.learn-page,body.labs-page {
+  --paper:#0d1116;
+  --paper-light:#1b222b;
+  --ink:#f0f4f7;
+  --forest:#ff8239;
+  --forest-dark:#303b46;
+  --orange:#ff873e;
+  --blue:#242d38;
+  --muted:#bcc5cf;
+  --rule:#485663;
+  --violet:#ff8239;
+  background:#0d1116;
+  color:#f0f4f7;
+  background-image:radial-gradient(ellipse at 79% -9%,rgba(210,43,29,.13),transparent 55%);
+}
+body:is(.learn-page,.labs-page) :is(.site-header,.labs-nav) {
+  background:rgba(13,17,23,.95);
+  border-color:rgba(229,237,245,.2);
+}
+body:is(.learn-page,.labs-page) :is(.brand-mark i,.brand-mark i:first-child) { border-color:#ff8239; }
+body:is(.learn-page,.labs-page) .brand-mark i:first-child { background:#ff8239; }
+body:is(.learn-page,.labs-page) :is(.learn-hero,.labs-hero) {
+  background:radial-gradient(ellipse at 87% 12%,rgba(219,49,30,.16),transparent 47%),#171d24;
+  border-color:rgba(250,103,42,.33);
+}
+body:is(.learn-page,.labs-page) :is(.section-kicker,.section-tag,.lesson-index,.artifact-top,.labs-eyebrow) {
+  color:#ff9b54;
+}
+body:is(.learn-page,.labs-page) :is(.nav-cta,.control-button,.osi-trace-next) { border-color:#ff873e99; }
+body:is(.learn-page,.labs-page) :is(.nav-cta:hover,.control-button:hover,.nav-cta:focus-visible) {
+  color:#11161c;background:#ff934c;border-color:#ffad72;
+}
+body:is(.learn-page,.labs-page) :is(.lesson-card,.concept,.artifact-card,.course-map-list li) {
+  background:#202730;
+  border-color:#505d6a;
+}
+body:is(.learn-page,.labs-page) :is(.lesson-card:hover,.concept:hover,.artifact-card:hover) {
+  border-color:#ff8c45;
+}
+body.learn-page.fortran-page {
+  --paper:#0d1116;--paper-light:#1b222b;--ink:#f0f4f7;--orange:#ff873e;
+  --forest:#ff8239;--forest-dark:#303b46;--muted:#bec7d0;--rule:#485663;
+  background:#0d1116;
+}
+body.learn-page.fortran-page .learn-hero {
+  background:radial-gradient(ellipse at 79% 21%,rgba(203,46,27,.15),transparent 54%),#171d24;
+  border-color:#ff8c4560;
+}
+body.learn-page.fortran-page .lesson-card {
+  background:#202730;
+  border-color:#566472;
+}
+body.learn-page.fortran-page :is(.build-stage.is-active,.build-stage:hover) {
+  border-color:#ff9e5d;
+  box-shadow:inset 0 0 0 1px #ff9e5d,0 0 22px rgba(255,111,47,.12);
+}
+body.labs-page .artifact-wall { background:#0d1116; }
+body.labs-page .artifact-card { background:#202730;border-color:#4c5966; }
+body.labs-page a.artifact-card:is(:hover,:focus-visible) { background:#31323a;border-color:#ff8c45; }
+body.labs-page .artifact-card .artifact-copy h3 { color:#f0f3f7; }
+body.labs-page .artifact-card :is(.artifact-top,.artifact-copy > span) { color:#ff9b54; }
+body.labs-page .labs-key i { background:#ff833e; }
+/* Historical disks become neutral cool-gray reading surfaces, not brown paper. */
+body.disk-page { background:#e3e7eb;color:#1d2731;color-scheme:light; }
+body.disk-page .site-header { background:rgba(237,240,243,.96);color:#1e2832;border-color:#8995a044; }
+body.disk-page .brand-mark i { border-color:#d94b30; }
+body.disk-page .brand-mark i:first-child { background:#d94b30; }
+body.disk-page :is(.disk-kicker,.fact-index,.disk-breadcrumb,.back-link) { color:#a43d2b; }
+body.disk-page :is(.fact-card,.history-row,.game-panel,.classic-game) {
+  background:#f4f6f8;border-color:#929ca856;
+}
+body.disk-page :is(.disk-hero h1,.fact-card summary,.history-year,.game-panel h2) { color:#222c36; }
+body.disk-page :is(.disk-hero p,.fact-card p,.history-row p) { color:#44515c; }
+body.disk-page :is(.game-controls button:hover,.game-mode button:hover) { background:#29323b;color:#fff; }
+body.disk-page a { color:#933b2a; }
+body.disk-page a:focus-visible,body.disk-page button:focus-visible { outline-color:#b5432b; }

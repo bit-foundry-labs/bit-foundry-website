@@ -3,21 +3,18 @@ import { useState } from "react";
 export const PHASES = [
   {
     id: "pour",
-    number: "01",
     label: "Pour",
     title: "Liquid possibility",
     description: "Molten metal enters a branching mold; the future traces exist, but cannot carry a signal yet.",
   },
   {
     id: "temper",
-    number: "02",
     label: "Cool",
     title: "Structure takes shape",
     description: "The metal cools into stable paths. Its geometry now determines which connections are possible.",
   },
   {
     id: "conduct",
-    number: "03",
     label: "Conduct",
     title: "A request finds its path",
     description: "Signals move through an illustrative sequence: DNS, TCP, TLS, and HTTP. This is a conceptual network analogy, not physical circuitry for those protocols.",
@@ -48,17 +45,13 @@ export function MoltenCircuit() {
   return (
     <div className={"molten-circuit molten-circuit--" + phase}
       aria-label="Interactive molten circuitry demonstration">
-      <div className="molten-circuit__masthead">
-        <span>BF / EXPERIMENT 002</span>
-        <span>THERMAL LOGIC / INTERACTIVE</span>
-      </div>
       <div className="molten-circuit__drawing">
         <svg viewBox="0 0 600 382" role="img"
           aria-label={"A stream of molten metal that cools into a branching circuit, then carries signal pulses. Stage: " + current.title}
           xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="molten-engrave-grid" width="23" height="23" patternUnits="userSpaceOnUse">
-              <path d="M23 0H0V23" stroke="#73503b" strokeWidth=".7" opacity=".27" fill="none"/>
+              <path d="M23 0H0V23" stroke="#3e4753" strokeWidth=".7" opacity=".27" fill="none"/>
             </pattern>
             <linearGradient id="molten-metal-line" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stopColor="#a6562b"/>
@@ -69,21 +62,15 @@ export function MoltenCircuit() {
               <feGaussianBlur stdDeviation="6"/>
             </filter>
           </defs>
-          <rect width="600" height="382" fill="#0f1110"/>
+          <rect width="600" height="382" fill="#10161e"/>
           <rect width="600" height="382" fill="url(#molten-engrave-grid)"/>
           <rect x="22" y="18" width="556" height="344" rx="2" fill="none"
-            stroke="#79513c" strokeWidth="1.2"/>
-          <text x="36" y="39" fill="#af8667" fontSize="11" fontFamily="monospace" letterSpacing="2">
-            FORGE / CONDUCTIVITY STUDY
-          </text>
-          <text x="567" y="39" fill="#bd916c" fontSize="11" fontFamily="monospace" textAnchor="end">
-            Cu / 29
-          </text>
-          <g stroke="#342a23" strokeWidth="21" fill="none"
+            stroke="#58616e" strokeWidth="1.2"/>
+          <g stroke="#1d2833" strokeWidth="21" fill="none"
             strokeLinecap="round" strokeLinejoin="round">
             {paths.map((path) => <path key={path} d={path}/>)}
           </g>
-          <g stroke="#76513a" strokeWidth="12" fill="none"
+          <g stroke="#59636e" strokeWidth="12" fill="none"
             strokeLinecap="round" strokeLinejoin="round">
             {paths.map((path) => <path key={path} d={path}/>)}
           </g>
@@ -96,41 +83,32 @@ export function MoltenCircuit() {
             {paths.map((path) => <path key={path} d={path} pathLength="1"/>)}
           </g>
           <g className="molten-circuit__signal" fill="none"
-            stroke="#fff1c8" strokeWidth="3" strokeLinecap="round">
+            stroke="#ffeecf" strokeWidth="3" strokeLinecap="round">
             {paths.map((path) => <path key={path} d={path}/>)}
           </g>
           <g className="molten-circuit__source">
-            <rect x="44" y="116" width="55" height="60" rx="3" fill="#352116"
-              stroke="#d28649" strokeWidth="2"/>
+            <rect x="44" y="116" width="55" height="60" rx="3" fill="#242c37"
+              stroke="#ff7b36" strokeWidth="2"/>
             <path d="M55 130 H89 L82 159 H62 Z" fill="#ffa849" opacity=".84"/>
-            <path d="M69 116 V100 H76 V116" stroke="#c59267" strokeWidth="3" fill="none"/>
+            <path d="M69 116 V100 H76 V116" stroke="#ff924e" strokeWidth="3" fill="none"/>
             <circle className="molten-circuit__droplet" cx="83" cy="146" r="6" fill="#ffca68"/>
-            <text x="71" y="193" fill="#e9ad78" fontFamily="monospace" textAnchor="middle" fontSize="11">
-              CAST
-            </text>
           </g>
           <g className="molten-circuit__chips">
             {chips.map((chip) => (
               <g key={chip.name}>
                 <rect x={chip.x-33} y={chip.y-19} width="66" height="38" rx="2"
-                  fill="#221b17" stroke="#bf8b63" strokeWidth="1.5"/>
+                  fill="#202832" stroke="#ff8245" strokeWidth="1.5"/>
                 <text x={chip.x} y={chip.y+4} textAnchor="middle"
-                  fontFamily="monospace" fontWeight="bold" fontSize="15" fill="#f3d3af">
+                  fontFamily="monospace" fontWeight="bold" fontSize="20" fill="#f5f8fb">
                   {chip.name}
                 </text>
-                <text x={chip.x+38} y={chip.y-22} fontFamily="monospace"
-                  fontSize="9" fill="#bb8a62">{chip.index}</text>
               </g>
             ))}
           </g>
-          <g fill="none" stroke="#eab37d" opacity=".52">
+          <g fill="none" stroke="#f97737" opacity=".52">
             <path d="M39 349 H167 M441 349 H562" strokeDasharray="2 8"/>
             <path d="M36 60 V86 M564 60 V86 M36 302 V329 M564 302 V329"/>
           </g>
-          <text x="300" y="352" textAnchor="middle" fill="#bb9273"
-            fontFamily="monospace" fontSize="10" letterSpacing="1.8">
-            MATERIAL → GEOMETRY → SIGNAL
-          </text>
         </svg>
       </div>
       <div className="molten-circuit__controls" role="group" aria-label="Forging stages">
@@ -139,13 +117,12 @@ export function MoltenCircuit() {
             className="molten-circuit__phase"
             aria-pressed={phase === item.id}
             onClick={() => setPhase(item.id)}>
-            <span>{item.number}</span>
             <strong>{item.label}</strong>
           </button>
         ))}
       </div>
       <div className="molten-circuit__readout" aria-live="polite" aria-atomic="true">
-        <div><span>{current.number} / 03</span><strong>{current.title}</strong></div>
+        <strong>{current.title}</strong>
         <p>{current.description}</p>
       </div>
     </div>

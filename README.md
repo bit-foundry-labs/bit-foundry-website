@@ -41,3 +41,8 @@ The effect uses native SVG and React only; it has no dependency on shaders, paid
 ## Natural scrolling & molten circuitry
 
 The React landing page no longer holds visitors in sticky viewport-sized scroll tracks. The original scene sections are in normal document flow, with short incidental visual changes. The vintage computer is horizontally centered as a full-width exhibit on mobile and desktop. The networking preview now includes `src/components/MoltenCircuit.tsx`, a three-stage SVG experiment (pour, cool, conduct) that visualizes metal becoming copper paths and then propagating conceptual DNS/TCP/TLS/HTTP signals. The controls are explicit, keyboard-accessible, mobile-friendly, and stop continuous motion when reduced motion is requested. Neither interaction uses a third-party animation library or captures wheel/touch scroll events.
+
+
+## Steel-and-fire editorial direction
+
+The homepage removes the old full-width `Labs / Bit Foundry` navigation bar in favor of a single accessible `Menu` control at the upper-right. The expanded menu provides direct links to the actual learning experiences, portfolio, and archive; its labels are large and readable. Decorative telemetry, numbered micro-labels, and filler interludes (`How we shape understanding`, `Two ways into the system`) have been removed rather than concealed. The Labs link now targets the Networking showcase directly. The site uses graphite/black surfaces and fire red/orange highlights rather than tan and brown. This visual iteration is developed on top of PR #9 to retain centered X-Ray, Molten Circuitry, and natural scrolling; review it as a dependent PR, not an independent merge into main.
