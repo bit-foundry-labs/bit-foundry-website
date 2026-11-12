@@ -778,3 +778,14 @@ footer {
   .molten-circuit__phase strong { font-size:15px; }
   .molten-circuit__readout > strong { font-size:18px; }
 }
+
+/* Photographic foundry scene with restrained light movement. */
+.forge-art { position:absolute; inset:0; overflow:hidden; pointer-events:none; background:#080b0d; }
+.forge-art__image { width:100%; height:100%; object-fit:cover; object-position:65% center; display:block; }
+.forge-art__heat, .forge-art__reflection { position:absolute; inset:0; pointer-events:none; }
+.forge-art__heat { background:radial-gradient(ellipse 20% 30% at 66% 75%,rgba(255,105,0,.20),transparent 75%); mix-blend-mode:screen; animation:casting-heat 4s ease-in-out infinite alternate; }
+.forge-art__reflection { background:linear-gradient(108deg,transparent 63%,rgba(255,190,100,.10) 67%,transparent 72%); mix-blend-mode:screen; animation:casting-reflection 7s ease-in-out infinite alternate; }
+@keyframes casting-heat { from { opacity:.25; } to { opacity:.8; } }
+@keyframes casting-reflection { from { opacity:.1; transform:translateX(-2%); } to { opacity:.65; transform:translateX(2%); } }
+@media (max-width:760px) { .forge-art__image { object-position:66% center; } }
+@media (prefers-reduced-motion:reduce) { .forge-art__heat,.forge-art__reflection { animation:none; opacity:.25; } }
