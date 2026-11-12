@@ -24,10 +24,10 @@ test("new brand copy, imagery, motion and reduced-motion rules are present",()=>
   const css=readFileSync("src/index.css","utf8");
   const design = readFileSync("src/forge-design.css", "utf8");
   assert.match(app, /className="forge-art" aria-hidden="true"/);
-  assert.match(app, /forge-art__pour/);
-  assert.match(app, /forge-art__traces/);
+  assert.match(app, /molten-foundry-hero\.webp/);
+  assert.match(app, /forge-art__reflection/);
   assert.match(app, /<SplitText>Welcome to<\/SplitText>/);
-  assert.match(design, /@keyframes casting-traces/);
+  assert.match(design, /@keyframes casting-reflection/);
   assert.match(design, /@media \(prefers-reduced-motion:reduce\)/);
   assert.match(css, /\.hero-scroll \{ height: 160vh; \}/);
   assert.match(css, /\.hero-scroll \{ height: 135vh; \}/);

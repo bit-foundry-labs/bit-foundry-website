@@ -182,17 +182,17 @@ try {
       const hero = document.querySelector(".forge-scene");
       if (!hero) throw new Error("Foundry scene did not mount");
       const art = hero.querySelector(".forge-art");
-      const pour = art?.querySelector(".forge-art__pour");
-      const traces = art?.querySelector(".forge-art__traces path:nth-child(2)");
+      const image = art?.querySelector(".forge-art__image");
+      for (let i = 0; i < 80 && image && !image.complete; i += 1) await pause(55);
+      const reflection = art?.querySelector(".forge-art__reflection");
       const h1 = hero.querySelector("h1");
       const words = Array.from(h1.querySelectorAll(".split-text")).map((node) => node.getBoundingClientRect());
       const section = hero.querySelector(".hero-copy");
 
       return {
         heading: Array.from(h1.querySelectorAll(".split-text")).map((node) => node.getAttribute("aria-label")).join(" "),
-        artworkPresent: !!art?.querySelector("svg") && art.getAttribute("aria-hidden") === "true",
-        pourAnimated: !!pour && getComputedStyle(pour).animationName.includes("casting-flow"),
-        tracesAnimated: !!traces && getComputedStyle(traces).animationName.includes("casting-traces"),
+        artworkPresent: !!image && image.complete && image.naturalWidth > 0 && art.getAttribute("aria-hidden") === "true",
+        reflectionAnimated: !!reflection && getComputedStyle(reflection).animationName.includes("casting-reflection"),
         lettersFit: words.every((box) => box.left >= -2 && box.right <= innerWidth + 2),
         titleVisible: getComputedStyle(section).display !== "none",
         castings: Array.from(document.querySelectorAll(".forge-casting")).map((casting) => {
@@ -217,8 +217,7 @@ try {
     const forge = forgeEvaluated.result?.value;
     assert.ok(forge?.heading.includes("Welcome to") && forge.heading.includes("the Foundry."));
     assert.equal(forge.artworkPresent, true, "Decorative forge artwork must render");
-    assert.equal(forge.pourAnimated, true, "Molten pour should animate");
-    assert.equal(forge.tracesAnimated, true, "Circuit traces should animate");
+    assert.equal(forge.reflectionAnimated, true, "Forge reflection should animate");
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
     assert.equal(forge.castings.length, 3, "Only three illustrative casts remain after deleting filler sections");
