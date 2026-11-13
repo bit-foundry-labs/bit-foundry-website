@@ -22,6 +22,9 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/id="labs" data-scroll-scene/);
   assert.match(app,/href="\/learn\/networking\/"/);
   assert.match(app,/href="\/learn\/fortran\/"/);
+  assert.match(app,/\["Labs", "\/labs\/"\]/);
+  assert.match(app,/<a className="soft-button" href="\/labs\/">/);
+  assert.match(app,/<a href="\/labs\/">Labs<\/a>/);
   assert.match(design,/\.nav-shell \{[\s\S]*?right:clamp\(16px,3\.6vw,58px\)/);
 });
 test("black steel and flames across the editorial sections",()=>{
