@@ -442,7 +442,6 @@ export default function App() {
         <section className="forge-section" id="products">
           <ForgeCasting tool="blade" />
           <div className="forge-heading">
-            <p className="forge-status">Private alpha · local-first developer tooling</p>
             <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
           <div className="forge-detail chapter-reveal">
