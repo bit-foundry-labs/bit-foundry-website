@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ForgeLoop is a private-alpha, local-first engineering workspace for bounded autonomous work.">
+  <title>ForgeLoop · Private alpha</title>
+  <style>
+    :root { color-scheme: dark; --ink:#edf0f2; --muted:#aeb8c0; --steel:#151b20; --line:#40505d; --ember:#ff7540; --amber:#ffae72; --coal:#080b0e; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; min-width:320px; background:var(--coal); color:var(--ink); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color:inherit; } .shell { width:min(1240px, calc(100% - 44px)); margin:auto; }
+    .masthead { min-height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #ffffff1c; font-size:15px; }
+    .brand { color:#fff; font-weight:700; text-decoration:none; letter-spacing:.08em; } .brand i { color:var(--ember); font-style:normal; }
+    .back { color:var(--muted); text-decoration:none; } .back:hover { color:var(--amber); }
+    .hero { position:relative; min-height:calc(100svh - 76px); display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(35px,8vw,130px); align-items:center; padding:clamp(68px,12vh,150px) 0; overflow:hidden; }
+    .hero::before { content:""; position:absolute; inset:15% -10% auto 35%; height:54%; background:radial-gradient(ellipse, rgba(243,69,29,.23), transparent 68%); filter:blur(12px); pointer-events:none; }
+    .context { margin:0 0 22px; color:var(--amber); font-size:16px; font-weight:500; }
+    h1 { max-width:730px; margin:0; font:clamp(56px,8.2vw,126px)/.88 Georgia, "Times New Roman", serif; letter-spacing:-.075em; } h1 em { color:var(--ember); font-style:italic; }
+    .lede { max-width:580px; margin:35px 0 0; color:#d5dce1; font-size:clamp(17px,1.65vw,22px); line-height:1.55; }
+    .actions { display:flex; gap:14px; flex-wrap:wrap; margin-top:42px; } .button { display:inline-flex; align-items:center; gap:30px; min-height:52px; padding:0 19px; border:1px solid var(--ember); text-decoration:none; font-size:15px; font-weight:600; } .button:hover { background:var(--ember); color:#160a06; } .button--quiet { border-color:#71808b; color:#d5dce1; }
+    .console { position:relative; border:1px solid #61707c; background:linear-gradient(155deg,#172026,#0d1216 72%); box-shadow:0 30px 110px #0008, inset 0 1px #ffffff12; }
+    .console-head { display:flex; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #52606b; color:#bfc8cf; font-size:14px; } .state { color:var(--amber); }
+    .objective { padding:22px 20px; border-bottom:1px solid #3e4a54; } .objective small { color:#94a1ab; font-size:14px; } .objective strong { display:block; margin-top:10px; font-size:17px; line-height:1.35; font-weight:500; }
+    .steps { padding:8px 20px 18px; } .step { display:grid; grid-template-columns:29px 1fr auto; gap:10px; align-items:center; min-height:53px; border-bottom:1px solid #ffffff12; color:#ced6dc; font-size:15px; } .step code { color:#93a2ae; font:13px ui-monospace, SFMono-Regular, Menlo, monospace; } .dot { width:10px; height:10px; border:1px solid #80909b; border-radius:50%; } .dot--done { border-color:var(--amber); background:var(--amber); box-shadow:0 0 14px #ff936777; } .dot--review { border-color:var(--ember); }
+    .limit { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid #52606b; } .limit div { padding:15px 13px; border-right:1px solid #52606b; } .limit div:last-child { border:0; } .limit b { display:block; color:#f3bc91; font-size:18px; } .limit span { display:block; margin-top:5px; color:#9dabb5; font-size:13px; }
+    .section { padding:125px 0; border-top:1px solid #ffffff18; } .section-grid { display:grid; grid-template-columns:.7fr 1.3fr; gap:clamp(40px,10vw,150px); } h2 { margin:0; font:clamp(36px,5vw,72px)/.98 Georgia, "Times New Roman", serif; letter-spacing:-.055em; } .section-copy { max-width:680px; margin:0; color:#c3cdd4; font-size:18px; line-height:1.65; }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:75px; background:#41505c; border:1px solid #41505c; } .flow article { min-height:200px; padding:23px; background:#10161b; } .flow span { color:var(--amber); font-size:15px; } .flow h3 { margin:50px 0 9px; font-size:17px; font-weight:500; } .flow p { margin:0; color:#9cabb5; font-size:14px; line-height:1.45; }
+    .guardrails { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:75px; } .guardrails article { padding:26px 0; border-top:1px solid #667680; } .guardrails b { color:#fff2e9; font-size:18px; font-weight:500; } .guardrails p { color:#aeb9c1; line-height:1.55; }
+    .alpha { margin:0 0 80px; padding:clamp(45px,7vw,92px); background:linear-gradient(135deg,#20120e,#0e1419 70%); border:1px solid #7c4936; } .alpha p { max-width:570px; color:#d0d8de; font-size:18px; line-height:1.55; }
+    footer { padding:34px 0 48px; color:#778590; font-size:14px; }
+    @media (max-width:780px) { .hero,.section-grid { grid-template-columns:1fr; } .hero { padding-top:70px; } .console { margin-top:20px; } .flow,.guardrails { grid-template-columns:1fr; } .flow article { min-height:150px; } .flow h3 { margin-top:32px; } .limit { grid-template-columns:1fr; } .limit div { border-right:0; border-bottom:1px solid #52606b; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
+  </style>
+</head>
+<body>
+  <header class="shell masthead"><a class="brand" href="/">BIT FOUNDRY <i>↗</i></a><a class="back" href="/">Back to studio</a></header>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="context">A private-alpha workspace for deliberate engineering work.</p>
+        <h1>Stop prompting.<br><em>Start shipping.</em></h1>
+        <p class="lede">ForgeLoop carries approved engineering objectives forward through bounded work, clear evidence, and deliberate human review.</p>
+        <div class="actions"><a class="button" href="mailto:hello@bitfoundrylabs.io?subject=ForgeLoop%20private%20alpha">Ask about the private alpha <span>↗</span></a><a class="button button--quiet" href="#guardrails">How it stays in your control ↓</a></div>
+      </div>
+      <aside class="console" aria-label="Conceptual ForgeLoop objective workflow">
+        <div class="console-head"><span>A work objective, at a glance</span><span class="state">Ready for review</span></div>
+        <div class="objective"><small>Approved objective</small><strong>Repair the failing test without weakening its assertion.</strong></div>
+        <div class="steps"><div class="step"><i class="dot dot--done"></i><span>Inspect evidence</span><code>Done</code></div><div class="step"><i class="dot dot--done"></i><span>Run bounded repair</span><code>Done</code></div><div class="step"><i class="dot dot--done"></i><span>Retest in worktree</span><code>Done</code></div><div class="step"><i class="dot dot--review"></i><span>Review change set</span><code>Your call</code></div></div>
+        <div class="limit"><div><b>$5</b><span>budget cap</span></div><div><b>3</b><span>repair attempts</span></div><div><b>0</b><span>automatic merges</span></div></div>
+      </aside>
+    </section>
+    <section class="section"><div class="section-grid"><p class="context">Your work should not reset when the chat ends.</p><div><h2>An objective has a life beyond the prompt.</h2><p class="section-copy">ForgeLoop is for developers managing more than one active project who are tired of restating context and repeatedly asking an agent to continue. It moves only through a preapproved sequence and stops when judgment is needed.</p></div></div>
+      <div class="flow"><article><span>01</span><h3>Approve</h3><p>Set the goal, boundaries, and ordered steps you are willing to delegate.</p></article><article><span>02</span><h3>Work</h3><p>Run checks and bounded work in an isolated worktree with explicit limits.</p></article><article><span>03</span><h3>Report</h3><p>Keep evidence, failed attempts, and the resulting state visible for inspection.</p></article><article><span>04</span><h3>Decide</h3><p>You review changes and decide what, if anything, ships.</p></article></div>
+    </section>
+    <section class="section" id="guardrails"><div class="section-grid"><p class="context">More momentum, less oversight theater.</p><div><h2>Autonomy needs edges.</h2><p class="section-copy">ForgeLoop’s promise is not “hands off forever.” It is less babysitting without surrendering control over cost, code, or release decisions.</p></div></div>
+      <div class="guardrails"><article><b>Local-first</b><p>Your work stays close to your machine and your chosen model access. It is designed around user control, not mandatory hosted infrastructure.</p></article><article><b>Bounded execution</b><p>Objectives carry step counts, retry budgets, and stop states. Reaching a limit produces an explanation, not a hidden continuation.</p></article><article><b>Human release control</b><p>ForgeLoop does not automatically push, open pull requests, merge, deploy, or send messages on your behalf.</p></article></div>
+    </section>
+    <section class="alpha"><h2>Built with working developers, not a feature checklist.</h2><p>We are opening a small set of conversations with people who manage several software projects and want a local-first system for keeping approved work moving.</p><a class="button" href="mailto:hello@bitfoundrylabs.io?subject=ForgeLoop%20private%20alpha">Start a conversation <span>↗</span></a></section>
+  </main>
+  <footer class="shell">Bit Foundry Labs · ForgeLoop private alpha</footer>
+</body>
+</html>

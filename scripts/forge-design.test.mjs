@@ -6,6 +6,7 @@ const app=readFileSync("src/App.tsx","utf8");
 const foundation=readFileSync("src/index.css","utf8");
 const design=readFileSync("src/forge-design.css","utf8");
 const legacy=readFileSync("public/legacy-theme.css","utf8");
+const forgeLoop=readFileSync("forgeloop/index.html","utf8");
 
 test("steel and fire visual layer loads last, remains compatible with forge motion",()=>{
   assert.ok(entry.indexOf('import "./index.css"')<entry.indexOf('import "./forge-design.css"'));
@@ -26,9 +27,14 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/<a className="soft-button" href="\/labs\/">/);
   assert.match(app,/<a href="\/labs\/">Labs<\/a>/);
   assert.match(app,/Private alpha · local-first developer tooling/);
-  assert.match(app,/mailto:hello@bitfoundrylabs\.io\?subject=ForgeLoop%20private%20alpha/);
+  assert.match(app,/href="\/forgeloop\/"/);
   assert.doesNotMatch(app,/href="https:\/\/github\.com\/bit-foundry-labs" target="_blank" rel="noreferrer">\s*<span>Discover our work/);
   assert.match(design,/\.nav-shell \{[\s\S]*?right:clamp\(16px,3\.6vw,58px\)/);
+});
+test("ForgeLoop page uses readable sentence-case labels instead of tiny all-caps filler",()=>{
+  assert.match(forgeLoop,/A private-alpha workspace for deliberate engineering work\./);
+  assert.match(forgeLoop,/A work objective, at a glance/);
+  assert.doesNotMatch(forgeLoop,/class="eyebrow"|text-transform:uppercase|MISSION CONTROL|NEEDS REVIEW|APPROVED OBJECTIVE/);
 });
 test("black steel and flames across the editorial sections",()=>{
   for(const cls of [".nav-shell",".about-section",".artifact-sticky",".archive-section",".forge-section",".closing-sticky","footer"])

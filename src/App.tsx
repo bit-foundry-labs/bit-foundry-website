@@ -450,8 +450,8 @@ export default function App() {
               A local-first engineering workspace for moving approved objectives forward without
               repeated prompting, while keeping budgets, review, and shipping decisions in your hands.
             </p>
-            <a href="mailto:hello@bitfoundrylabs.io?subject=ForgeLoop%20private%20alpha">
-              <span>Ask about private alpha</span>
+            <a href="/forgeloop/">
+              <span>Explore ForgeLoop</span>
               <Arrow />
             </a>
           </div>

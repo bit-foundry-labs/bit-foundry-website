@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
  * except for adding a shared stylesheet after each page's original styles.
  */
 export const preserveLegacySite = (root, output) => {
-  const directories = ["assets", "disks", "labs", "learn", "styles"];
+  const directories = ["assets", "disks", "forgeloop", "labs", "learn", "styles"];
   const files = ["styles.css", "learn.js", "script.js"];
   mkdirSync(output, { recursive: true });
 
@@ -22,6 +22,7 @@ export const preserveLegacySite = (root, output) => {
     "disks/internet/index.html",
     "disks/gaming-history/index.html",
     "disks/oregon-trail/index.html",
+    "forgeloop/index.html",
     "labs/index.html",
     "labs/lan/index.html",
     "learn/networking/index.html",
@@ -30,6 +31,7 @@ export const preserveLegacySite = (root, output) => {
   for (const page of pages) {
     const destination = join(output, page);
     if (!existsSync(destination)) throw new Error(`Missing preserved page: ${page}`);
+    if (page === "forgeloop/index.html") continue;
     const cssPath = relative(dirname(page), "legacy-theme.css").replaceAll("\\", "/");
     const source = readFileSync(destination, "utf8");
     if (!source.includes("</head>")) throw new Error(`Missing head in ${page}`);
