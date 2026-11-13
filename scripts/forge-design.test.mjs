@@ -26,7 +26,7 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/\["Labs", "\/labs\/"\]/);
   assert.match(app,/<a className="soft-button" href="\/labs\/">/);
   assert.match(app,/<a href="\/labs\/">Labs<\/a>/);
-  assert.match(app,/Private alpha · local-first developer tooling/);
+  assert.doesNotMatch(app,/Private alpha · local-first developer tooling|forge-status/);
   assert.match(app,/href="\/forgeloop\/"/);
   assert.doesNotMatch(app,/href="https:\/\/github\.com\/bit-foundry-labs" target="_blank" rel="noreferrer">\s*<span>Discover our work/);
   assert.match(design,/\.nav-shell \{[\s\S]*?right:clamp\(16px,3\.6vw,58px\)/);
