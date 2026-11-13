@@ -442,15 +442,16 @@ export default function App() {
         <section className="forge-section" id="products">
           <ForgeCasting tool="blade" />
           <div className="forge-heading">
+            <p className="forge-status">Private alpha · local-first developer tooling</p>
             <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
           <div className="forge-detail chapter-reveal">
             <p>
-              An autonomous engineering workspace with bounded agents, explicit objectives, and
-              human oversight.
+              A local-first engineering workspace for moving approved objectives forward without
+              repeated prompting, while keeping budgets, review, and shipping decisions in your hands.
             </p>
-            <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">
-              <span>Discover our work</span>
+            <a href="mailto:hello@bitfoundrylabs.io?subject=ForgeLoop%20private%20alpha">
+              <span>Ask about private alpha</span>
               <Arrow />
             </a>
           </div>
