@@ -25,6 +25,9 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/\["Labs", "\/labs\/"\]/);
   assert.match(app,/<a className="soft-button" href="\/labs\/">/);
   assert.match(app,/<a href="\/labs\/">Labs<\/a>/);
+  assert.match(app,/Private alpha · local-first developer tooling/);
+  assert.match(app,/mailto:hello@bitfoundrylabs\.io\?subject=ForgeLoop%20private%20alpha/);
+  assert.doesNotMatch(app,/href="https:\/\/github\.com\/bit-foundry-labs" target="_blank" rel="noreferrer">\s*<span>Discover our work/);
   assert.match(design,/\.nav-shell \{[\s\S]*?right:clamp\(16px,3\.6vw,58px\)/);
 });
 test("black steel and flames across the editorial sections",()=>{
