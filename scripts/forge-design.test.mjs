@@ -25,7 +25,7 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/href="\/learn\/fortran\/"/);
   assert.match(app,/\["Labs", "\/labs\/"\]/);
   assert.match(app,/<a className="soft-button" href="\/labs\/">/);
-  assert.match(app,/<a href="\/labs\/">Labs<\/a>/);
+  assert.match(app,/href="\/labs\/">Interactive labs<\/a>/);
   assert.doesNotMatch(app,/Private alpha · local-first developer tooling|forge-status/);
   assert.match(app,/href="\/forgeloop\/"/);
   assert.doesNotMatch(app,/href="https:\/\/github\.com\/bit-foundry-labs" target="_blank" rel="noreferrer">\s*<span>Discover our work/);
@@ -39,7 +39,14 @@ test("ForgeLoop page uses readable sentence-case labels instead of tiny all-caps
 test("homepage calls to action and closing copy retain readable sentence case",()=>{
   assert.match(design,/\.forge-detail a \{ border-color:#ff702c;font:500 15px\/1\.4 var\(--sans\);text-transform:none; \}/);
   assert.match(design,/\.closing-copy > p \{ font:400 clamp\(15px,1\.1vw,18px\)\/1\.55 var\(--sans\);text-transform:none; \}/);
-  assert.match(design,/\.footer-links \{ font:400 14px\/1\.45 var\(--sans\);text-transform:none; \}/);
+  assert.match(design,/\.footer-links \{ justify-self:end;display:grid;grid-template-columns:repeat\(2,minmax\(150px,1fr\)\);/);
+});
+test("footer provides clear company context, contact and product navigation",()=>{
+  assert.match(app,/Independent software studio for systems, developer tools, and learning experiences\./);
+  assert.match(app,/href="mailto:hello@bitfoundrylabs\.io">hello@bitfoundrylabs\.io/);
+  assert.match(app,/href="\/forgeloop\/">ForgeLoop<\/a>/);
+  assert.match(app,/A New Mexico limited liability company/);
+  assert.match(design,/\.footer-links h2 \{ margin:0 0 8px;color:#f2f4f6;font:500 18px\/1\.2 var\(--sans\);letter-spacing:0; \}/);
 });
 test("black steel and flames across the editorial sections",()=>{
   for(const cls of [".nav-shell",".about-section",".artifact-sticky",".archive-section",".forge-section",".closing-sticky","footer"])
