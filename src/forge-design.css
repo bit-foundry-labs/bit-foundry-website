@@ -249,7 +249,7 @@ html,body { background: #090a0d; }
 }
 .forge-heading h2 { color:#ff9a52;text-shadow:0 0 45px rgba(232,48,24,.16); }
 .forge-detail p { color:#d0d8e0;font-size:clamp(15px,1.1vw,18px); }
-.forge-detail a { border-color:#ff702c; }
+.forge-detail a { border-color:#ff702c;font:500 15px/1.4 var(--sans);text-transform:none; }
 .forge-detail a:is(:hover,:focus-visible) { color:#ffb27c;border-color:#ffb27c; }
 .closing-sticky {
   background:radial-gradient(ellipse at 56% 46%,rgba(197,44,31,.13),transparent 45%),#090b0e;
@@ -259,13 +259,15 @@ html,body { background: #090a0d; }
     repeating-radial-gradient(circle at 50% 51%,transparent 0 98px,rgba(233,236,239,.021) 99px,transparent 100px 196px);
 }
 .closing-copy h2 em { color:#ffa35e; }
-.closing-copy > a { border-color:rgba(255,133,69,.76); }
+.closing-copy > p { font:400 clamp(15px,1.1vw,18px)/1.55 var(--sans);text-transform:none; }
+.closing-copy > a { border-color:rgba(255,133,69,.76);font:500 15px/1.4 var(--sans);text-transform:none; }
 .closing-copy > a:is(:hover,:focus-visible) { color:#ffb679; }
 footer {
   background:radial-gradient(ellipse at 73% 0%,rgba(201,40,29,.09),transparent 48%),#080a0d;
   border-top:1px solid rgba(232,237,243,.15);
 }
 .footer-mark { color:#f5f7f9; }
+.footer-links { font:400 14px/1.45 var(--sans);text-transform:none; }
 .footer-links a:is(:hover,:focus-visible) { color:#ff944a; }
 .footer-bottom { border-top-color:rgba(238,241,244,.2);color:#abb5c1;font-size:13px; }
 .footer-bottom a:is(:hover,:focus-visible) { color:#ff9a56; }

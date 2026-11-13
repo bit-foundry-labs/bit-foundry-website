@@ -36,6 +36,11 @@ test("ForgeLoop page uses readable sentence-case labels instead of tiny all-caps
   assert.match(forgeLoop,/A work objective, at a glance/);
   assert.doesNotMatch(forgeLoop,/class="eyebrow"|text-transform:uppercase|MISSION CONTROL|NEEDS REVIEW|APPROVED OBJECTIVE/);
 });
+test("homepage calls to action and closing copy retain readable sentence case",()=>{
+  assert.match(design,/\.forge-detail a \{ border-color:#ff702c;font:500 15px\/1\.4 var\(--sans\);text-transform:none; \}/);
+  assert.match(design,/\.closing-copy > p \{ font:400 clamp\(15px,1\.1vw,18px\)\/1\.55 var\(--sans\);text-transform:none; \}/);
+  assert.match(design,/\.footer-links \{ font:400 14px\/1\.45 var\(--sans\);text-transform:none; \}/);
+});
 test("black steel and flames across the editorial sections",()=>{
   for(const cls of [".nav-shell",".about-section",".artifact-sticky",".archive-section",".forge-section",".closing-sticky","footer"])
     assert.ok(design.includes(cls),cls);
