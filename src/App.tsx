@@ -473,18 +473,27 @@ export default function App() {
         </section>
       </main>
 
-      <footer>
-        <div className="footer-mark">Bit Foundry</div>
-        <div className="footer-links">
-          <a href="#about">About</a>
-          <a href="/labs/">Labs</a>
-          <a href="#archive">Archive</a>
-          <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">
-            GitHub ↗
-          </a>
+      <footer aria-label="Bit Foundry Labs">
+        <div className="footer-brand">
+          <div className="footer-mark">Bit Foundry</div>
+          <p>Independent software studio for systems, developer tools, and learning experiences.</p>
+          <a className="footer-contact" href="mailto:hello@bitfoundrylabs.io">hello@bitfoundrylabs.io <Arrow /></a>
         </div>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <section>
+            <h2>Explore</h2>
+            <a href="/labs/">Interactive labs</a>
+            <a href="/forgeloop/">ForgeLoop</a>
+            <a href="#archive">Field archive</a>
+          </section>
+          <section>
+            <h2>Studio</h2>
+            <a href="#about">About Bit Foundry</a>
+            <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
+          </section>
+        </nav>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Bit Foundry Labs LLC</span>
+          <span>© {new Date().getFullYear()} Bit Foundry Labs LLC · A New Mexico limited liability company</span>
           <a href="#top">Back to the Foundry ↑</a>
         </div>
       </footer>
