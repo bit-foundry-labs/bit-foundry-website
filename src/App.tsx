@@ -248,7 +248,6 @@ export default function App() {
         <div className="intro-progress">
           <span />
         </div>
-        <small>Connecting to system</small>
       </div>
 
       <header className="nav-shell">

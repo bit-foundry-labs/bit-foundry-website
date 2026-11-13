@@ -19,7 +19,7 @@ test("homepage has no floating branding bar or filler interludes",()=>{
   assert.match(app,/className="nav-shell"/);
   assert.match(app,/className="menu-toggle"/);
   assert.doesNotMatch(app,/className="wordmark"|className="nav-location"|hero-kicker|hero-coordinate/);
-  assert.doesNotMatch(app,/method-section|lab-intro|How we shape understanding|Two ways|We don’t simplify/);
+  assert.doesNotMatch(app,/method-section|lab-intro|How we shape understanding|Two ways|We don’t simplify|Connecting to system/);
   assert.match(app,/id="labs" data-scroll-scene/);
   assert.match(app,/href="\/learn\/networking\/"/);
   assert.match(app,/href="\/learn\/fortran\/"/);
