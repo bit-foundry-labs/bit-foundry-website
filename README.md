@@ -1,5 +1,7 @@
 # Bit Foundry Labs web frontend
 
+[Visit the live site](https://bit-foundry-website.vercel.app)
+
 The homepage is built with **React 19 / Vite / Tailwind CSS v4** using the Figma Make redesign. The existing interactive networking, Fortran, LAN, and floppy archive pages remain standalone HTML/JavaScript applications.
 
 ## Development
