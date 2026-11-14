@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { DecodeText, LetterRoll } from "./components/KineticText";
-import { ForgeCasting } from "./components/ForgeCasting";
 import { ComputerXRay } from "./components/ComputerXRay";
 import { MoltenCircuit } from "./components/MoltenCircuit";
 import { getForgeMotion } from "./lib/forge-motion.mjs";
@@ -314,7 +313,6 @@ export default function App() {
         </section>
 
         <section className="about-section" id="about">
-          <ForgeCasting tool="hammer" />
           <div className="about-intro">
             <p>
               Bit Foundry is one idea, and the studio built around it:
@@ -405,7 +403,6 @@ export default function App() {
         </section>
 
         <section className="archive-section" id="archive">
-          <ForgeCasting tool="compass" />
           <div className="archive-heading">
             <h2><DecodeText text="Field archive" /></h2>
             <p>Fragments from the systems that brought us here.</p>
@@ -439,7 +436,6 @@ export default function App() {
         </section>
 
         <section className="forge-section" id="products">
-          <ForgeCasting tool="blade" />
           <div className="forge-heading">
             <h2><DecodeText text="ForgeLoop" /></h2>
           </div>
