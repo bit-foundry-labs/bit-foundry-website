@@ -455,6 +455,28 @@ export default function App() {
           </div>
         </section>
 
+        <section className="contributors-section" aria-labelledby="contributors-title">
+          <div className="contributors-heading">
+            <p>Looking for contributors</p>
+            <h2 id="contributors-title">Bring a sharp tool<br />to the bench.</h2>
+          </div>
+          <div className="contributors-detail">
+            <p>
+              Bit Foundry is looking for people who care about systems that are technically rigorous,
+              clear to use, and worth learning from.
+            </p>
+            <ul>
+              <li><strong>Rust &amp; systems</strong><span>Kernel bring-up, capability design, QEMU, and reproducible experiments.</span></li>
+              <li><strong>Security &amp; assurance</strong><span>Threat models, formal methods, protocol reviews, and test design.</span></li>
+              <li><strong>Learning &amp; interaction</strong><span>Technical writing, visual explanations, and browser-based learning tools.</span></li>
+            </ul>
+            <a className="contributors-link" href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">
+              <span>See open work on GitHub</span>
+              <Arrow />
+            </a>
+          </div>
+        </section>
+
         <section className="closing-scroll" data-scroll-scene>
           <div className="closing-sticky">
             <div className="closing-wash" />
