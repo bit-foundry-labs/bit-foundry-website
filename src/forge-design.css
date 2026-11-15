@@ -799,3 +799,6 @@ footer {
 @keyframes casting-reflection { from { opacity:.1; transform:translateX(-2%); } to { opacity:.65; transform:translateX(2%); } }
 @media (max-width:760px) { .forge-art__image { object-position:66% center; } }
 @media (prefers-reduced-motion:reduce) { .forge-art__heat,.forge-art__reflection { animation:none; opacity:.25; } }
+
+.hero-copy .hero-labs-link { margin-top: 24px; }
+.arrow { flex: 0 0 20px; display: inline-block; vertical-align: middle; }
