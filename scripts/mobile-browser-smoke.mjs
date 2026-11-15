@@ -220,10 +220,8 @@ try {
     assert.equal(forge.reflectionAnimated, true, "Forge reflection should animate");
     assert.equal(forge.lettersFit, true, "Hero lettering should fit the phone and desktop viewport");
     assert.equal(forge.titleVisible, true);
-    assert.equal(forge.castings.length, 3, "Only three illustrative casts remain after deleting filler sections");
-    assert.ok(forge.castings.every((casting) => casting.decorative && casting.fits && casting.paths >= 4));
-    assert.ok(forge.castings.every((casting) => casting.animated), "Native scroll-timeline effects should initialize");
-    console.log("✓ " + size.width + "px: forge castings fit the viewport and animate");
+    assert.equal(forge.castings.length, 0, "Decorative forge-tool motifs should not render on the homepage");
+    console.log("✓ " + size.width + "px: no decorative forge-tool motifs render");
     console.log("✓ " + size.width + "px: foundry hero artwork, typography and animation");
 
     const materialCheck = await connection.send("Runtime.evaluate", {
