@@ -69,6 +69,7 @@ function SplitText({ children, className = "" }: { children: string; className?:
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [introComplete, setIntroComplete] = useState(false);
   const [heroReady] = useState(true);
   const introStartedAt = useRef<number | null>(null);
@@ -181,11 +182,14 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape" && menuOpen) {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [menuOpen]);
 
   useEffect(() => {
     if (!introComplete) return;
@@ -250,6 +254,7 @@ export default function App() {
       <header className="nav-shell">
         <button
           className="menu-toggle"
+          ref={menuButtonRef}
           type="button"
           aria-controls="primary-navigation"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
