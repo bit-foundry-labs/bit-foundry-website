@@ -46,9 +46,7 @@ const archiveItems = [
 
 function Arrow() {
   return (
-    <span className="arrow" aria-hidden="true">
-      ↗
-    </span>
+    <svg className="arrow" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 19 19 5M7 5h12v12" /></svg>
   );
 }
 
@@ -305,6 +303,7 @@ export default function App() {
                 Look beneath the surface.
                 <span> Beautiful tools and interactive lessons about the machinery inside computing.</span>
               </p>
+              <a className="soft-button hero-labs-link" href="/labs/"><span>Explore interactive labs</span><Arrow /></a>
             </div>
             <a className="scroll-cue" href="#about" aria-label="Scroll to discover Bit Foundry">
               <span aria-hidden="true">↓</span>
