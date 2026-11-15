@@ -266,9 +266,12 @@ try {
         const footerHubPath=document.querySelector("footer a[href='/labs/']")?.getAttribute("href");
         const aboutHubPath=document.querySelector(".about-section a.soft-button")?.getAttribute("href");
         const menuVisible=getComputedStyle(menu).visibility;
-        button.click();
+        navLinks[0].focus();
+        window.dispatchEvent(new KeyboardEvent("keydown", {key:"Escape", bubbles:true}));
+        await new Promise(done=>setTimeout(done,75));
+        const escapeRestoresFocus=document.activeElement===button && button.getAttribute("aria-expanded")==="false";
         return {
-          before,expanded,menuVisible,links,hubPath,footerHubPath,aboutHubPath,
+          before,expanded,menuVisible,links,hubPath,footerHubPath,aboutHubPath,escapeRestoresFocus,
           buttonLabel:button.textContent.trim(),
           navWidth:navRect.width,
           navRight:navRect.right,
@@ -286,6 +289,7 @@ try {
     assert.equal(ui.before,"false");
     assert.equal(ui.expanded,"true");
     assert.equal(ui.menuVisible,"visible");
+    assert.equal(ui.escapeRestoresFocus,true,"Escape closes the menu and restores focus to its button");
     assert.ok(ui.links.includes("Networking")&&ui.links.includes("Fortran"));
     assert.equal(ui.hubPath,"/labs/","Labs menu item should reach the actual hub");
     assert.equal(ui.footerHubPath,"/labs/","Footer Labs link should reach the hub");
