@@ -43,7 +43,7 @@ test("homepage calls to action and closing copy retain readable sentence case",(
 });
 test("footer provides clear company context, contact and product navigation",()=>{
   assert.match(app,/Independent software studio for systems, developer tools, and learning experiences\./);
-  assert.match(app,/href="mailto:hello@bitfoundrylabs\.io">hello@bitfoundrylabs\.io/);
+  assert.match(app,/href="mailto:brittney@bitfoundrylabs\.io">brittney@bitfoundrylabs\.io/);
   assert.match(app,/href="\/forgeloop\/">ForgeLoop<\/a>/);
   assert.match(app,/A New Mexico limited liability company/);
   assert.match(design,/\.footer-links h2 \{ margin:0 0 8px;color:#f2f4f6;font:500 18px\/1\.2 var\(--sans\);letter-spacing:0; \}/);

@@ -284,7 +284,7 @@ export default function App() {
           ))}
         </nav>
         <div className="menu-social">
-          <a href="mailto:hello@bitfoundrylabs.io">Contact</a>
+          <a href="mailto:brittney@bitfoundrylabs.io">Contact</a>
           <a href="https://github.com/bit-foundry-labs" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
         </div>
       </div>
@@ -487,7 +487,7 @@ export default function App() {
                 <br />
                 <em>We’ll open the box.</em>
               </h2>
-              <a href="mailto:hello@bitfoundrylabs.io">
+              <a href="mailto:brittney@bitfoundrylabs.io">
                 Start a conversation <Arrow />
               </a>
             </div>
@@ -499,7 +499,7 @@ export default function App() {
         <div className="footer-brand">
           <div className="footer-mark">Bit Foundry</div>
           <p>Independent software studio for systems, developer tools, and learning experiences.</p>
-          <a className="footer-contact" href="mailto:hello@bitfoundrylabs.io">hello@bitfoundrylabs.io <Arrow /></a>
+          <a className="footer-contact" href="mailto:brittney@bitfoundrylabs.io">brittney@bitfoundrylabs.io <Arrow /></a>
         </div>
         <nav className="footer-links" aria-label="Footer navigation">
           <section>
